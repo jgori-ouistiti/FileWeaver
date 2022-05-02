@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+PATHSETTING=${3:-relativepath} 
+
+if [ $2 = '1' ];
+then
+	if [ $PATHSETTING != 'fullpath' ];
+	then
+		strace -ff --trace=file $1 2>&1 | grep O_CREAT | awk -F '"' '{print $2}'
+	else
+		strace -ff --trace=file $1 2>&1 | grep O_CREAT | awk -F '"' '{
+			if (substr($2,0,1)!="/") 
+				print(ENVIRON["PWD"] "/" $2)
+			else
+				print($2)
+				}'
+	fi
+elif [ $2 = '2' ];
+then
+	if [ $PATHSETTING != 'fullpath' ];
+	then
+		strace -ff --trace=file $1 2>&1 | grep O_RDONLY | awk -F '"' '{print $2}'
+	else
+		strace -ff --trace=file $1 2>&1 | grep O_RDONLY | awk -F '"' '{
+			if (substr($2,0,1)!="/") 
+				print(ENVIRON["PWD"] "/" $2)
+			else
+				print($2)
+				}'
+	fi
+else
+	if [ $PATHSETTING != 'fullpath' ];
+	then
+		strace -ff --trace=file $1 2>&1 | grep 'O_RDONLY\|O_CREAT' | awk -F '"' '{print $2}'
+	else
+		strace -ff --trace=file $1 2>&1 | grep 'O_RDONLY\|O_CREAT' | awk -F '"' '{
+			if (substr($2,0,1)!="/") 
+				print(ENVIRON["PWD"] "/" $2)
+			else
+				print($2)
+				}'
+	fi
+fi

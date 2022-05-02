@@ -113,8 +113,17 @@ You can check what is inside that conf.cfg file, it indicates the location of va
 Some tips
 ------------
 
-To maintain a ``requirements.txt`` using Poetry (so that people who don't want to use poetry can still install FileWeaver) do the following:
+* To maintain a ``requirements.txt`` using Poetry (so that people who don't want to use poetry can still install FileWeaver) do the following:
 
 .. code-block:: bash
 
     poetry export --without-hashes --dev -f requirements.txt --output requirements.txt
+
+* Sometimes you will get a ``zmq.error.ZMQError: Address already in use`` if FileWeaver was quit with an interruption (e.g. closing the terminal, hitting Ctrl+C). The reason is that the sockets and the ZMQ context have not been destroyed properly. A simple workaround is to close the sockets by hand:
+
+.. code-block:: bash
+
+    netstat -lntp # Look up sockets, identify the PID holding socket with port 5555 open
+    kill -9 $PID
+
+
