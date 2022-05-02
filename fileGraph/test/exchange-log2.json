@@ -1,0 +1,159 @@
+{
+ "epdic": null,
+ "action": "add",
+ "linkname": "2053_4982371",
+ "vpdic": {
+  "status": 1,
+  "emptyin": 0,
+  "target": "main.tex",
+  "trace": [
+   "#!/bin/bash",
+   "if cat $1 | grep -q \\begin{document};",
+   "then",
+   "\tpath=$(dirname \"$1\")",
+   "\tcd $path",
+   "\tpdflatex -output-format pdf -interaction nonstopmode $1 ",
+   "\tif head -1 $1 | grep -q {beamer};",
+   "\tthen",
+   "\t\tlatexmk -c $1",
+   "\t\trm *.nav",
+   "\t\trm *.snm",
+   "\telse",
+   "\t\tlatexmk -c $1",
+   "\tfi",
+   "\texit 1",
+   "else",
+   "\texit 1",
+   "fi"
+  ],
+  "interact": [
+   "texmaker -n $1"
+  ],
+  "recipe": [
+   "#!/bin/bash",
+   "if cat $1 | grep -q \\begin{document};",
+   "then",
+   "\tpath=$(dirname \"$1\")",
+   "\tcd $path",
+   "\tlatexmk -pdf -interaction=nonstopmode -bibtex-cond -silent -deps-out=.deps.txt $1 ",
+   "\tif head -1 $1 | grep -q {beamer};",
+   "\tthen",
+   "\t\tlatexmk -c $1",
+   "\t\trm *.nav",
+   "\t\trm *.snm",
+   "\telse",
+   "\t\tlatexmk -c $1",
+   "\tfi",
+   "\texit 1",
+   "else",
+   "\texit 1",
+   "fi"
+  ],
+  "emptyout": 0,
+  "tag": "main.tex",
+  "flags": [
+   1,
+   -2,
+   -2,
+   0
+  ],
+  "path": "/home/jgori/.cookbook/files/2053_4982371/main.tex",
+  "smlk": "/home/jgori/Documents/LaTex/projets_en_cours/missing_link_testing_area/main.tex"
+ },
+ "type": "G",
+ "id": "2"
+}{
+ "epdic": null,
+ "action": "add",
+ "linkname": "2053_4982469",
+ "vpdic": {
+  "status": 1,
+  "emptyin": 0,
+  "target": "section.tex",
+  "version": "ae1a34c155689221ab4ea342f7e6d17f0b682976",
+  "trace": [
+   "#!/bin/bash",
+   "if cat $1 | grep -q \\begin{document};",
+   "then",
+   "\tpath=$(dirname \"$1\")",
+   "\tcd $path",
+   "\tpdflatex -output-format pdf -interaction nonstopmode $1 ",
+   "\tif head -1 $1 | grep -q {beamer};",
+   "\tthen",
+   "\t\tlatexmk -c $1",
+   "\t\trm *.nav",
+   "\t\trm *.snm",
+   "\telse",
+   "\t\tlatexmk -c $1",
+   "\tfi",
+   "\texit 1",
+   "else",
+   "\texit 1",
+   "fi"
+  ],
+  "interact": [
+   "texmaker -n $1"
+  ],
+  "recipe": [
+   "#!/bin/bash",
+   "if cat $1 | grep -q \\begin{document};",
+   "then",
+   "\tpath=$(dirname \"$1\")",
+   "\tcd $path",
+   "\tlatexmk -pdf -interaction=nonstopmode -bibtex-cond -silent -deps-out=.deps.txt $1 ",
+   "\tif head -1 $1 | grep -q {beamer};",
+   "\tthen",
+   "\t\tlatexmk -c $1",
+   "\t\trm *.nav",
+   "\t\trm *.snm",
+   "\telse",
+   "\t\tlatexmk -c $1",
+   "\tfi",
+   "\texit 1",
+   "else",
+   "\texit 1",
+   "fi"
+  ],
+  "emptyout": 0,
+  "tag": "section.tex",
+  "flags": [
+   1,
+   -2,
+   -2,
+   0
+  ],
+  "path": "/home/jgori/.cookbook/files/2053_4982469/section.tex",
+  "smlk": "/home/jgori/Documents/LaTex/projets_en_cours/missing_link_testing_area/section.tex"
+ },
+ "type": "G",
+ "id": "3"
+}{
+ "linkname": [
+  "2053_4982371"
+ ],
+ "type": "V"
+}{
+ "epdic": {
+  "update_bool": true,
+  "update_time": 1588230234.138618,
+  "parent_version": "ae1a34c155689221ab4ea342f7e6d17f0b682976",
+  "edge_dir_up": false,
+  "format": ""
+ },
+ "action": "add_edge",
+ "linkname": "2053_4982371",
+ "vpdic": {},
+ "type": "G",
+ "id": "3#2"
+}{
+ "epdic": {
+  "update_time": 1588230234.138618,
+  "parent_version": "1d8e84b0d63d6d5f9687f6ddfc09eddf818e64b5",
+  "edge_dir_up": false
+ },
+ "action": "update_edge",
+ "linkname": "14",
+ "vpdic": {},
+ "type": "G",
+ "id": "3#2"
+}

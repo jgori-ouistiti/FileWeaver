@@ -1,0 +1,49 @@
+=DEFAULT-RECIPE
+#!/bin/bash
+if cat $1 | grep -q \begin{document};
+then
+	path=$(dirname "$1")
+	cd $path
+	latexmk -pdf -interaction=nonstopmode -bibtex-cond -silent -deps-out=.deps.txt $1 
+	if head -1 $1 | grep -q {beamer};
+	then
+		latexmk -c $1
+		rm *.nav
+		rm *.snm
+	else
+		latexmk -c $1
+	fi
+	exit 1
+else
+	exit 1
+fi
+!=DEFAULT-RECIPE
+=DEFAULT-TRACE
+#!/bin/bash
+if cat $1 | grep -q \begin{document};
+then
+	path=$(dirname "$1")
+	cd $path
+	pdflatex -output-format pdf -interaction nonstopmode $1 
+	if head -1 $1 | grep -q {beamer};
+	then
+		latexmk -c $1
+		rm *.nav
+		rm *.snm
+	else
+		latexmk -c $1
+	fi
+	exit 1
+else
+	exit 1
+fi
+!=DEFAULT-TRACE
+=DEFAULT-INTERACT
+code -n $1
+!=DEFAULT-INTERACT
+=DEFAULT-FORMAT-IMG
+pdf/eps/png
+!=DEFAULT-FORMAT-IMG
+=END
+
+

@@ -1,0 +1,19 @@
+=DEFAULT-RECIPE
+#!/bin/bash
+path=$(dirname "$1")
+cd $path
+python $1
+exit 1
+!=DEFAULT-RECIPE
+=DEFAULT-TRACE
+recipe
+!=DEFAULT-TRACE
+=DEFAULT-INTERACT
+atom -n $1 &
+!=DEFAULT-INTERACT
+=DEFAULT-FORMAT-IMG
+None
+!=DEFAULT-FORMAT-IMG
+=END
+
+

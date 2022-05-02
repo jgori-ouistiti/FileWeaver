@@ -1,0 +1,110 @@
+\documentclass[compress]{beamer}
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{tabulary}
+\useinnertheme{default}
+\usepackage{pdfpages}
+\usepackage{multicol}
+\definecolor{chi2018_front}{RGB}{125,31,239}
+\definecolor{chi2018_back}{RGB}{188,146,239}
+\definecolor{myblue}{RGB}{31,119,180}
+\definecolor{myorange}{RGB}{255,127,14}
+
+%Navigation symbols
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{footline}[frame number]
+%text
+\usefonttheme{serif}
+\usepackage{palatino}
+%Structure
+\setbeamerfont{title like}{shape=\scshape}
+\setbeamerfont{frametitle}{shape=\scshape}
+\setbeamercolor*{normal text}{fg=black,bg=white} 
+\setbeamercolor*{structure}{fg=white,bg=chi2018_front} 
+%Items
+\setbeamertemplate{itemize items}[circle]
+\setbeamercolor{itemize item}{fg=chi2018_front}
+\setbeamertemplate{enumerate items}[default]
+\setbeamercolor{enumerate item}{fg=chi2018_front}
+%Blocks
+\setbeamercolor{block title}{bg=chi2018_front,fg=white}
+\setbeamercolor{block body}{bg=chi2018_back,fg=black}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+%Examples
+\setbeamercolor{example text}{bg=chi2018_front,fg=white}
+\setbeamercolor{block body example}{bg=chi2018_back}
+\setbeamerfont{section number projected}{%
+  family=\rmfamily,series=\bfseries,size=\normalsize}
+  \setbeamerfont{subsection number projected}{%
+  family=\rmfamily,series=\bfseries,size=\normalsize}
+\setbeamercolor{section number projected}{bg=white,fg=chi2018_front}
+\setbeamercolor{subsection number projected}{bg=white,fg=chi2018_front}
+%%%%%%%%ùTable of Contents
+\defbeamertemplate{section in toc}{sections numbered roman}{%
+  \leavevmode%
+  \MakeUppercase{\romannumeral\inserttocsectionnumber}.\ %
+  \inserttocsection\par}
+\defbeamertemplate{subsection in toc}{subsections numbered roman}{%
+  \leavevmode%
+  \MakeUppercase{\romannumeral\inserttocsubsectionnumber}.\ %
+  \inserttocsubsection\par}
+  
+\setbeamercolor{section in toc}{bg = white, fg=chi2018_front}
+\setbeamercolor{subsection in toc}{bg = white, fg=black}
+
+\setbeamerfont{section number projected}{%
+  family=\rmfamily,series=\bfseries,size=\normalsize}
+  \setbeamerfont{subsection number projected}{%
+  family=\rmfamily,series=\bfseries,size=\normalsize}
+\setbeamercolor{section number projected}{bg=white,fg=chi2018_front}
+\setbeamercolor{subsection number projected}{bg=white,fg=chi2018_front}
+
+%\setbeamertemplate{section in toc}[sections numbered roman]
+%\AtBeginSection[]
+%{
+%  \begin{frame}<beamer>
+%    \frametitle{Outline for Sect.~\romannumeral\thesection}
+%    \tableofcontents[currentsection]
+%  \end{frame}
+%}
+%%%%%%%%%% End TOC
+
+\usepackage[most]{tcolorbox}
+
+\usepackage[normalem]{ulem}
+\usepackage{pgfpages}
+%\setbeameroption{show notes on second screen}
+
+\newcommand{\titleframe}[1]{\centering \usebeamerfont*{frametitle} \usebeamercolor[fg]{frametitle} \usebeamercolor[bg]{frametitle} #1}
+
+%%%%%%%%%%%%%%%% Aliases
+\usepackage{xspace} 
+\newcommand{\mt}{\ensuremath{\mathrm{MT}}\xspace}
+\newcommand{\W}{\ensuremath{\mathrm{W}}\xspace}
+\newcommand{\D}{\ensuremath{\mathrm{D}}\xspace}
+\newcommand{\id}{\ensuremath{\mathrm{ID}}\xspace}
+
+
+
+\begin{document}
+
+\begin{frame}
+\vspace{-.5\baselineskip}
+\title{\normalsize{MyPresentation}}
+\author{\textbf{Doc~Thor}\inst{1}}
+\institute{
+  \inst{1}%
+  Anonymous
+}
+
+\maketitle
+\centering
+\includegraphics[width = .5\textwidth, height = .5\textheight, keepaspectratio]{img/fig2.pdf} 
+\end{frame}
+
+
+\end{document}

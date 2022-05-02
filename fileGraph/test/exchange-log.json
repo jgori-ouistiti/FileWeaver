@@ -1,0 +1,1198 @@
+{
+ "linkname": [
+  "2053_4982371"
+ ],
+ "type": "V"
+}{
+ "epdic": null,
+ "action": "add",
+ "linkname": "2053_4982371",
+ "vpdic": {
+  "status": 1,
+  "emptyin": 0,
+  "target": "main.tex",
+  "trace": [
+   "#!/bin/bash",
+   "if cat $1 | grep -q \\begin{document};",
+   "then",
+   "\tpath=$(dirname \"$1\")",
+   "\tcd $path",
+   "\tpdflatex -output-format pdf -interaction nonstopmode $1 ",
+   "\tif head -1 $1 | grep -q {beamer};",
+   "\tthen",
+   "\t\tlatexmk -c $1",
+   "\t\trm *.nav",
+   "\t\trm *.snm",
+   "\telse",
+   "\t\tlatexmk -c $1",
+   "\tfi",
+   "\texit 1",
+   "else",
+   "\texit 1",
+   "fi"
+  ],
+  "interact": [
+   "texmaker -n $1"
+  ],
+  "recipe": [
+   "#!/bin/bash",
+   "if cat $1 | grep -q \\begin{document};",
+   "then",
+   "\tpath=$(dirname \"$1\")",
+   "\tcd $path",
+   "\tlatexmk -pdf -interaction=nonstopmode -bibtex-cond -silent -deps-out=.deps.txt $1 ",
+   "\tif head -1 $1 | grep -q {beamer};",
+   "\tthen",
+   "\t\tlatexmk -c $1",
+   "\t\trm *.nav",
+   "\t\trm *.snm",
+   "\telse",
+   "\t\tlatexmk -c $1",
+   "\tfi",
+   "\texit 1",
+   "else",
+   "\texit 1",
+   "fi"
+  ],
+  "emptyout": 0,
+  "tag": "main.tex",
+  "flags": [
+   1,
+   -2,
+   -2,
+   0
+  ],
+  "path": "/home/jgori/.cookbook/files/2053_4982371/main.tex",
+  "smlk": "/home/jgori/Documents/LaTex/projets_en_cours/missing_link_testing_area/main.tex"
+ },
+ "type": "G",
+ "id": "2"
+}{
+ "epdic": null,
+ "action": "add",
+ "linkname": "2053_4982469",
+ "vpdic": {
+  "status": 1,
+  "emptyin": 0,
+  "target": "section.tex",
+  "trace": [
+   "#!/bin/bash",
+   "if cat $1 | grep -q \\begin{document};",
+   "then",
+   "\tpath=$(dirname \"$1\")",
+   "\tcd $path",
+   "\tpdflatex -output-format pdf -interaction nonstopmode $1 ",
+   "\tif head -1 $1 | grep -q {beamer};",
+   "\tthen",
+   "\t\tlatexmk -c $1",
+   "\t\trm *.nav",
+   "\t\trm *.snm",
+   "\telse",
+   "\t\tlatexmk -c $1",
+   "\tfi",
+   "\texit 1",
+   "else",
+   "\texit 1",
+   "fi"
+  ],
+  "interact": [
+   "texmaker -n $1"
+  ],
+  "recipe": [
+   "#!/bin/bash",
+   "if cat $1 | grep -q \\begin{document};",
+   "then",
+   "\tpath=$(dirname \"$1\")",
+   "\tcd $path",
+   "\tlatexmk -pdf -interaction=nonstopmode -bibtex-cond -silent -deps-out=.deps.txt $1 ",
+   "\tif head -1 $1 | grep -q {beamer};",
+   "\tthen",
+   "\t\tlatexmk -c $1",
+   "\t\trm *.nav",
+   "\t\trm *.snm",
+   "\telse",
+   "\t\tlatexmk -c $1",
+   "\tfi",
+   "\texit 1",
+   "else",
+   "\texit 1",
+   "fi"
+  ],
+  "emptyout": 0,
+  "tag": "section.tex",
+  "flags": [
+   1,
+   -2,
+   -2,
+   0
+  ],
+  "path": "/home/jgori/.cookbook/files/2053_4982469/section.tex",
+  "smlk": "/home/jgori/Documents/LaTex/projets_en_cours/missing_link_testing_area/section.tex"
+ },
+ "type": "G",
+ "id": "3"
+}{
+ "epdic": null,
+ "action": "add",
+ "linkname": "2053_4982367",
+ "vpdic": {
+  "status": 1,
+  "emptyin": 0,
+  "target": "fig2.png",
+  "trace": [
+   "#!/bin/bash"
+  ],
+  "interact": [
+   "#!/bin/bash",
+   "eog $1"
+  ],
+  "recipe": [
+   "#!/bin/bash"
+  ],
+  "emptyout": 0,
+  "tag": "fig2.png",
+  "flags": [
+   1,
+   -2,
+   -2,
+   0
+  ],
+  "path": "/home/jgori/.cookbook/files/2053_4982367/fig2.png",
+  "smlk": "/home/jgori/Documents/LaTex/projets_en_cours/missing_link_testing_area/img/fig2.png"
+ },
+ "type": "G",
+ "id": "4"
+}{
+ "epdic": {
+  "update_bool": true,
+  "update_time": 1588230234.138618,
+  "parent_version": "ae1a34c155689221ab4ea342f7e6d17f0b682976",
+  "edge_dir_up": false,
+  "format": ""
+ },
+ "action": "add_edge",
+ "linkname": "2053_4982371",
+ "vpdic": {},
+ "type": "G",
+ "id": "3#2"
+}{
+ "epdic": {
+  "update_bool": true,
+  "update_time": 1588230234.154527,
+  "parent_version": "b048871111a48747f3628c6717107c83d83a1455",
+  "edge_dir_up": false,
+  "format": ""
+ },
+ "action": "add_edge",
+ "linkname": "2053_4982371",
+ "vpdic": {},
+ "type": "G",
+ "id": "4#2"
+}{
+ "epdic": null,
+ "action": "update",
+ "linkname": "2053_4982469",
+ "vpdic": {
+  "emptyin": 1588230234.253936
+ },
+ "type": "G",
+ "id": "3"
+}{
+ "epdic": {
+  "update_time": 1588230234.319606,
+  "parent_version": "ae1a34c155689221ab4ea342f7e6d17f0b682976",
+  "edge_dir_up": true
+ },
+ "action": "update_edge",
+ "linkname": "2053_4982469",
+ "vpdic": {},
+ "type": "G",
+ "id": "3#2"
+}{
+ "epdic": null,
+ "action": "update",
+ "linkname": "2053_4982367",
+ "vpdic": {
+  "emptyin": 1588230234.411528
+ },
+ "type": "G",
+ "id": "4"
+}{
+ "epdic": {
+  "update_time": 1588230234.474011,
+  "parent_version": "b048871111a48747f3628c6717107c83d83a1455",
+  "edge_dir_up": true
+ },
+ "action": "update_edge",
+ "linkname": "2053_4982367",
+ "vpdic": {},
+ "type": "G",
+ "id": "4#2"
+}{
+ "epdic": null,
+ "action": "add",
+ "linkname": "2053_4983191",
+ "vpdic": {
+  "status": 1,
+  "emptyin": 0,
+  "target": "main.pdf",
+  "trace": [
+   "#!/bin/bash"
+  ],
+  "interact": [
+   "#!/bin/bash",
+   "evince $1"
+  ],
+  "recipe": [
+   "#!/bin/bash"
+  ],
+  "emptyout": 0,
+  "tag": "main.pdf",
+  "flags": [
+   1,
+   -2,
+   -2,
+   0
+  ],
+  "path": "/home/jgori/.cookbook/files/2053_4983191/main.pdf",
+  "smlk": "/home/jgori/Documents/LaTex/projets_en_cours/missing_link_testing_area/main.pdf"
+ },
+ "type": "G",
+ "id": "5"
+}{
+ "epdic": {
+  "update_bool": true,
+  "update_time": 1588230235.742695,
+  "parent_version": "0a326adb0b0fbe856da39985ce02692bff25fee5",
+  "edge_dir_up": true,
+  "format": ""
+ },
+ "action": "add_edge",
+ "linkname": "2053_4982371",
+ "vpdic": {},
+ "type": "G",
+ "id": "2#5"
+}{
+ "linkname": [
+  "2053_4982335"
+ ],
+ "type": "V"
+}{
+ "epdic": null,
+ "action": "add",
+ "linkname": "2053_4982335",
+ "vpdic": {
+  "status": 1,
+  "emptyin": 0,
+  "target": "beamer.tex",
+  "trace": [
+   "#!/bin/bash",
+   "if cat $1 | grep -q \\begin{document};",
+   "then",
+   "\tpath=$(dirname \"$1\")",
+   "\tcd $path",
+   "\tpdflatex -output-format pdf -interaction nonstopmode $1 ",
+   "\tif head -1 $1 | grep -q {beamer};",
+   "\tthen",
+   "\t\tlatexmk -c $1",
+   "\t\trm *.nav",
+   "\t\trm *.snm",
+   "\telse",
+   "\t\tlatexmk -c $1",
+   "\tfi",
+   "\texit 1",
+   "else",
+   "\texit 1",
+   "fi"
+  ],
+  "interact": [
+   "texmaker -n $1"
+  ],
+  "recipe": [
+   "#!/bin/bash",
+   "if cat $1 | grep -q \\begin{document};",
+   "then",
+   "\tpath=$(dirname \"$1\")",
+   "\tcd $path",
+   "\tlatexmk -pdf -interaction=nonstopmode -bibtex-cond -silent -deps-out=.deps.txt $1 ",
+   "\tif head -1 $1 | grep -q {beamer};",
+   "\tthen",
+   "\t\tlatexmk -c $1",
+   "\t\trm *.nav",
+   "\t\trm *.snm",
+   "\telse",
+   "\t\tlatexmk -c $1",
+   "\tfi",
+   "\texit 1",
+   "else",
+   "\texit 1",
+   "fi"
+  ],
+  "emptyout": 0,
+  "tag": "beamer.tex",
+  "flags": [
+   1,
+   -2,
+   -2,
+   0
+  ],
+  "path": "/home/jgori/.cookbook/files/2053_4982335/beamer.tex",
+  "smlk": "/home/jgori/Documents/LaTex/projets_en_cours/missing_link_testing_area/beamer.tex"
+ },
+ "type": "G",
+ "id": "6"
+}{
+ "epdic": null,
+ "action": "add",
+ "linkname": "2053_4982351",
+ "vpdic": {
+  "status": 1,
+  "emptyin": 0,
+  "target": "fig2.pdf",
+  "trace": [
+   "#!/bin/bash"
+  ],
+  "interact": [
+   "#!/bin/bash",
+   "evince $1"
+  ],
+  "recipe": [
+   "#!/bin/bash"
+  ],
+  "emptyout": 0,
+  "tag": "fig2.pdf",
+  "flags": [
+   1,
+   -2,
+   -2,
+   0
+  ],
+  "path": "/home/jgori/.cookbook/files/2053_4982351/fig2.pdf",
+  "smlk": "/home/jgori/Documents/LaTex/projets_en_cours/missing_link_testing_area/img/fig2.pdf"
+ },
+ "type": "G",
+ "id": "7"
+}{
+ "epdic": {
+  "update_bool": true,
+  "update_time": 1588230286.131118,
+  "parent_version": "6dd9602f9fa97f472f5e99b9acaf5a25e30a4402",
+  "edge_dir_up": false,
+  "format": ""
+ },
+ "action": "add_edge",
+ "linkname": "2053_4982335",
+ "vpdic": {},
+ "type": "G",
+ "id": "7#6"
+}{
+ "epdic": null,
+ "action": "update",
+ "linkname": "2053_4982351",
+ "vpdic": {
+  "emptyin": 1588230286.213753
+ },
+ "type": "G",
+ "id": "7"
+}{
+ "epdic": {
+  "update_time": 1588230286.280639,
+  "parent_version": "6dd9602f9fa97f472f5e99b9acaf5a25e30a4402",
+  "edge_dir_up": true
+ },
+ "action": "update_edge",
+ "linkname": "2053_4982351",
+ "vpdic": {},
+ "type": "G",
+ "id": "7#6"
+}{
+ "epdic": null,
+ "action": "add",
+ "linkname": "2053_4983807",
+ "vpdic": {
+  "status": 1,
+  "emptyin": 0,
+  "target": "beamer.pdf",
+  "trace": [
+   "#!/bin/bash"
+  ],
+  "interact": [
+   "#!/bin/bash",
+   "evince $1"
+  ],
+  "recipe": [
+   "#!/bin/bash"
+  ],
+  "emptyout": 0,
+  "tag": "beamer.pdf",
+  "flags": [
+   1,
+   -2,
+   -2,
+   0
+  ],
+  "path": "/home/jgori/.cookbook/files/2053_4983807/beamer.pdf",
+  "smlk": "/home/jgori/Documents/LaTex/projets_en_cours/missing_link_testing_area/beamer.pdf"
+ },
+ "type": "G",
+ "id": "8"
+}{
+ "epdic": {
+  "update_bool": true,
+  "update_time": 1588230289.998616,
+  "parent_version": "99e5218e0ba6914cf346959d21d3247bd4725bb1",
+  "edge_dir_up": true,
+  "format": ""
+ },
+ "action": "add_edge",
+ "linkname": "2053_4982335",
+ "vpdic": {},
+ "type": "G",
+ "id": "6#8"
+}{
+ "linkname": [
+  "2053_4982458"
+ ],
+ "type": "V"
+}{
+ "epdic": null,
+ "action": "add",
+ "linkname": "2053_4982458",
+ "vpdic": {
+  "status": 1,
+  "emptyin": 0,
+  "target": "script_for_fig1.py",
+  "trace": [
+   "#!/bin/bash",
+   "path=$(dirname \"$1\")",
+   "cd $path",
+   "python $1",
+   "exit 1"
+  ],
+  "interact": [
+   "atom -n $1 &"
+  ],
+  "recipe": [
+   "#!/bin/bash",
+   "path=$(dirname \"$1\")",
+   "cd $path",
+   "python $1",
+   "exit 1"
+  ],
+  "emptyout": 0,
+  "tag": "script_for_fig1.py",
+  "flags": [
+   1,
+   -2,
+   -2,
+   0
+  ],
+  "path": "/home/jgori/.cookbook/files/2053_4982458/script_for_fig1.py",
+  "smlk": "/home/jgori/Documents/LaTex/projets_en_cours/missing_link_testing_area/python/script_for_fig1.py"
+ },
+ "type": "G",
+ "id": "9"
+}{
+ "epdic": null,
+ "action": "update",
+ "linkname": "2053_4982458",
+ "vpdic": {
+  "emptyin": 1588230316.089033
+ },
+ "type": "G",
+ "id": "9"
+}{
+ "epdic": null,
+ "action": "add",
+ "linkname": "2053_4983847",
+ "vpdic": {
+  "status": 1,
+  "emptyin": 0,
+  "target": "fig1.pdf",
+  "trace": [
+   "#!/bin/bash"
+  ],
+  "interact": [
+   "#!/bin/bash",
+   "evince $1"
+  ],
+  "recipe": [
+   "#!/bin/bash"
+  ],
+  "emptyout": 0,
+  "tag": "fig1.pdf",
+  "flags": [
+   1,
+   -2,
+   -2,
+   0
+  ],
+  "path": "/home/jgori/.cookbook/files/2053_4983847/fig1.pdf",
+  "smlk": "/home/jgori/Documents/LaTex/projets_en_cours/missing_link_testing_area/img/fig1.pdf"
+ },
+ "type": "G",
+ "id": "10"
+}{
+ "epdic": {
+  "update_bool": true,
+  "update_time": 1588230317.074307,
+  "parent_version": "6632d3b38da0d53b072a654d94679fbfd5b853e0",
+  "edge_dir_up": true,
+  "format": ""
+ },
+ "action": "add_edge",
+ "linkname": "2053_4982458",
+ "vpdic": {},
+ "type": "G",
+ "id": "9#10"
+}{
+ "linkname": [
+  "2053_4982372"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4982371"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4982371"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4982371"
+ ],
+ "type": "V"
+}{
+ "epdic": {
+  "update_time": 1588230371.162565,
+  "parent_version": "ae1a34c155689221ab4ea342f7e6d17f0b682976",
+  "edge_dir_up": false
+ },
+ "action": "update_edge",
+ "linkname": "2053_4982371",
+ "vpdic": {},
+ "type": "G",
+ "id": "3#2"
+}{
+ "epdic": {
+  "update_bool": true,
+  "update_time": 1588230371.179555,
+  "parent_version": "158cec13b3b2c1202d48605828938c01b317ceda",
+  "edge_dir_up": false,
+  "format": ""
+ },
+ "action": "add_edge",
+ "linkname": "2053_4982371",
+ "vpdic": {},
+ "type": "G",
+ "id": "10#2"
+}{
+ "epdic": null,
+ "action": "delete_edge",
+ "linkname": "2053_4982371",
+ "vpdic": null,
+ "type": "G",
+ "id": "4#2"
+}{
+ "epdic": {
+  "update_time": 1588230372.449126,
+  "parent_version": "600a7c4d4f2965c02b10e2b66226780ab800de01",
+  "edge_dir_up": true
+ },
+ "action": "update_edge",
+ "linkname": "2053_4982371",
+ "vpdic": {},
+ "type": "G",
+ "id": "2#5"
+}{
+ "linkname": [
+  "2053_4982371"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4982371"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4982354",
+  "2053_4982351",
+  "2053_4982367",
+  "2053_4982370"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4982354",
+  "2053_4982351",
+  "2053_4982367",
+  "2053_4982370"
+ ],
+ "type": "V"
+}{
+ "epdic": null,
+ "action": "add",
+ "linkname": "2053_4982354",
+ "vpdic": {
+  "status": 1,
+  "emptyin": 0,
+  "target": "fig2.jpg",
+  "trace": [
+   "#!/bin/bash"
+  ],
+  "interact": [
+   "#!/bin/bash",
+   "eog $1"
+  ],
+  "recipe": [
+   "#!/bin/bash"
+  ],
+  "emptyout": 0,
+  "tag": "fig2.jpg",
+  "flags": [
+   1,
+   -2,
+   -2,
+   0
+  ],
+  "path": "/home/jgori/.cookbook/files/2053_4982354/fig2.jpg",
+  "smlk": "/home/jgori/Documents/LaTex/projets_en_cours/missing_link_testing_area/img/fig2.jpg"
+ },
+ "type": "G",
+ "id": "11"
+}{
+ "epdic": null,
+ "action": "add",
+ "linkname": "2053_4982370",
+ "vpdic": {
+  "status": 1,
+  "emptyin": 0,
+  "target": "fig2.svg",
+  "trace": [
+   "#!/bin/bash"
+  ],
+  "interact": [
+   "#!/bin/bash",
+   "evince $1"
+  ],
+  "recipe": [
+   "#!/bin/bash"
+  ],
+  "emptyout": 0,
+  "tag": "fig2.svg",
+  "flags": [
+   1,
+   -2,
+   -2,
+   0
+  ],
+  "path": "/home/jgori/.cookbook/files/2053_4982370/fig2.svg",
+  "smlk": "/home/jgori/Documents/LaTex/projets_en_cours/missing_link_testing_area/img/fig2.svg"
+ },
+ "type": "G",
+ "id": "12"
+}{
+ "epdic": null,
+ "action": "update",
+ "linkname": "2053_4982354",
+ "vpdic": {
+  "flags": [
+   1,
+   -2,
+   -1,
+   0
+  ]
+ },
+ "type": "G",
+ "id": "11"
+}{
+ "epdic": null,
+ "action": "update",
+ "linkname": "2053_4982351",
+ "vpdic": {
+  "flags": [
+   1,
+   -2,
+   11,
+   0
+  ]
+ },
+ "type": "G",
+ "id": "7"
+}{
+ "epdic": null,
+ "action": "update",
+ "linkname": "2053_4982367",
+ "vpdic": {
+  "flags": [
+   1,
+   -2,
+   11,
+   0
+  ]
+ },
+ "type": "G",
+ "id": "4"
+}{
+ "epdic": null,
+ "action": "update",
+ "linkname": "2053_4982370",
+ "vpdic": {
+  "flags": [
+   1,
+   -2,
+   11,
+   0
+  ]
+ },
+ "type": "G",
+ "id": "12"
+}{
+ "linkname": [
+  "2053_4982340"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4982340"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4982335"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4982335"
+ ],
+ "type": "V"
+}{
+ "epdic": null,
+ "action": "update",
+ "linkname": "2053_4982335",
+ "vpdic": {
+  "flags": [
+   1,
+   -2,
+   -2,
+   1
+  ]
+ },
+ "type": "G",
+ "id": "6"
+}{
+ "epdic": {
+  "update_time": 1588230511.332782,
+  "parent_version": "6dd9602f9fa97f472f5e99b9acaf5a25e30a4402",
+  "edge_dir_up": false
+ },
+ "action": "update_edge",
+ "linkname": "2053_4982335",
+ "vpdic": {},
+ "type": "G",
+ "id": "7#6"
+}{
+ "epdic": {
+  "update_time": 1588230514.982897,
+  "parent_version": "2d26dc57258d2b9828f8dfff26043e06a73a66e4",
+  "edge_dir_up": true
+ },
+ "action": "update_edge",
+ "linkname": "2053_4982335",
+ "vpdic": {},
+ "type": "G",
+ "id": "6#8"
+}{
+ "linkname": [
+  "2053_4982372"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4982458"
+ ],
+ "type": "V"
+}{
+ "epdic": null,
+ "action": "update",
+ "linkname": "2053_4982458",
+ "vpdic": {
+  "emptyin": 1588230586.393304
+ },
+ "type": "G",
+ "id": "9"
+}{
+ "epdic": null,
+ "action": "add",
+ "linkname": "2053_4985354",
+ "vpdic": {
+  "status": 1,
+  "emptyin": 0,
+  "target": "fig3.pdf",
+  "trace": [
+   "#!/bin/bash"
+  ],
+  "interact": [
+   "#!/bin/bash",
+   "evince $1"
+  ],
+  "recipe": [
+   "#!/bin/bash"
+  ],
+  "emptyout": 0,
+  "tag": "fig3.pdf",
+  "flags": [
+   1,
+   -2,
+   -2,
+   0
+  ],
+  "path": "/home/jgori/.cookbook/files/2053_4985354/fig3.pdf",
+  "smlk": "/home/jgori/Documents/LaTex/projets_en_cours/missing_link_testing_area/img/fig3.pdf"
+ },
+ "type": "G",
+ "id": "13"
+}{
+ "epdic": {
+  "update_bool": true,
+  "update_time": 1588230588.483558,
+  "parent_version": "",
+  "edge_dir_up": true,
+  "format": ""
+ },
+ "action": "add_edge",
+ "linkname": "2053_4982458",
+ "vpdic": {},
+ "type": "G",
+ "id": "9#13"
+}{
+ "epdic": {
+  "update_bool": true,
+  "update_time": 1588230588.483558,
+  "parent_version": "9d341af5112240329638b4658feb9eca29c952d6",
+  "edge_dir_up": true,
+  "format": ""
+ },
+ "action": "add_edge",
+ "linkname": "2053_4982458",
+ "vpdic": {},
+ "type": "G",
+ "id": "9#13"
+}{
+ "linkname": [
+  "2053_4982372"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4982372"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4982371"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4982371",
+  "2053_4982466"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4982371",
+  "2053_4982466"
+ ],
+ "type": "V"
+}{
+ "epdic": null,
+ "action": "add",
+ "linkname": "2053_4982466",
+ "vpdic": {
+  "status": 1,
+  "emptyin": 0,
+  "target": "read.txt",
+  "trace": [
+   "#!/bin/bash"
+  ],
+  "interact": [
+   "#!/bin/bash",
+   "$EDITOR $1 || gedit $1 || nano $1 || edit $1"
+  ],
+  "recipe": [
+   "#!/bin/bash"
+  ],
+  "emptyout": 0,
+  "tag": "read.txt",
+  "flags": [
+   1,
+   -2,
+   -2,
+   0
+  ],
+  "path": "/home/jgori/.cookbook/files/2053_4982466/read.txt",
+  "smlk": "/home/jgori/Documents/LaTex/projets_en_cours/missing_link_testing_area/read.txt"
+ },
+ "type": "G",
+ "id": "14"
+}{
+ "epdic": {
+  "update_bool": false,
+  "update_time": 1.7976931348623157e+308,
+  "parent_version": "1d8e84b0d63d6d5f9687f6ddfc09eddf818e64b5",
+  "edge_dir_up": false,
+  "format": "NA"
+ },
+ "action": "add_edge",
+ "linkname": "2053_4982466",
+ "vpdic": {},
+ "type": "G",
+ "id": "14#2"
+}{
+ "linkname": [
+  "2053_4982371"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4982371"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4982371"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4982371",
+  "2053_4982466"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4982371",
+  "2053_4982466"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4982371"
+ ],
+ "type": "V"
+}{
+ "epdic": null,
+ "action": "update",
+ "linkname": "2053_4982371",
+ "vpdic": {
+  "flags": [
+   1,
+   -1,
+   -2,
+   0
+  ]
+ },
+ "type": "G",
+ "id": "2"
+}{
+ "epdic": null,
+ "action": "add",
+ "linkname": "2053_5636341",
+ "vpdic": {
+  "status": 1,
+  "emptyin": 0,
+  "target": "main.tex",
+  "trace": "['#!/bin/bash', 'if cat $1 | grep -q \\\\begin{document};', 'then', '\\tpath=$(dirname \"$1\")', '\\tcd $path', '\\tpdflatex -output-format pdf -interaction nonstopmode $1 ', '\\tif head -1 $1 | grep -q {beamer};', '\\tthen', '\\t\\tlatexmk -c $1', '\\t\\trm *.nav', '\\t\\trm *.snm', '\\telse', '\\t\\tlatexmk -c $1', '\\tfi', '\\texit 1', 'else', '\\texit 1', 'fi']",
+  "interact": "['texmaker -n $1']",
+  "recipe": "['#!/bin/bash', 'if cat $1 | grep -q \\\\begin{document};', 'then', '\\tpath=$(dirname \"$1\")', '\\tcd $path', '\\tlatexmk -pdf -interaction=nonstopmode -bibtex-cond -silent -deps-out=.deps.txt $1 ', '\\tif head -1 $1 | grep -q {beamer};', '\\tthen', '\\t\\tlatexmk -c $1', '\\t\\trm *.nav', '\\t\\trm *.snm', '\\telse', '\\t\\tlatexmk -c $1', '\\tfi', '\\texit 1', 'else', '\\texit 1', 'fi']",
+  "emptyout": 0,
+  "tag": "main_vB.tex",
+  "flags": [
+   1,
+   2,
+   -2,
+   0
+  ],
+  "path": "/home/jgori/.cookbook/files/2053_5636341/main.tex",
+  "smlk": "/home/jgori/Documents/LaTex/projets_en_cours/missing_link_testing_area/main_vB.tex"
+ },
+ "type": "G",
+ "id": "15"
+}{
+ "epdic": {
+  "update_bool": true,
+  "update_time": 1588230371.162565,
+  "parent_version": "ae1a34c155689221ab4ea342f7e6d17f0b682976",
+  "edge_dir_up": false
+ },
+ "action": "update_edge",
+ "linkname": "2053_5636341",
+ "vpdic": {},
+ "type": "G",
+ "id": "3#15"
+}{
+ "epdic": {
+  "update_bool": true,
+  "update_time": 1588230371.179555,
+  "parent_version": "158cec13b3b2c1202d48605828938c01b317ceda",
+  "edge_dir_up": false
+ },
+ "action": "update_edge",
+ "linkname": "2053_5636341",
+ "vpdic": {},
+ "type": "G",
+ "id": "10#15"
+}{
+ "epdic": {
+  "update_bool": false,
+  "update_time": 1.7976931348623157e+308,
+  "parent_version": "1d8e84b0d63d6d5f9687f6ddfc09eddf818e64b5",
+  "edge_dir_up": false
+ },
+ "action": "update_edge",
+ "linkname": "2053_5636341",
+ "vpdic": {},
+ "type": "G",
+ "id": "14#15"
+}{
+ "linkname": [
+  "2053_4982371"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4983807"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4983807",
+  "2053_4983191"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_4983807",
+  "2053_4983191"
+ ],
+ "type": "V"
+}{
+ "epdic": null,
+ "action": "update",
+ "linkname": "2053_4983807",
+ "vpdic": {
+  "tag": "Final Version"
+ },
+ "type": "G",
+ "id": "8"
+}{
+ "epdic": null,
+ "action": "update",
+ "linkname": "2053_4983191",
+ "vpdic": {
+  "tag": "Final Version"
+ },
+ "type": "G",
+ "id": "5"
+}{
+ "linkname": [
+  "2053_5636341"
+ ],
+ "type": "V"
+}{
+ "linkname": [
+  "2053_5636341"
+ ],
+ "type": "V"
+}{
+ "epdic": null,
+ "action": "update",
+ "linkname": "2053_5636341",
+ "vpdic": {
+  "emptyin": 1588231024.435187
+ },
+ "type": "G",
+ "id": "15"
+}{
+ "epdic": {
+  "update_time": 1.7976931348623157e+308,
+  "parent_version": "1d8e84b0d63d6d5f9687f6ddfc09eddf818e64b5",
+  "edge_dir_up": false
+ },
+ "action": "update_edge",
+ "linkname": "14",
+ "vpdic": {},
+ "type": "G",
+ "id": "14.0#15.0"
+}{
+ "epdic": null,
+ "action": "update",
+ "linkname": "2053_5636341",
+ "vpdic": {
+  "emptyout": 1588231024.523883
+ },
+ "type": "G",
+ "id": "15"
+}{
+ "epdic": {
+  "update_time": 1.7976931348623157e+308,
+  "parent_version": "1d8e84b0d63d6d5f9687f6ddfc09eddf818e64b5",
+  "edge_dir_up": false
+ },
+ "action": "update_edge",
+ "linkname": "14",
+ "vpdic": {},
+ "type": "G",
+ "id": "14.0#15.0"
+}{
+ "epdic": null,
+ "action": "update",
+ "linkname": "2053_5636341",
+ "vpdic": {
+  "emptyin": 1588231026.594795
+ },
+ "type": "G",
+ "id": "15"
+}{
+ "epdic": {
+  "update_time": 1.7976931348623157e+308,
+  "parent_version": "1d8e84b0d63d6d5f9687f6ddfc09eddf818e64b5",
+  "edge_dir_up": false
+ },
+ "action": "update_edge",
+ "linkname": "14",
+ "vpdic": {},
+ "type": "G",
+ "id": "14.0#15.0"
+}{
+ "epdic": null,
+ "action": "update",
+ "linkname": "2053_5636341",
+ "vpdic": {
+  "emptyout": 1588231026.685558
+ },
+ "type": "G",
+ "id": "15"
+}{
+ "epdic": {
+  "update_time": 1.7976931348623157e+308,
+  "parent_version": "1d8e84b0d63d6d5f9687f6ddfc09eddf818e64b5",
+  "edge_dir_up": false
+ },
+ "action": "update_edge",
+ "linkname": "14",
+ "vpdic": {},
+ "type": "G",
+ "id": "14.0#15.0"
+}{
+ "linkname": [
+  "2053_4983788"
+ ],
+ "type": "V"
+}

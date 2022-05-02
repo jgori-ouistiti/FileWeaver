@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>FileWeaver Graph</title>
+
+	<link rel="stylesheet" type="text/css" href="lib/menu.css">
+
+	<script src="lib/anime.min.js"></script>
+	<script src="lib/graphView.js"></script>
+	<script src="lib/menu.js"></script>
+
+	<script type="text/javascript">
+
+		let contextMenus = {
+			node: {
+				checkDisabled(info) {},
+				execute(info) { singleFileCommand(info) },
+			},
+			edge: {
+				checkDisabled(info) {},
+				execute(info) {},
+			},
+			graph: {
+				checkDisabled(info) {},
+				execute(info) { multipleFilesCommand(info) },
+			}
+		}
+
+		let clickCommands = {
+			clickNode(e) {
+				let [target, type] = getTarget(e.target)
+				if (type !== 'node')
+					return
+				let node = graph.nodes[target.id]
+				if (! node)
+					return
+
+				if (e.shiftKey || e.ctrlKey || e.metaKey) {
+					if (node.isSelected) {
+						node.isSelected = false
+						deselectNode(target.id)
+					} else {
+						node.isSelected = true
+						selectNode(target.id)
+					}
+				} else {
+					if (node.isSelected)
+						return
+					deselectAllNodes()
+					node.isSelected = true
+					selectNode(target.id)
+				}
+			},
+			dblclickNode(e) {
+				let [target, type] = getTarget(e.target)
+				if (type !== 'node')
+					return
+				let node = graph.nodes[target.id]
+				if (! node)
+					return
+
+				if (isCollapsedMorph(target.id)) {
+					let morph = graph.morphs['g'+node.morph.group]
+					morph.collapsed = false
+					global.graph.layout(graph, updateGraph)
+				} else
+					global.backend.send('editFileAndUpdate', node.linkname)
+			},
+			clickGraph(e) {
+				deselectAllNodes()
+			}
+		}
+
+		function singleFileCommand(info) {
+			if (! info.target || ! info.cmd)
+				return
+			let id = info.target.getAttribute('id')
+			let node = graph.nodes[id]
+			if (! node) {
+				console.warn(`fileCommand - unknown node ${id} for ${info.cmd}`)
+				return
+			}
+
+			global.backend.send(info.cmd, node.linkname)
+		}
+
+		function multipleFilesCommand(info) {
+			if (! info.cmd)
+				return
+			let selection = []
+			for (let n in graph.nodes) {
+				let node = graph.nodes[n]
+				if (node.isSelected)
+					selection.push(node.linkname)
+			}
+			global.backend.send(info.cmd, ...selection)
+		}
+
+		let graph = {
+				nodes: {},
+				edges: {},
+				morphs: {},
+			}
+
+		// function loadGraph(name) {
+		// 	graphEl = document.getElementById('graph')
+		// 	global.graph.parse(name, g => {
+		// 		graph = g
+		// 		global.graph.layout(graph, parseGraph)
+		// 	})
+		// }
+
+		function inspectPage() {
+			require('nw.gui').Window.get().showDevTools()
+		}
+
+		function inspectBgPage() {
+			chrome.developerPrivate.openDevTools({
+			    renderViewId: -1,
+			    renderProcessId: -1,
+			    extensionId: chrome.runtime.id
+			})
+		}
+
+		function deselectAllNodes() {
+			for (let n in graph.nodes) {
+				let node = graph.nodes[n]
+				if (node.isSelected) {
+					node.isSelected = false
+					deselectNode(n)
+				}
+			}
+		}
+
+		function getNodeUnderContextMenu() {
+			let info = sm.context.menuInfo
+			if (!info || !info.target || info.type !== 'node')
+				return null
+			let node = graph.nodes[info.target.id]
+			if (! node)
+				return null
+			return node
+		}
+
+		function collapseMorph() {
+			node = getNodeUnderContextMenu()
+			if (! node || ! node.morph)
+				return
+
+			let morph = graph.morphs['g'+node.morph.group]
+			if (morph.collapsed)
+				return
+			morph.collapsed = true
+			global.graph.layout(graph, updateGraph)
+		}
+
+		function expandMorph() {
+			node = getNodeUnderContextMenu()
+			if (! node || ! node.morph)
+				return
+
+			let morph = graph.morphs['g'+node.morph.group]
+			if (! morph.collapsed)
+				return
+			morph.collapsed = false
+			global.graph.layout(graph, updateGraph)
+		}
+
+		function showHistory() {
+			node = getNodeUnderContextMenu()
+			console.log(`showHistory ${node.tag}`)
+			if (! node)
+				return
+
+			let uri = `git.html?path=${encodeURIComponent(node.path)}&tag=${encodeURIComponent(node.tag)}`
+			require('nw.gui').Window.open(uri, win => { win.x = 100; win.y = 100})
+		}
+
+		function init() {
+			// inspectPage()
+			// inspectBgPage()
+
+			graphEl = document.getElementById('graph')
+			initMenu()
+
+			global.backend.start(data => console.log('Backend: '+data))
+			global.exchange.watch(graph, graph => global.graph.layout(graph, updateGraph))
+		}
+
+	</script>
+</head>
+<body onload="init()">
+	<div id="graphMenu" class="menu">
+		<ul class="items">
+			<li id="connectFiles">Connect files</li>
+			<li id="morphFiles">Create morph</li>
+			<li id="tagGroupOfFiles">Tag group</li>
+		</ul>
+		<hr />
+		<ul class="items">
+			<li onmouseup="inspectPage()">Inspect page</li>
+			<li onmouseup="inspectBgPage()">Inspect background</li>
+		</ul>
+	</div>
+	<div id="nodeMenu" class="menu">
+		<ul class="items">
+			<li id="showInFileBrowser">Show original</li>
+			<li id="editFileAndUpdate">Edit and update</li>
+			<li id="addFileAndChildren">Add linked files</li>
+			<li id="removeFileAsLink">Remove</li>
+			<li id="copyFileWithDependencies">Copy</li>
+			<li onmouseup="showHistory()">Show history</li>
+			<li id="makeStandaloneArchiveRun">Archive</li>
+			<li id="makeStandaloneArchiveFlat">Flat archive</li>
+			<li id="tagFile">Tag</li>
+			<li onmouseup="collapseMorph()">Collapse morph</li>
+			<li onmouseup="expandMorph()">Expand morph</li>
+		</ul>
+		<hr />
+		<ul class="items">
+			<li onmouseup="inspectPage()">Inspect page</li>
+			<li onmouseup="inspectBgPage()">Inspect background</li>
+		</ul>
+	</div>
+	<div id="edgeMenu" class="menu">
+		<ul class="items">
+			<li id="disconnectFiles">Disconnect files</li>
+		</ul>
+		<hr />
+		<ul class="items">
+			<li onmouseup="inspectPage()">Inspect page</li>
+			<li onmouseup="inspectBgPage()">Inspect background</li>
+		</ul>
+	</div>
+
+	<svg class="graph" width="800" height="1200" viewBox="0 0 800 1200"
+		 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		 <defs>
+			<marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+				<path d="M0,0 L0,6 L9,3 z" fill="black" />
+			</marker>
+			<marker id="copyarrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+				<path d="M0,0 L0,6 L9,3 z" fill="green" />
+			</marker>
+			<marker id="stalearrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+				<path d="M0,0 L0,6 L9,3 z" fill="red" />
+			</marker>
+			<marker id="manualarrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+				<path d="M0,0 L0,6 L9,3 z" fill="lightgrey" />
+			</marker>
+		</defs>
+		<g id="graph" transform="scale(1 1) rotate(0) translate(0 0)">
+		</g>
+	</svg>
+</body>
+</html>
