@@ -2,10 +2,16 @@ import os
 import configparser
 
 config = configparser.RawConfigParser()
-config.read("conf.cfg")
+try:
+	config.read("conf.cfg")
 
-PATH_TO_LIBS = config.get("Main", "PATH_TO_LIBS")
-PATH_TO_LINKS = config.get("FW-paths", "PATH_TO_LINKS")
+	PATH_TO_LIBS = config.get("Main", "PATH_TO_LIBS")
+	PATH_TO_LINKS = config.get("FW-paths", "PATH_TO_LINKS")
+except configparser.NoSectionError:
+	config.read("../conf.cfg")
+
+	PATH_TO_LIBS = config.get("Main", "PATH_TO_LIBS")
+	PATH_TO_LINKS = config.get("FW-paths", "PATH_TO_LINKS")
 
 os.environ["CONFIG_FILE"] = os.path.abspath(PATH_TO_LIBS + "/conf.cfg")
 
