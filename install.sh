@@ -1,11 +1,21 @@
 # Install script for Ubuntu 20.04 focal fossa
 
-# Installing 
-deb [ arch=amd64 ] https://downloads.skewed.de/apt focal main
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key 612DEFB798507F25
-sudo apt-get install python3-graph-tool
-sudo apt-get install python3-nautilus
+# install git
+sudo apt-get install git
+git clone https://github.com/jgori-ouistiti/FileWeaver
 
+# Installing graph tool
+echo 'deb [arch=amd64] https://downloads.skewed.de/apt focal main' | sudo tee -a /etc/apt/sources.list
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key 612DEFB798507F25
+sudo apt-get update
+sudo apt-get install python3-graph-tool -y
+sudo apt-get install python3-nautilus -y
+
+# curl
+sudo apt-get install curl -y
+
+# venv
+sudo apt-get install python3.8-venv -y
 # poetry
 curl -sSL https://install.python-poetry.org | python3 -
 
