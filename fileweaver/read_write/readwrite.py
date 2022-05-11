@@ -13,7 +13,7 @@ import json
 
 import sys
 
-import websocket
+
 import configparser
 import zmq
 
