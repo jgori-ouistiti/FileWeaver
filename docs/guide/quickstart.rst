@@ -17,7 +17,7 @@ To run FileWeaver, you will have to install graph-tool, nautilus-python and poet
 
     .. code-block:: bash
 
-        sudo apt-get install gir1.2-gconf-2.0 # to try out an example
+        # sudo apt-get install gir1.2-gconf-2.0 # likely not needed
         sudo apt-get install python3-nautilus
 
         
@@ -60,17 +60,23 @@ To run FileWeaver, you will have to install graph-tool, nautilus-python and poet
     
     .. code-block:: bash
 
-        mkdir -p ~.local/share/nautilus-python/extensions/
-        export XDG_DATA_HOME=~.local
+        mkdir -p ~/.local/share/nautilus-python/extensions/
+        export XDG_DATA_HOME=~/.local
 
     Make sure the extensions work, by trying out one of the `examples <https://gitlab.gnome.org/GNOME/nautilus-python/-/tree/master/examples>`_ that are known to work.
+
+    If that does not work, run Nautilus with ``NAUTILUS_PYTHON_DEBUG=misc``, and look where the extension looks for files
+
+    .. code-block:: bash
+
+        export NAUTILUS_PYTHON_DEBUG=misc
 
     Finally, add a symbolic link to FileWeaver's entry point file in Nautilus:
 
     .. code-block:: bash
 
             # From FileWeaver repository
-            ln -s fileweaver/scripts/linked_menu.py ~.local/share/nautilus-python/extensions/linked_menu.py
+            ln -s fileweaver/scripts/linked_menu.py ~/.local/share/nautilus-python/extensions/linked_menu.py
 
     * Poetry is a Python package manager, that is used to manage Fileweaver dependencies. To install poetry, follow the instructions on the `projects' website <https://python-poetry.org/docs/#installation>`_.
 

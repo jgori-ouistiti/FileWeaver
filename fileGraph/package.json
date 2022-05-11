@@ -1,7 +1,7 @@
 {
   "name": "filegraph",
-  "version": "1.0.0",
-  "description": "graphs for the MissingLink project",
+  "version": "0.0.1",
+  "description": "graphs for the Filweaver project",
   "main": "graph.html",
   "node-main": "index.js",
   "scripts": {
