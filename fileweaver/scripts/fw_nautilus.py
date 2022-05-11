@@ -28,7 +28,13 @@ def startup():
             print("Error: %s : %s" % (path, e.strerror))
 
 
-shutil.move(f"{PATH_TO_LIBS}/fileweaver/scripts/linked_menu.py", f"{os.environ['HOME']}/.local/share/nautilus-python/extensions/")
+try:
+    shutil.copy(
+        f"{PATH_TO_LIBS}/fileweaver/scripts/linked_menu.py",
+        f"{os.environ['HOME']}/.local/share/nautilus-python/extensions/",
+    )
+except shutil.SameFileError:
+    pass
 
 startup()
 
