@@ -4,11 +4,6 @@ Quick Start
 ===============
 
 
-Installation
----------------
-
-    A script ``install.sh`` is provided that can be run as is on Ubuntu 20.04. For other Linux distributions, you may use that file as basis to adapt. 
-
 .. To run FileWeaver, you will have to install graph-tool, nautilus-python and poetry:
 
     
@@ -93,8 +88,8 @@ Installation
 ..         sudo apt-get install nemo
 
 
-First usage
---------------
+First usage / Install
+--------------------------
 
 * git clone the FileWeaver repository
 
@@ -109,6 +104,9 @@ First usage
 .. code-block:: bash
 
     bash install.sh
+
+* Log out / Log in (optional)
+
 
 * Edit the ``conf.ini`` file. You have to give the path to the FileWeaver library you just cloned, and the path to a folder where FileWeaver will operate. An example would be:
 
@@ -127,6 +125,18 @@ First usage
     python3 configure.py
 
 You can check what is inside that conf.cfg file, it indicates the location of various FileWeaver components.
+
+* Open the poetry shell:
+
+.. code-block:: bash
+
+    poetry shell
+
+This will put you in the virtual python environment with the correct packages installed. If your system is unable to find poetry, this is probably because you didn't relog in the session. Either do so or run
+
+.. code-block:: bash
+
+    source ~/.bash_profile
 
 * Run ``run_fileweaver.py``. This will launch the server that forwards Fileweaver messages incoming from Nautilus over a websocket, and receives messages that it passes to Nautilus. This will also launch a Nautilus instance with Fileweaver support. From there, you can head to your FileWeaver partition and start experimenting.
 
