@@ -4,7 +4,6 @@
 # sudo apt-get install git
 # git clone https://github.com/jgori-ouistiti/FileWeaver
 
-cd Fileweaver
 
 # Installing graph tool
 echo 'deb [arch=amd64] https://downloads.skewed.de/apt focal main' | sudo tee -a /etc/apt/sources.list
@@ -20,6 +19,7 @@ sudo apt-get install curl -y
 
 # venv
 sudo apt-get install python3.8-venv -y
+pip3 install pyzmq
 
 # poetry
 curl -sSL https://install.python-poetry.org | python3 -
@@ -27,6 +27,13 @@ echo "export PATH=\$PATH:~/.local/bin" >> ~/.bash_profile
 source ~/.bash_profile
 # install python packages with poetry, enable system-site-packages
 poetry config virtualenvs.in-project true
+
+#update
+curl -sSL https://install.python-poetry.orgsudo apt update
+sudo apt upgrade
+
+poetry install
+poetry update
 poetry install
 sed -i 's/include-system-site-packages = false/include-system-site-packages = true/g' .venv/pyvenv.cfg
 
@@ -35,7 +42,7 @@ sudo apt-get install python3-nautilus -y
 mkdir -p ~/.local/share/nautilus-python/extensions/
 export XDG_DATA_HOME=~/.local/share/
 export NAUTILUS_PYTHON_DEBUG=misc
-
+ln -s fileweaver/scripts/linked_menu.py ~.local/share/nautilus-python/extensions/linked_menu.py
 ##### Useful but not strictly needed
 # netstat for sudo netstat -lntp
 sudo apt-get install net-tools
