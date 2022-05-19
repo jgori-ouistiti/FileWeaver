@@ -172,10 +172,9 @@ def add_file_and_children(file):
     logging.debug(cakes)
     logging.info("and deps | Update necessary: {}".format(dflag))
     logging.debug(deps)
-
     ##### Here this calls the unmorphed files, which do not exist as symlink, creating an error
     for d in deps:
-        cookbookpage = managing.new_link(d)
+    	cookbookpage = managing.new_link(d)
     if dflag:
         update_deps_in_graph(deps, file)
     add_dependency(file)
@@ -463,40 +462,62 @@ def check_link(file, send=True):
 
 
     """
-
+	
+	#save the info of the file in a FlexFile
     FFobject = linking.FlexFile(file)
     filename, linkname, cookbookpage, cookbookleftpage = FFobject._get()
     FILE_ACCESS_TIME = os.stat(filename)[stat.ST_MTIME]
 
+	#we're checking if the links need to get updated
     g, namemap = graph.open_graph()
     v = namemap.get(linkname)
+    
+    #we will check the cakes and deps that need to be updated from the file we 
+    
     if v is None:
+    	#if the file has never been linked with fileweaver
+    	# cakes and deps need to be updated
         cakes_need_to_be_updated = True
         deps_need_to_be_updated = True
     else:
+    	#if we linked the file with fileweaver before (at least once)
+    	#we get the edges of the graph so we can check if they need an update
+    	
+    	#we first update the out_edges
         edges = g.get_out_edges(v, eprops=[g.ep.update_time, g.ep.update_bool])
+        #for f in [g.get_out_edges,g.get_in_edges]:
+        	#f((v, eprops=[g.ep.update_time, g.ep.update_bool]))
         if edges.any():
+
             if (
                 numpy.min(numpy.ma.masked_array(edges[:, 2], ~edges[:, 3].astype(bool)))
                 > FILE_ACCESS_TIME
             ):
+            #if the edges have been updated after they have last been accessed to 
+        	#we don't need them to get updated
                 logging.info(
                     "Node had out edges brought up to date after last modif of file, no need to update cakes"
                 )
                 cakes_need_to_be_updated = False
             else:
+            #if edges have not been updated after they've been last accessed to
+            #we need to update them
                 logging.info(
                     "Node had out edges brought up to date before last modif of file, need to update cakes"
                 )
                 cakes_need_to_be_updated = True
         else:
+        	
             if g.vp.emptyout[v] > FILE_ACCESS_TIME:
+            #the cake needs to be update if ?????????????????????????????????
                 logging.info("Node without out edges | No need to update")
                 cakes_need_to_be_updated = False
             else:
                 logging.info("Node without out edges | Need to update")
                 cakes_need_to_be_updated = True
 
+
+		#same thing with in_edges
         edges = g.get_in_edges(v, eprops=[g.ep.update_time, g.ep.update_bool])
         if edges.any():
             if (
@@ -566,7 +587,6 @@ def read_deps(g, namemap, linkname):
 
 
     """
-
     return [g.vp.smlk[v] for v in g.get_in_edges(namemap[linkname])[:, 0]]
 
 
@@ -609,7 +629,7 @@ def get_cakes(file):
     for c in cakes:
         if not os.path.isabs(c):
             _cakes.append(os.path.join(dirname, c))
-
+	
     return _cakes
 
 

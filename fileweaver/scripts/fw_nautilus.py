@@ -57,4 +57,5 @@ with open(PATH_TO_HIDDEN_JSON_SHARED_FILE, "w") as fd:
 
 
 print("Opening Nautilus")
-subprocess.call("nautilus -q; nautilus", shell=True)
+
+subprocess.call("nautilus", shell=True)
