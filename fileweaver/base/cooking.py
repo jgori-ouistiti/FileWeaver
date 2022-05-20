@@ -486,7 +486,7 @@ def check_link(file, send=True):
     	#we first update the out_edges
         edges = g.get_out_edges(v, eprops=[g.ep.update_time, g.ep.update_bool])
         #for f in [g.get_out_edges,g.get_in_edges]:
-        	#f((v, eprops=[g.ep.update_time, g.ep.update_bool]))
+        	#f(v, eprops=[g.ep.update_time, g.ep.update_bool])
         if edges.any():
 
             if (
