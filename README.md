@@ -1,0 +1,78 @@
+Installation
+===============
+
+To run FileWeaver, you will have to install graph-tool, nautilus-python and poetry:
+
+    
+   	* To install graph-tool, visit `graph-tool's documentation<https://git.skewed.de/count0/graph-tool/-/wikis/installation-instructions>`_
+
+
+   	* Nautilus-python is an extension to Gnome Nautilus to write Python extensions for Nautilus, that FileWeaver uses as entry point in Ubuntu. To install nautilus-python, make sure you install the Python3 version:
+
+        
+	```
+	sudo apt-get install gir1.2-gconf-2.0 # to try out an example
+	sudo apt-get install python3-nautilus
+	```
+
+	Make sure Nautilus-Python knows where to find the Python scripts.
+        
+	```
+	mkdir -p ~/.local/share/nautilus-python/extensions/
+	export XDG_DATA_HOME=~/.local
+	```
+
+	Make sure the extensions work, by trying out one of the `examples<https://gitlab.gnome.org/GNOME/nautilus-python/-/tree/master/examples>`_ that are known to work.
+
+        Finally, add a symbolic link to FileWeaver's entry point file in Nautilus:
+
+        ```
+	# From FileWeaver repository
+	ln -s $PWD/fileweaver/scripts/linked_menu.py ~/.local/share/nautilus-python/extensions/linked_menu.py
+	```
+
+	* Poetry is a Python package manager, that is used to manage Fileweaver dependencies. To install poetry, follow the instructions on the [projects' website](https://python-poetry.org/docs/#installation).
+
+I also recommend installing nemo. Since during development you will be closing and opening Nautilus a lot, it is useful to have another file manager. Nemo is a lightweight system which integrates well with GNOME:
+
+	```
+	sudo apt-get install nemo
+	```
+
+First usage
+===============
+
+* Git clone
+
+* Install all dependencies in a virtual environment using poetry
+
+```
+poetry install
+```
+
+* Determine a folder which will act as a fake partition. FileWeaver will only act on files inside this folder. For example, you can
+
+```
+mkdir ~/Documents/FileWeaver_Partition
+```
+
+Then, edit the ``conf.ini`` file. you have to give the path to the FileWeaver library you downloaded, and the path to the folder you just created above.
+
+* Run ``configure.py``, which creates a conf.cfg file and various scripts. 
+
+```
+python3 configure.py
+```
+
+You can check what is inside that conf.cfg file, it indicates the location of various FileWeaver components.
+
+* Run the main file, from the virtual environment maintained by poetry:
+
+```
+poetry shell
+python3 run_fileweaver.py
+```
+
+You can observe the websocket communication by monitoring ws://localhost:4000
+
+
