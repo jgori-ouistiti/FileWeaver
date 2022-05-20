@@ -34,7 +34,10 @@ class FlexFile:
 
     Call _get() to return:
         filename, linkname, cookbookpage, cookbookleftpage
-
+	filename : absolute path before fw
+	linkname : 'idfile_idpartition'
+	cookbookpage : /.cookbook/linkname
+	cookbookleftpage : cookbookleftpage/filename
     """
 
     def __init__(self, *args):
