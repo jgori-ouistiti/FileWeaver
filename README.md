@@ -2,32 +2,31 @@ Installation
 ===============
 
 To run FileWeaver, you will have to install graph-tool, nautilus-python and poetry:
-   	* To install graph-tool, visit `graph-tool's [documentation](https://git.skewed.de/count0/graph-tool/-/wikis/installation-instructions)
-   	* Nautilus-python is an extension to Gnome Nautilus to write Python extensions for Nautilus, that FileWeaver uses as entry point in Ubuntu. To install nautilus-python, make sure you install the Python3 version:
+* To install graph-tool, visit [graph-tool's documentation](https://git.skewed.de/count0/graph-tool/-/wikis/installation-instructions)
+* Nautilus-python is an extension to Gnome Nautilus to write Python extensions for Nautilus, that FileWeaver uses as entry point in Ubuntu. To install nautilus-python, make sure you install the Python3 version:
 ```
-	sudo apt-get install gir1.2-gconf-2.0 # to try out an example
-	sudo apt-get install python3-nautilus
+sudo apt-get install gir1.2-gconf-2.0 # to try out an example
+sudo apt-get install python3-nautilus
 ```
-	Make sure Nautilus-Python knows where to find the Python scripts.
-```
-	mkdir -p ~/.local/share/nautilus-python/extensions/
-	export XDG_DATA_HOME=~/.local
-```
-
-	Make sure the extensions work, by trying out one of the [examples](https://gitlab.gnome.org/GNOME/nautilus-python/-/tree/master/examples) that are known to work.
-	
-	Finally, add a symbolic link to FileWeaver's entry point file in Nautilus. From FileWeaver repository:
+Make sure Nautilus-Python knows where to find the Python scripts.
 
 ```
-	ln -s $PWD/fileweaver/scripts/linked_menu.py ~/.local/share/nautilus-python/extensions/linked_menu.py
+mkdir -p ~/.local/share/nautilus-python/extensions/
+export XDG_DATA_HOME=~/.local
 ```
 
-	* Poetry is a Python package manager, that is used to manage Fileweaver dependencies. To install poetry, follow the instructions on the [projects' website](https://python-poetry.org/docs/#installation).
+Make sure the extensions work, by trying out one of the [examples](https://gitlab.gnome.org/GNOME/nautilus-python/-/tree/master/examples) that are known to work. Finally, add a symbolic link to FileWeaver's entry point file in Nautilus. From FileWeaver repository:
+
+```
+ln -s $PWD/fileweaver/scripts/linked_menu.py ~/.local/share/nautilus-python/extensions/linked_menu.py
+```
+
+* Poetry is a Python package manager, that is used to manage Fileweaver dependencies. To install poetry, follow the instructions on the [projects' website](https://python-poetry.org/docs/#installation).
 
 I also recommend installing nemo. Since during development you will be closing and opening Nautilus a lot, it is useful to have another file manager. Nemo is a lightweight system which integrates well with GNOME:
 
 ```
-	sudo apt-get install nemo
+sudo apt-get install nemo
 ```
 
 First usage
