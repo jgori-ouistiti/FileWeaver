@@ -84,9 +84,7 @@ def write_conf_file():
 
 
 def scenario_one():
-    with open(
-        os.path.join(PATH_TO_LIBS, "scenarios", "scenario_one", "scnr.sh"), "w"
-    ) as fd:
+    with open(os.path.join(PATH_TO_LIBS, "scenarios", "scenario_one", "scnr.sh"), "w") as fd:
         fd.write("#!/bin/bash")
         fd.write("\n")
         fd.write(

@@ -4,7 +4,7 @@ gi.require_version("Nautilus", "3.0")
 from gi.repository import Nautilus, GObject
 
 
-import os
+import os.path
 import configparser
 
 config = configparser.ConfigParser()
@@ -18,6 +18,9 @@ from fileweaver.read_write import readwrite
 from fileweaver.base import graph
 from fileweaver.base import managing
 from fileweaver.base import linking
+from fileweaver.base import filters
+
+
 
 from fileweaver.git_integration import nautgit
 import graph_tool.topology as gtt
@@ -36,6 +39,8 @@ import sys
 import stat
 import time
 import random
+
+
 
 
 @managing.exists_decorator
@@ -197,6 +202,7 @@ def check_cakes(file, cakes):
 
 
 	"""
+	print(f"check the fillllllllllle {file}")
 	FFobject = linking.FlexFile(file)
 	filename, linkname, cookbookpage, cookbookleftpage = FFobject._get()
 	keep_cakes = []
@@ -483,7 +489,7 @@ def check_link(file, send=True):
 		logging.debug("I am simply reading off the cakes")
 		cakes = read_cakes(g, namemap, linkname)
 
-	print("\n=====")
+	
 	print(f"cakes : {cakes}")
 	print("\n=======")
 
@@ -606,7 +612,7 @@ def read_cakes(g, namemap, linkname):
 	"""Read cakes.
 
 	Args:
-		g (graph object): graph
+		g (graph object): graphF
 		namemap (dictionnary): namemap linking linknames to vertex_index
 		linkname (str): basename of the cookbookpage
 
@@ -651,7 +657,7 @@ def get_deps(file, cakes):
 	Run trace to find up to date deps list
 
 	Args:
-		file (FileObject, str): filename in whatever form works for linking.FlexFile()
+		file (FileObject, str): filename in whatever form works for linking.FlexFile() : pathabs
 	Returns:
 		deps (list): List of all deps of the file
 
@@ -692,8 +698,9 @@ def generate_trace_cake(filename, linkname, cookbookleftpage):
 	trace = g.vp.trace[namemap.get(linkname)]
 	file = generate_builder_file(trace)
 	tracefile = run_trace(file, filename, cookbookleftpage, inout=1)
-	print(f"traaaaaaaaaaaaaaaaaaaaaaaaace {tracefile}")
-	return unmold_cake(tracefile, filename, level="fwpartition")
+	l1 = filtering(tracefile, filename, filter_out_cakes_for_deps)
+	return set(l1)
+	#return unmold_cake(tracefile, filename, level="fwpartition")
 
 
 def generate_recipe(linkname):
@@ -715,7 +722,9 @@ def generate_trace_deps(filename, linkname, cookbookleftpage, cakes):
 	trace = g.vp.trace[namemap.get(linkname)]
 	file = generate_builder_file(trace)
 	tracefile = run_trace(file, filename, cookbookleftpage, inout=2)
-	return _sort_out_trace(tracefile, cakes, filename, level="fwpartition")
+	l = filtering(tracefile, filename, filters.filter_partit_or_local, filters.filter_is_not_dir, filters.filter_filename_not_in_line, filters.filter_cookbook, filters.filter_no_hidden_files)
+	return set(l)
+	#return _sort_out_trace(tracefile, cakes, filename, level="fwpartition")
 
 
 def _sort_out_trace(tracefile, cakes, filename, level="fwpartition"):
@@ -760,7 +769,7 @@ def _sort_out_trace(tracefile, cakes, filename, level="fwpartition"):
 					filename.split("_v")[1].split(".")[0] in VERSION_NUMBER
 				):
 					copy_flag = True
-					logging.debug("I am tracing on a copy")
+					print("I am tracing on a copyyyyyyyyyyyyyyyyy")
 				else:
 					copy_flag = False
 			except IndexError:
@@ -768,7 +777,7 @@ def _sort_out_trace(tracefile, cakes, filename, level="fwpartition"):
 			try:
 				if line.split("_v")[0] == filename.split(".")[0]:
 					copy_flag_bis = True
-					logging.debug("I found a copy in the deps")
+					print("I found a copyyyyyyyyyyyyyyyyy in the deps")
 				else:
 					copy_flag_bis = False
 			except IndexError:
@@ -849,6 +858,7 @@ def run_trace(script, symlink, leftcookbookpage, inout=3):
 	return dep_name
 
 
+#existance dependance entre la line qu'on check et le filename
 def filter_out_cakes_for_deps(line, filename):
 	g, namemap = graph.open_graph()
 	t = namemap[linking.FlexFile(filename).linkname]
@@ -868,6 +878,42 @@ def filter_out_cakes_for_deps(line, filename):
 	return 1
 
 
+def filtering(tracefile, filename, showline, *filters):
+	"""Filter the output of the trace file.
+
+	For now only dealing with dependencies at level inside /home/user/. Later might do more complex stuff to get further dependencies, such as librairies.
+
+	Args:
+		tracefile (str): Absolute paths to the output of trace file.
+		filename : absolute path
+		level (str): Filtering level. For now this is the only option that is provided.
+		*filters : applied filter
+
+	Returns:
+		cakes (list): List of the absolute paths to the cakes.
+
+	"""
+	res = []
+	stop = False
+	with open(tracefile, "r") as fd:
+		for line in fd:
+			
+			line = line.rstrip("\n")
+			for filt in filters :
+				if not filt(line, filename):
+					print(f"stoping because offfffff {str(filt)}")
+					stop = True
+					break
+			line = line.lstrip("/.")
+			if stop == False:
+				res.append(line)
+			stop = False
+	if showline == True:
+		print(f"reeeeeeeeeessssssssssssssss {res}")
+	return res
+						 
+
+
 def unmold_cake(tracefile, filename, level="fwpartition"):
 	"""Filter the output of the trace file.
 
@@ -875,6 +921,7 @@ def unmold_cake(tracefile, filename, level="fwpartition"):
 
 	Args:
 		tracefile (str): Absolute paths to the output of trace file.
+		filename : absolute path
 		level (str): Filtering level. For now this is the only option that is provided.
 
 	Returns:
@@ -889,7 +936,6 @@ def unmold_cake(tracefile, filename, level="fwpartition"):
 	print("=================== starting trace for cake")
 	with open(tracefile, "r") as fd:
 		for line in fd:
-			print(f"liiiiiiiiiiiiiiiiiiine {line}")
 			line = line.rstrip("\n")
 			if line[0] == "/":  # absolute paths
 				if (
@@ -911,3 +957,4 @@ def unmold_cake(tracefile, filename, level="fwpartition"):
 
 	# os.remove(tracefile)
 	return set(cakes)
+	
