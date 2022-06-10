@@ -86,3 +86,4 @@ class FWServer:
 if __name__ == "__main__":
     server = FWServer()
     server.start()
+    print("\n -------------------------------------------------\n THE SERVER STARTED \n -----------------------------------\n")

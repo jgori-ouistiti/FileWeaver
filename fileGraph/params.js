@@ -19,8 +19,8 @@ let test = {
 }
 
 let prod = {
-	exchangePath: '/home/juliengori/Documents/VC/FileWeaver/exchange.json',
-	backendPath: '/home/juliengori/Documents/VC/FileWeaver/backend_entry.py',
+	exchangePath: '/home/alexandre/Documents/StageM1/FileWeaver/exchange.json',
+	backendPath: '/home/alexandre/Documents/StageM1/FileWeaver/fileGraph/test/backend_entry.py',
 	git2dot: '../nautilusGit/git2dot.py',
 	git2dotArgs,
 }

@@ -165,7 +165,7 @@ def send_instruction_over(linkname, action, id, vdic=None, edic=None):
     # ws.close()
     msg = json.dumps(out_json)
     print(f"sending: {msg} ({type(msg)})")
-    socket.send_string(json.dumps(out_json))
+    socket.send_json(msg)
     # msg = socket.recv()
     # print("=============================================== DONE WRITING")
     # print(f"received  {msg}")

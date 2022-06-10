@@ -518,8 +518,9 @@ def need_update(g, v, FILE_ACCESS_TIME):
 	edges_in = g.get_in_edges(v, eprops=[g.ep.update_time, g.ep.update_bool])
 	if v is None :
 		return cakes_need_update, deps_need_update
-	"""
+	
 	if edges_out.any():
+		edges = edges_out
 		if (most_recent_update(edges) > FILE_ACCESS_TIME):
 		#if the edges have been updated after they have last been accessed to 
 		#we don't need them to get updated
@@ -543,6 +544,7 @@ def need_update(g, v, FILE_ACCESS_TIME):
 		else:
 			logging.info("Node without out edges | Need to update")
 			cakes_need_to_be_updated = True
+	
 	"""
 	if g.vp.emptyout[v] > FILE_ACCESS_TIME:
 		#the cake needs to be update if ?????????????????????????????????
@@ -552,7 +554,9 @@ def need_update(g, v, FILE_ACCESS_TIME):
 		logging.info("Node without out edges | Need to update")
 		cakes_need_update = True
 	"""
+	
 	if edges_in.any():
+		edges = edges_in
 		if (
 			numpy.min(numpy.ma.masked_array(edges[:, 2], ~edges[:, 3].astype(bool)))
 			> FILE_ACCESS_TIME
@@ -580,8 +584,9 @@ def need_update(g, v, FILE_ACCESS_TIME):
 	else:
 		logging.info("Node without in edges | Need to update")
 		deps_need_update = True	
+	"""
 	return cakes_need_update, deps_need_update
-				
+	
 			
 
 def most_recent_update(edges):

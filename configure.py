@@ -138,14 +138,34 @@ def startup_scenario_one():
         fd.write(f"rm -f {PATH_TO_JSON_SHARED_FILE}")
         fd.write("\n")
 
+def startup_scenario_complex():
+	with open(
+		os.path.join(PATH_TO_LIBS, "scripts", "startup_scenario_complex.sh"), "w"
+	) as fd:
+		fd.write("#!/bin/bash")
+		fd.write("\n")
+		fd.write(f"rm -f {PATH_TO_GRAPH}")
+		fd.write("\n")
+		fd.write(f"rm -f {PATH_TO_NAMEMAP}")
+		fd.write("\n")
+		fd.write(f"rm -f {PATH_TO_HIDDEN_JSON_SHARED_FILE}")
+		fd.write("\n")
+		fd.write(f"rm -f {PATH_TO_JSON_SHARED_FILE}")
+		fd.write("\n")
+		fd.write(f"gh=\"https://github.com/AllenDowney/ThinkDSP\"")
+		fd.write("\n")
+		fd.write(f"git clone $gh {PATH_TO_FW_PARTITION}")
+		
 
 def write_scripts():
     scenario_one()
     scenario_two()
     startup_scenario_one()
+    startup_scenario_complex()
     os.chmod(os.path.join(PATH_TO_LIBS, "scenarios", "scenario_one", "scnr.sh"), 0o777)
     os.chmod(os.path.join(PATH_TO_LIBS, "scenarios", "scenario_two", "scnr.sh"), 0o777)
     os.chmod(os.path.join(PATH_TO_LIBS, "scripts", "startup_scenario_one.sh"), 0o777)
+    os.chmod(os.path.join(PATH_TO_LIBS, "scripts", "startup_scenario_complex.sh"), 0o777)
 
 
 def stracegawk():
@@ -166,4 +186,4 @@ def stracegawk():
 if __name__ == "__main__":
     write_conf_file()
     write_scripts()
-    stracegawk()
+    stracegawk()				

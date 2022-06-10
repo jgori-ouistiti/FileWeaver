@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Context Menu</title>
+</head>
+<body>
+
+<p>'Right click' here to show context menu.</p>
+
+<script>
+// Create an empty context menu
+var menu = new nw.Menu();
+
+// Add some items with label
+menu.append(new nw.MenuItem({
+  label: 'Item A',
+  click: function(){
+    //var test = get();
+    window.alert("BONJOUR");
+    var win = nw.Window.get();
+    window.alert(win.width);
+    window.alert(win.height);
+    win.maximize();
+    
+    alert(win.title);
+    alert(process.versions['nw-flavor']);
+    //alert(win.iframe.contentWindow.toString());
+    
+    nw.Window.open('graph.html', {}, function(new_win) {
+  // do something with the newly created window
+  //tag = new_win.get(iframe.contentWindow);
+});
+  }
+}));
+menu.append(new nw.MenuItem({ label: 'Item B' }));
+menu.append(new nw.MenuItem({ type: 'separator' }));
+menu.append(new nw.MenuItem({ label: 'Item C' }));
+
+// Hooks the "contextmenu" event
+document.body.addEventListener('contextmenu', function(ev) {
+  // Prevent showing default context menu
+  ev.preventDefault();
+  // Popup the native context menu at place you click
+  menu.popup(ev.x, ev.y);
+
+  return false;
+}, false);
+
+</script>  
+</body>
+</html>

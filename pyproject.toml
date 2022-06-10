@@ -11,6 +11,13 @@ pyzmq = "^22.3.0"
 sphinx-rtd-theme = "^1.0.0"
 sphinxcontrib-tikz = "^0.4.16"
 matplotlib = "^3"
+scikit-learn = "^1.1.1"
+pylatexenc = "^2.10"
+pandas = "^1.4.2"
+lxml = "^4.9.0"
+yake = "^0.4.8"
+rake-nltk = "^1.0.6"
+gensim = "^4.2.0"
 
 
 [tool.poetry.dev-dependencies]

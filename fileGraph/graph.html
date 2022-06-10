@@ -102,16 +102,17 @@
 				morphs: {},
 			}
 
-		// function loadGraph(name) {
-		// 	graphEl = document.getElementById('graph')
-		// 	global.graph.parse(name, g => {
-		// 		graph = g
-		// 		global.graph.layout(graph, parseGraph)
-		// 	})
-		// }
+		function loadGraph(name) {
+		 	graphEl = document.getElementById('graph')
+		 	global.graph.parse(name, g => {
+		 		graph = g
+		 		global.graph.layout(graph, parseGraph)
+		 	})
+		 }
 
 		function inspectPage() {
-			require('nw.gui').Window.get().showDevTools()
+			//require('nw.gui').Window.get().showDevTools()
+			nw.Window.get().showDevTools()
 		}
 
 		function inspectBgPage() {
@@ -177,14 +178,29 @@
 		}
 
 		function init() {
-			// inspectPage()
-			// inspectBgPage()
+			 inspectPage();
+			 //inspectBgPage()
 
-			graphEl = document.getElementById('graph')
-			initMenu()
-
-			global.backend.start(data => console.log('Backend: '+data))
-			global.exchange.watch(graph, graph => global.graph.layout(graph, updateGraph))
+			//graphEl = document.getElementById('graph');
+			//console.log(global.aaa);
+			//global.backend.start(data => console.log('Backend: '+data))
+			//global.exchange.watch(graph, graph => global.graph.layout(graph, updateGraph))
+			
+			
+			var ws = new WebSocket('ws://localhost:4000');
+			
+			ws.onmessage = function(event){
+				console.log("Received");
+				console.log(typeof(event.data));
+				const data = JSON.parse(event.data);
+				console.log("Voici l'objet parsed!");
+				console.log(data);
+				var message = document.getElementById('message');
+				message.innerHTML = data;
+				//const data = JSON.parse(event.data);
+				//console.log(data.message);
+                    };
+		
 		}
 
 	</script>
@@ -233,6 +249,11 @@
 		</ul>
 	</div>
 
+	<div>
+	<h1>Message:</h1>
+        <div id="message"></div>
+        </div>
+
 	<svg class="graph" width="800" height="1200" viewBox="0 0 800 1200"
 		 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 		 <defs>
@@ -254,3 +275,4 @@
 	</svg>
 </body>
 </html>
+
