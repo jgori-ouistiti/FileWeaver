@@ -21,6 +21,9 @@ sudo apt-get install curl -y
 sudo apt-get install python3.8-venv -y
 pip3 install pyzmq
 
+#graphviz
+sudo apt-get install graphviz
+
 # poetry
 curl -sSL https://install.python-poetry.org | python3 -
 echo "export PATH=\$PATH:~/.local/bin" >> ~/.bash_profile

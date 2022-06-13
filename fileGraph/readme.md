@@ -6,7 +6,7 @@ A: `% npm install`
 
 Or 
 
-B: `% npm install nw`
+B: npm install -D nw@0.65.0-sdk
 
 ### Test with simulation
 

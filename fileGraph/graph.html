@@ -104,6 +104,7 @@
 
 		function loadGraph(name) {
 		 	graphEl = document.getElementById('graph')
+			graphEl.textContent = ""
 		 	global.graph.parse(name, g => {
 		 		graph = g
 		 		global.graph.layout(graph, parseGraph)
@@ -171,7 +172,8 @@
 			node = getNodeUnderContextMenu()
 			console.log(`showHistory ${node.tag}`)
 			if (! node)
-				return
+				ocket
+
 
 			let uri = `git.html?path=${encodeURIComponent(node.path)}&tag=${encodeURIComponent(node.tag)}`
 			require('nw.gui').Window.open(uri, win => { win.x = 100; win.y = 100})
@@ -199,6 +201,8 @@
 				message.innerHTML = data;
 				//const data = JSON.parse(event.data);
 				//console.log(data.message);
+				console.log(ws)
+				loadGraph("/home/gozea/.cookbook/graph")
                     };
 		
 		}

@@ -1,4 +1,4 @@
-Installation
+jnstallation
 ===============
 
 To run FileWeaver, you will have to install graph-tool, nautilus-python and poetry:
@@ -19,6 +19,13 @@ Make sure the extensions work, by trying out one of the [examples](https://gitla
 
 ```
 ln -s $PWD/fileweaver/scripts/linked_menu.py ~/.local/share/nautilus-python/extensions/linked_menu.py
+
+```
+install graphviz so you can draw the graphs
+```
+
+sudo apt-get install graphviz
+
 ```
 
 * Poetry is a Python package manager, that is used to manage Fileweaver dependencies. To install poetry, follow the instructions on the [projects' website](https://python-poetry.org/docs/#installation).

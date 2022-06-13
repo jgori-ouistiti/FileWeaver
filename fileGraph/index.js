@@ -4,4 +4,3 @@ global.exchange = require('lib/exchange')
 global.backend = require('lib/backend')
 
 global.git = require('lib/git')
-global.aaa = 'ok'

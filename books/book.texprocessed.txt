@@ -1,0 +1,6517 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+a:linkcolor:black;
+p+pmargin-top:1em;margin-bottom:1em
+imgborder:0px
+
+
+[alt="previous"]back.png
+  [alt="up"]up.png
+  [alt="next"]next.png
+
+
+
+
+
+
+
+
+
+
+
+
+    think dsp
+    allen b. downey
+    June 2, 2022
+===================
+
+
+
+
+
+
+exercise
+  
+  
+  
+  
+  
+  
+   
+  
+
+exercise
+exerciseexercise[chapter]
+
+
+
+
+
+
+
+
+
+
+
+empty
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+version 
+
+
+
+
+
+
+
+
+
+
+
+empty
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+version 
+
+
+
+
+
+allen b. downey
+
+
+
+
+
+
+
+green tea press
+
+needham, massachusetts
+
+
+
+
+
+
+
+
+empty
+
+copyright  2014 allen b. downey.
+
+
+
+
+
+
+
+green tea press       
+
+9 washburn ave 
+
+needham ma 02492
+
+
+
+permission is granted to copy, distribute, and/or modify this document
+under the terms of the creative commons
+attribution-noncommercial-sharealike 4.0 international license, which
+is available at
+<
+
+
+the  source for this book is available from
+<
+
+
+
+
+
+
+
+
+
+
+
+
+
+: 
+
+allen b. downey
+
+version 
+
+
+
+
+copyright 2014 allen b. downey
+
+
+
+
+permission is granted to copy, distribute, and/or modify this document
+under the terms of the creative commons
+attribution-noncommercial-sharealike 4.0 international license,
+which is available at
+<
+
+
+
+
+
+
+
+
+
+CHAPTER: PREFACE
+
+
+
+signal processing is one of my favorite topics.  it is useful
+in many areas of science and engineering, and if you understand
+the fundamental ideas, it provides insight into many things
+we see in the world, and especially the things we hear.
+
+but unless you studied electrical or mechanical engineering, you
+probably haven't had a chance to learn about signal processing.  the
+problem is that most books (and the classes that use them) present the
+material bottom-up, starting with mathematical abstractions like
+phasors.  and they tend to be theoretical, with few applications and
+little apparent relevance.
+
+the premise of this book is that if you know how to program, you
+can use that skill to learn other things, and have fun doing it.
+
+with a programming-based approach, i can present the most important
+ideas right away.  by the end of the first chapter, you can analyze
+sound recordings and other signals, and generate new sounds.  each
+chapter introduces a new technique and an application you can
+apply to real signals.  at each step you learn how to use a
+technique first, and then how it works.
+
+this approach is more practical and, i hope you'll agree, more fun.
+
+
+
+
+§ WHO IS THIS BOOK FOR?
+
+
+the examples and supporting code for this book are in python.  you
+should know core python and you should be
+familiar with object-oriented features, at least using objects if not
+defining your own.
+
+if you are not already familiar with python, you might want to start
+with my other book, think python, which is an introduction to
+python for people who have never programmed, or mark
+lutz's learning python, which might be better for people with
+programming experience.
+
+i use numpy and scipy extensively.  if you are familiar with them
+already, that's great, but i will also explain the functions
+and data structures i use.
+
+i assume that the reader knows basic mathematics, including complex
+numbers.  you don't need much calculus; if you understand the concepts
+of integration and differentiation, that will do.
+i use some linear algebra, but i will explain it as we
+go along.
+
+
+
+
+§ USING THE CODE
+
+
+
+the code and sound samples used in this book are available from
+<  git is a version
+control system that allows you to keep track of the files that
+make up a project.  a collection of files under git's control is
+called a “repository”.  github is a hosting service that provides
+storage for git repositories and a convenient web interface.
+repository
+git
+github
+
+the github homepage for my repository provides several ways to
+work with the code:
+
+
+
+
+  * you can create a copy of my repository
+on github by pressing the fork button.  if you don't already
+have a github account, you'll need to create one.  after forking, you'll
+have your own repository on github that you can use to keep track
+of code you write while working on this book.  then you can
+clone the repo, which means that you copy the files
+to your computer.
+fork
+
+
+  * or you could clone
+my repository.  you don't need a github account to do this, but you
+won't be able to write your changes back to github.
+clone
+
+
+  * if you don't want to use git at all, you can download the files
+in a zip file using the button in the lower-right corner of the
+github page.
+
+
+
+all of the code is written to work in both python 2 and python 3
+with no translation.
+
+i developed this book using anaconda from
+continuum analytics, which is a free python distribution that includes
+all the packages you'll need to run the code (and lots more).
+i found anaconda easy to install.  by default it does a user-level
+installation, not system-level, so you don't need administrative
+privileges.  and it supports both python 2 and python 3.  you can
+download anaconda from <
+anaconda
+
+if you don't want to use anaconda, you will need the following
+packages:
+
+
+
+
+  * numpy for basic numerical computation, <
+numpy
+
+
+  * scipy for scientific computation,
+  <
+scipy
+
+
+  * matplotlib for visualization, <
+matplotlib
+
+
+
+although these are commonly used packages, they are not included with
+all python installations, and they can be hard to install in some
+environments.  if you have trouble installing them, i
+recommend using anaconda or one of the other python distributions
+that include these packages.
+installation
+
+most exercises use python scripts, but some also use jupyter
+notebooks.  if you have not used jupyter before, you can read about
+it at <
+jupyter
+
+there are three ways you can work with the jupyter notebooks:
+
+
+
+
+  run jupyter on your computer
+
+if you installed anaconda, you
+  probably got jupyter by default.  to check, start the server from
+the command line, like this:
+
+
+
+if it's not installed, you can install it in anaconda like this:
+
+
+
+when you start the server, it should launch your default web browser
+or create a new tab in an open browser window.
+
+
+  run jupyter on binder
+
+binder is a service that runs jupyter in a virtual machine.  if you
+follow this link, <
+you should get a jupyter home page with the notebooks for this book
+and the supporting data and scripts.
+
+you can run the scripts and modify them to run your own code, but the
+virtual machine you run in is temporary.  any changes you make will
+disappear, along with the virtual machine, if you leave it idle for
+more than about an hour.
+
+
+  view notebooks on nbviewer
+
+when we refer to notebooks later in the book, we will provide links to
+nbviewer, which provides a static view of the code and results.  you
+can use these links to read the notebooks and listen to the examples,
+but you won't be able to modify or run the code, or use the
+interactive widgets.
+
+
+
+good luck, and have fun!
+
+
+
+
+
+§ CONTRIBUTOR LIST
+
+
+if you have a suggestion or correction, please send email to
+downey@allendowney.com.  if i make a change based on your
+feedback, i will add you to the contributor list
+(unless you ask to be omitted).
+contributors
+
+if you include at least part of the sentence the
+error appears in, that makes it easy for me to search.  page and
+section numbers are fine, too, but not as easy to work with.
+thanks!
+
+
+
+
+
+
+  * before i started writing, my thoughts about this book
+benefited from conversations with boulos harb at google and
+aurelio ramos, formerly at harmonix music systems.
+
+
+  * during the fall 2013 semester, nathan lintz and ian daniher
+worked with me on an independent study project and helped me with
+the first draft of this book.
+
+
+  * on reddit's dsp forum, the anonymous user ramjetsoundwave
+helped me fix a problem with my implementation of brownian noise.
+and andodli found a typo.
+
+
+  * in spring 2015 i had the pleasure of teaching this material
+along with prof. oscar mur-miranda and prof. siddhartan govindasamy.
+both made many suggestions and corrections.
+
+
+  * silas gyger corrected an arithmetic error.
+
+
+  * giuseppe masetti sent a number of very helpful suggestions.
+
+
+  * eric peters sent many helpful suggestions.
+
+
+
+
+
+
+special thanks to freesound, which is the source of many of the
+sound samples i use in this book, and to the freesound users who
+uploaded those sounds.  i include some of their wave files in
+the github repository for this book, using the original file
+names, so it should be easy to find their sources.
+
+unfortunately, most freesound users don't make their real names
+available, so i can only thank them using their user names.  samples
+used in this book were contributed by freesound users: iluppai,
+wcfl10, thirsk, docquesting, kleeb, landup, zippi1, themusicalnomad,
+bcjordan, rockwehrmann, marcgascon7, jcveliz.  thank you all!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CHAPTER: SOUNDS AND SIGNALS
+
+
+
+a signal represents a quantity that varies in time.  that
+definition is pretty abstract, so let's start with a concrete example:
+sound.  sound is variation in air pressure.  a sound signal represents
+variations in air pressure over time.
+
+a microphone is a device that measures these variations and generates
+an electrical signal that represents sound.  a speaker is a device
+that takes an electrical signal and produces sound.
+microphones and speakers are called transducers because they
+transduce, or convert, signals from one form to another.
+
+this book is about signal processing, which includes processes for
+synthesizing, transforming, and analyzing signals.  i will focus on
+sound signals, but the same methods apply to electronic signals,
+mechanical vibration, and signals in many other domains.
+
+they also apply to signals that vary in space rather than time, like
+elevation along a hiking trail.  and they apply to signals in more
+than one dimension, like an image, which you can think of as a signal
+that varies in two-dimensional space.  or a movie, which is
+a signal that varies in two-dimensional space and time.
+
+but we start with simple one-dimensional sound.
+
+the code for this chapter is in chap01.ipynb, which is in the
+repository for this book (see section ).
+you can also view it at <
+
+
+
+
+§ PERIODIC SIGNALS
+
+
+
+
+
+
+
+segment from a recording of a bell.
+
+
+
+we'll start with periodic signals, which are signals that
+repeat themselves after some period of time.  for example, if you
+strike a bell, it vibrates and generates sound.  if you record
+that sound and plot the transduced signal, it looks like
+figure .
+
+this signal resembles a sinusoid, which means it has the same
+shape as the trigonometric sine function.
+
+you can see that this signal is periodic.  i chose the duration
+to show three full repetitions, also known as cycles.
+the duration of each cycle, called the period, is about 2.3 ms.
+
+the frequency of a signal is the number of cycles
+per second, which is the inverse of the period.
+the units of frequency are cycles per second, or hertz,
+abbreviated “hz”.  (strictly speaking, the number of cycles is
+a dimensionless number, so a hertz is really a “per second”).
+
+the frequency of this signal is about 439 hz, slightly lower than 440
+hz, which is the standard tuning pitch for orchestral music.  the
+musical name of this note is a, or more specifically, a4.  if you are
+not familiar with “scientific pitch notation”, the numerical suffix
+indicates which octave the note is in.  a4 is the a above middle c.
+a5 is one octave higher.  see
+<
+
+
+
+
+
+segment from a recording of a violin.
+
+
+
+a tuning fork generates a sinusoid because the vibration of the tines
+is a form of simple harmonic motion.  most musical instruments
+produce periodic signals, but the shape of these signals is not
+sinusoidal.  for example, figure  shows a segment
+from a recording of a violin playing
+boccherini's string quintet no. 5 in e, 3rd
+movement.
+
+
+
+
+
+
+again we can see that the signal is periodic, but the shape of the
+signal is more complex.  the shape of a periodic signal is called
+the waveform.  most musical instruments produce waveforms more
+complex than a sinusoid.  the shape of the waveform determines the
+musical timbre, which is our perception of the quality of the
+sound.  people usually perceive complex waveforms as rich, warm and
+more interesting than sinusoids.
+
+
+
+
+§ SPECTRAL DECOMPOSITION
+
+
+
+
+
+
+spectrum of a segment from the violin recording.
+
+
+
+the most important topic in this book is spectral decomposition,
+which is the idea that any signal can be expressed as the sum of
+sinusoids with different frequencies.
+
+the most important mathematical idea in this book is the discrete
+  fourier transform, or dft, which takes a signal and produces
+its spectrum.  the spectrum is the set of sinusoids that add up to
+produce the signal.
+
+and the most important algorithm in this book is the fast
+fourier transform, or fft, which is an efficient way to
+compute the dft.
+
+for example, figure  shows the spectrum of the violin
+recording in figure .  the x-axis is the range of
+frequencies that make up the signal.  the y-axis shows the strength
+or amplitude of each frequency component.
+
+the lowest frequency component is called the fundamental
+  frequency.  the fundamental frequency of this signal is near 440 hz
+(actually a little lower, or “flat”).
+
+in this signal the fundamental frequency has the largest amplitude,
+so it is also the dominant frequency.
+normally the perceived pitch of a sound is determined by the
+fundamental frequency, even if it is not dominant.
+
+the other spikes in the spectrum are at frequencies 880, 1320, 1760, and
+2200, which are integer multiples of the fundamental.
+these components are called harmonics because they are
+musically harmonious with the fundamental:
+
+
+
+
+  * 880 is the frequency of a5, one octave higher than the fundamental.
+an octave is a doubling in frequency.
+
+
+  * 1320 is approximately e6, which is a perfect fifth above a5.
+  if you are not familiar with musical intervals like "perfect fifth”, see
+  <
+
+
+  * 1760 is a6, two octaves above the fundamental.
+
+
+  * 2200 is approximately c♯7, which is a major third
+above a6.
+
+
+
+these harmonics make up the notes of an a major
+chord, although not all in the same octave.  some of them are only
+approximate because the notes that make up western music have been
+adjusted for equal temperament (see
+ <
+
+given the harmonics and their amplitudes, you can reconstruct the
+signal by adding up sinusoids.
+next we'll see how.
+
+
+
+
+§ SIGNALS
+
+
+i wrote a python module called thinkdsp.py that contains classes
+and functions for working with signals and spectrums[the
+plural of “spectrum” is often written “spectra”, but i prefer
+to use standard english plurals.  if you are familiar with “spectra”,
+i hope my choice doesn't sound too strange.].  you
+will find it in the repository for this book (see section ).
+
+to represent signals, thinkdsp provides a class called
+signal, which is the parent class for several signal types,
+including sinusoid, which represents both sine and cosine
+signals.
+
+thinkdsp provides functions to create sine and cosine signals:
+
+
+
+freq is frequency in hz.  amp is amplitude in unspecified
+units where 1.0 is defined as the largest amplitude we can record or
+play back.
+
+offset is a phase offset in radians.  phase offset
+determines where in the period the signal starts.  for example, a
+sine signal with offset=0 starts at sin 0, which is 0.
+with offset=pi/2 it starts at sinπ/2, which is 1.
+
+signals have an  method, so you can use the +
+operator to add them:
+
+
+
+the result is a sumsignal, which represents the sum of two
+or more signals.
+
+a signal is basically a python representation of a mathematical
+function.  most signals are defined for all values of t,
+from negative infinity to infinity.
+
+you can't do much with a signal until you evaluate it.  in this
+context, “evaluate” means taking a sequence of points in time, ts, and computing the corresponding values of the signal, ys.
+i represent ts and ys using numpy arrays and encapsulate
+them in an object called a wave.
+
+a wave represents a signal evaluated at a sequence of points in
+time.  each point in time is called a frame (a term borrowed
+from movies and video).  the measurement itself is called a
+sample, although “frame” and “sample” are sometimes
+used interchangeably.
+
+signal provides , which returns a new
+wave object:
+
+
+
+duration is the length of the wave in seconds.  start is
+the start time, also in seconds.  framerate is the (integer)
+number of frames per second, which is also the number of samples
+per second.
+
+11,025 frames per second is one of several framerates commonly used in
+audio file formats, including waveform audio file (wav) and mp3.
+
+this example evaluates the signal from t=0 to t=0.5 at
+5,513 equally-spaced frames (because 5,513 is half of 11,025).
+the time between frames, or timestep, is 1/11025 seconds, about
+91 μs.
+
+wave provides a plot method that uses pyplot.
+you can plot the wave like this:
+
+
+
+pyplot is part of matplotlib; it is included in many
+python distributions, or you might have to install it.
+
+
+
+
+
+segment from a mixture of two sinusoid signals.
+
+
+
+at freq=440 there are 220 periods in 0.5 seconds, so this plot
+would look like a solid block of color.  to zoom in on a small number
+of periods, we can use segment, which copies a segment of a wave
+and returns a new wave:
+
+
+
+period is a property of a signal; it returns the period in seconds.
+
+start and duration are in seconds.  this example copies
+the first three periods from mix.  the result is a wave object.
+
+if we plot segment, it looks like figure .
+this signal contains two frequency components, so it is more
+complicated than the signal from the tuning fork, but less complicated
+than the violin.
+
+
+
+
+§ READING AND WRITING WAVES
+
+
+thinkdsp provides , which reads a wav
+file and returns a wave:
+
+
+
+and wave provides write, which writes a wav file:
+
+
+
+you can listen to the wave with any media player that plays wav
+files.  on unix systems, i use aplay, which is simple, robust,
+and included in many linux distributions.
+
+thinkdsp also provides , which runs
+the media player as a subprocess:
+
+
+
+it uses aplay by default, but you can provide the
+name of another player.
+
+
+
+
+§ SPECTRUMS
+
+
+
+wave provides , which returns a
+spectrum:
+
+
+
+and spectrum provides plot:
+
+
+
+
+
+spectrum provides three methods that modify the spectrum:
+
+
+
+
+  *  applies a low-pass filter, which means that
+  components above a given cutoff frequency are attenuated (that is,
+  reduced in magnitude) by a factor.
+
+
+  *  applies a high-pass filter, which means that
+  it attenuates components below the cutoff.
+
+
+  *  attenuates components in the band of
+frequencies between two cutoffs.
+
+
+
+this example attenuates all frequencies above 600 by 99%:
+
+
+
+a low pass filter removes bright, high-frequency sounds, so
+the result sounds muffled and darker.  to hear what it sounds
+like, you can convert the spectrum back to a wave, and then play it.
+
+
+
+the play method writes the wave to a file and then plays it.
+if you use jupyter notebooks, you can use , which
+makes an audio widget that plays the sound.
+
+
+
+
+§ WAVE OBJECTS
+
+
+
+
+
+
+
+relationships among the classes in thinkdsp.
+
+
+
+there is nothing very complicated in thinkdsp.py.  most
+of the functions it provides are thin wrappers around functions
+from numpy and scipy.
+
+the primary classes in thinkdsp are signal, wave, and spectrum.
+given a signal, you can make a wave.  given a wave, you can
+make a spectrum, and vice versa.  these relationships are shown
+in figure .
+
+a wave object contains three attributes: ys is a numpy array
+that contains the values in the signal; ts is an array of the
+times where the signal was evaluated or sampled; and framerate is the number of samples per unit of time.  the
+unit of time is usually seconds, but it doesn't have to be.  in
+one of my examples, it's days.
+
+wave also provides three read-only properties: start,
+end, and duration.  if you modify ts, these
+properties change accordingly.
+
+to modify a wave, you can access the ts and ys directly.
+for example:
+
+
+
+the first line scales the wave by a factor of 2, making
+it louder.  the second line shifts the wave in time, making it
+start 1 second later.
+
+but wave provides methods that perform many common operations.
+for example, the same two transformations could be written:
+
+
+
+you can read the documentation of these methods and others at
+<
+
+
+
+
+§ SIGNAL OBJECTS
+
+
+
+signal is a parent class that provides functions common to all
+kinds of signals, like .  child classes inherit
+these methods and provide evaluate, which evaluates the
+signal at a given sequence of times.
+
+for example, sinusoid is a child class of signal, with this
+definition:
+
+
+
+the parameters of  are:
+
+
+
+
+  * freq: frequency in cycles per second, or hz.
+
+
+  * amp: amplitude.  the units of amplitude are arbitrary,
+usually chosen so 1.0 corresponds to the maximum input from a
+microphone or maximum output to a speaker.
+
+
+  * offset: indicates where in its period the signal starts;
+offset is in units of radians, for reasons i explain below.
+
+
+  * func: a python function used
+to evaluate the signal at a particular point in time.  it is
+usually either np.sin or np.cos, yielding a sine or
+cosine signal.
+
+
+
+like many init methods, this one just tucks the parameters away for
+future use.
+
+signal provides , which looks like
+this:
+
+
+
+start and duration are the start time and duration
+in seconds.  framerate is the number of frames (samples)
+per second.
+
+n is the number of samples, and ts is a numpy array
+of sample times.
+
+to compute the ys,  invokes evaluate,
+which is provided by sinusoid:
+
+
+
+let's unwind this function one step at time:
+
+
+
+
+  * self.freq is frequency in cycles per second, and each
+  element of ts is a time in seconds, so their product is the
+  number of cycles since the start time.
+
+
+  * pi2 is a constant that stores 2 π.  multiplying by
+  pi2 converts from cycles to phase.  you can think of
+  phase as “cycles since the start time” expressed in radians.  each
+  cycle is 2 π radians.
+
+
+  * self.offset is the phase when t is ts[0].
+  it has the effect of shifting the signal left or right in time.
+
+
+  * if self.func is np.sin or np.cos, the result is a
+  value between -1 and +1.
+
+
+  * multiplying by self.amp yields a signal that ranges from
+  -self.amp to +self.amp.
+
+
+
+in math notation, evaluate is written like this:
+
+
+    y = a cos (2 π f t + ϕ_0)
+
+
+where a is amplitude, f is frequency, t is time, and ϕ_0
+is the phase offset.  it may seem like i wrote a lot of code
+to evaluate one simple expression, but as we'll see, this code
+provides a framework for dealing with all kinds of signals, not
+just sinusoids.
+
+
+
+
+§ EXERCISES
+
+
+before you begin these exercises, you should download the code
+for this book, following the instructions in section .
+
+solutions to these exercises are in chap01soln.ipynb.
+
+
+if you have jupyter, load chap01.ipynb, read through it, and run
+the examples.  you can also view this notebook at
+<
+
+
+
+
+go to < and download a sound sample that
+includes music, speech, or other sounds that have a well-defined pitch.
+select a roughly half-second segment where the pitch is
+constant.  compute and plot the spectrum of the segment you selected.
+what connection can you make between the timbre of the sound and the
+harmonic structure you see in the spectrum?
+
+use , , and  to
+filter out some of the harmonics.  then convert the spectrum back
+to a wave and listen to it.  how does the sound relate to the
+changes you made in the spectrum?
+
+
+
+
+synthesize a compound signal by creating sinsignal and cossignal
+objects and adding them up.  evaluate the signal to get a wave,
+and listen to it.  compute its spectrum and plot it.
+what happens if you add frequency
+components that are not multiples of the fundamental?
+
+
+
+
+write a function called stretch that takes a wave and a stretch
+factor and speeds up or slows down the wave by modifying ts and
+framerate.  hint: it should only take two lines of code.
+
+
+
+
+
+CHAPTER: HARMONICS
+
+
+
+in this chapter i present several new waveforms; we will look at
+their spectrums to understand their harmonic structure, which is
+the set of sinusoids they are made up of.
+
+i'll also introduce one of the most important phenomena in digital
+signal processing: aliasing.  and i'll explain a little more about how
+the spectrum class works.
+
+the code for this chapter is in chap02.ipynb, which is in the
+repository for this book (see section ).
+you can also view it at <
+
+
+
+
+§ TRIANGLE WAVES
+
+
+
+a sinusoid contains only one frequency component, so its spectrum
+has only one peak.  more complicated waveforms, like the
+violin recording, yield dfts with many peaks.  in this section we
+investigate the relationship between waveforms and their spectrums.
+
+
+
+
+
+segment of a triangle signal at 200 hz.
+
+
+
+i'll start with a triangle waveform, which is like a straight-line
+version of a sinusoid.  figure  shows a
+triangle waveform with frequency 200 hz.
+
+to generate a triangle wave, you can use thinkdsp.trianglesignal:
+
+
+
+trianglesignal inherits  from sinusoid,
+so it takes the same arguments: freq, amp, and offset.
+
+the only difference is evaluate.  as we saw before,
+ts is the sequence of sample times where we want to
+evaluate the signal.
+
+there are many ways to generate a triangle wave.  the details
+are not important, but here's how evaluate works:
+
+
+
+
+  * cycles is the number of cycles since the start time.
+np.modf splits the number of cycles into the fraction
+part, stored in frac, and the integer part, which is ignored
+[using an underscore as a variable name is a convention that
+means, “i don't intend to use this value.”].
+
+
+  * frac is a sequence that ramps from 0 to 1 with the given
+  frequency.  subtracting 0.5 yields values between -0.5 and 0.5.
+  taking the absolute value yields a waveform that zig-zags between
+  0.5 and 0.
+
+
+  * unbias shifts the waveform down so it is centered at 0; then
+normalize scales it to the given amplitude, amp.
+
+
+
+here's the code that generates figure :
+
+
+
+
+
+
+
+spectrum of a triangle signal at 200 hz, shown on two
+  vertical scales.  the version on the right cuts off the fundamental
+  to show the harmonics more clearly.
+
+
+
+next we can use the signal to make a wave, and use the wave to
+make a spectrum:
+
+
+
+figure  shows two views of the result; the
+view on the right is scaled to show the harmonics more clearly.  as
+expected, the highest peak is at the fundamental frequency, 200 hz,
+and there are additional peaks at harmonic frequencies, which are
+integer multiples of 200.
+
+but one surprise is that there are no peaks at the even multiples:
+400, 800, etc.  the harmonics of a triangle wave are all
+odd multiples of the fundamental frequency, in this example
+600, 1000, 1400, etc.
+
+another feature of this spectrum is the relationship between the
+amplitude and frequency of the harmonics.  their amplitude drops off
+in proportion to frequency squared.  for example the frequency ratio
+of the first two harmonics (200 and 600 hz) is 3, and the amplitude
+ratio is approximately 9.  the frequency ratio of the next two
+harmonics (600 and 1000 hz) is 1.7, and the amplitude ratio is
+approximately 1.7^2 = 2.9.  this relationship is called the
+harmonic structure.
+
+
+
+
+§ SQUARE WAVES
+
+
+
+
+
+
+
+segment of a square signal at 100 hz.
+
+
+
+thinkdsp also provides squaresignal, which represents
+a square signal.  here's the class definition:
+
+
+
+like trianglesignal, squaresignal inherits
+ from sinusoid, so it takes the same
+parameters.
+
+and the evaluate method is similar.  again, cycles is
+the number of cycles since the start time, and frac is the
+fractional part, which ramps from 0 to 1 each period.
+
+unbias shifts frac so it ramps from -0.5 to 0.5,
+then np.sign maps the negative values to -1 and the
+positive values to 1.  multiplying by amp yields a square
+wave that jumps between -amp and amp.
+
+
+
+
+
+spectrum of a square signal at 100 hz.
+
+
+
+figure  shows three periods of a square
+wave with frequency 100 hz,
+and figure  shows its spectrum.
+
+like a triangle wave, the square wave contains only odd harmonics,
+which is why there are peaks at 300, 500, and 700 hz, etc.
+but the amplitude of the harmonics drops off more slowly.
+specifically, amplitude drops in proportion to frequency (not frequency
+squared).
+
+the exercises at the end of this chapter give you a chance to
+explore other waveforms and other harmonic structures.
+
+
+
+
+§ ALIASING
+
+
+
+
+
+
+
+spectrum of a triangle signal at 1100 hz sampled at
+10,000 frames per second.  the view on the right is scaled to
+show the harmonics.
+
+
+
+i have a confession.  i chose the examples in the previous section
+carefully to avoid showing you something confusing.  but now it's
+time to get confused.
+
+figure  shows the spectrum of a triangle wave
+at 1100 hz, sampled at 10,000 frames per second.  again, the view on
+the right is scaled to show the harmonics.
+
+the harmonics
+of this wave should be at 3300, 5500, 7700, and 9900 hz.
+in the figure, there are peaks at 1100 and 3300 hz, as expected, but
+the third peak is at 4500, not 5500 hz.  the
+fourth peak is at 2300, not 7700 hz.  and if you look closely, the
+peak that should be at 9900 is actually at 100 hz.  what's going on?
+
+the problem is that when you evaluate the signal at
+discrete points in time, you lose information about what happened
+between samples.  for low frequency components, that's not a
+problem, because you have lots of samples per period.
+
+but if you sample a signal at 5000 hz with 10,000 frames per second,
+you only have two samples per period.  that turns out to be enough,
+just barely, but if the frequency is higher, it's not.
+
+to see why, let's generate cosine signals at 4500 and 5500 hz,
+and sample them at 10,000 frames per second:
+
+
+
+
+
+
+
+cosine signals at 4500 and 5500 hz, sampled at 10,000 frames
+per second.  the signals are different, but the samples are identical.
+
+
+
+figure  shows the result.  i plotted the signals
+with thin gray lines and the samples using vertical lines,
+to make it easier to compare the
+two waves.  the problem
+should be clear: even though the signals are different, the
+waves are identical!
+
+when we sample a 5500 hz signal at 10,000 frames per second, the
+result is indistinguishable from a 4500 hz signal.
+for the same reason, a 7700 hz signal is indistinguishable
+from 2300 hz, and a 9900 hz is indistinguishable from 100 hz.
+
+this effect is called aliasing because when the high frequency
+signal is sampled, it appears to be a low frequency signal.
+
+in this example, the highest frequency we can measure is 5000 hz,
+which is half the sampling rate.  frequencies above 5000 hz are folded
+back below 5000 hz, which is why this threshold is sometimes called
+the “folding frequency”.  it is sometimes also called the nyquist frequency.  see
+<
+
+the folding pattern continues if the aliased frequency goes below
+zero.  for example, the 5th harmonic of the 1100 hz triangle wave is
+at 12,100 hz.  folded at 5000 hz, it would appear at -2100 hz, but it
+gets folded again at 0 hz, back to 2100 hz.  in fact, you can see a
+small peak at 2100 hz in figure , and the next
+one at 4300 hz.
+
+
+
+
+§ COMPUTING THE SPECTRUM
+
+
+we have seen the wave method  several times.
+here is the implementation (leaving out some details we'll get
+to later):
+
+
+
+the parameter self is a wave object.  n is the number
+of samples in the wave, and d is the inverse of the
+frame rate, which is the time between samples.
+
+np.fft is the numpy module that provides functions related
+to the fast fourier transform (fft), which is an efficient
+algorithm that computes the discrete fourier transform (dft).
+
+
+ uses rfft, which stands for “real
+fft”, because the wave contains real values, not complex.  later
+we'll see the full fft, which can handle complex signals.  the result
+of rfft, which i call hs, is a numpy array of complex
+numbers that represents the amplitude and phase offset of each
+frequency component in the wave.
+
+the result of rfftfreq, which i call fs, is an array that
+contains frequencies corresponding to the hs.
+
+to understand the values in hs, consider these two ways to think
+about complex numbers:
+
+
+
+
+  * a complex number is the sum of a real part and an imaginary
+  part, often written x + iy, where i is the imaginary unit,
+  √(-1).  you can think of x and y as cartesian coordinates.
+
+
+  * a complex number is also the product of a magnitude and a
+  complex exponential, a e^i ϕ, where a is the magnitude and ϕ is the angle in radians, also called
+  the “argument”.  you can think of a and ϕ as polar
+  coordinates.
+
+
+
+each value in hs corresponds to a frequency component: its
+magnitude is proportional to the amplitude of the corresponding
+component; its angle is the phase offset.
+
+the spectrum class provides two read-only properties, amps
+and angles, which return numpy arrays representing the
+magnitudes and angles of the hs.  when we plot a spectrum
+object, we usually plot amps versus fs.  sometimes
+it is also useful to plot angles versus fs.
+
+although it might be tempting to look at the real and imaginary
+parts of hs, you will almost never need to.  i encourage
+you to think of the dft as a vector of amplitudes and phase offsets
+that happen to be encoded in the form of complex numbers.
+
+to modify a spectrum, you can access the hs directly.
+for example:
+
+
+
+the first line multiples the elements of hs by 2, which
+doubles the amplitudes of all components.  the second line
+sets to 0 only the elements of hs where the corresponding
+frequency exceeds some cutoff frequency.
+
+but spectrum also provides methods to perform these operations:
+
+
+
+you can read the documentation of these methods and others at
+<
+
+at this point you should have a better idea of how the signal, wave,
+and spectrum classes work, but i have not explained how the fast
+fourier transform works.  that will take a few more chapters.
+
+
+
+
+§ EXERCISES
+
+
+solutions to these exercises are in chap02soln.ipynb.
+
+
+if you use jupyter, load chap02.ipynb and try out the examples.
+you can also view the notebook at <
+
+
+
+a sawtooth signal has a waveform that ramps up linearly from -1 to 1,
+then drops to -1 and repeats. see
+<
+
+write a class called
+sawtoothsignal that extends signal and provides
+evaluate to evaluate a sawtooth signal.
+
+compute the spectrum of a sawtooth wave.  how does the harmonic
+structure compare to triangle and square waves?
+
+
+
+make a square signal at 1100 hz and make a wave that samples it
+at 10000 frames per second.  if you plot the spectrum, you can
+see that most of the harmonics are aliased.
+when you listen to the wave, can you hear the aliased harmonics?
+
+
+
+
+if you have a spectrum object, spectrum, and print the
+first few values of spectrum.fs, you'll see that they
+start at zero.  so spectrum.hs[0] is the magnitude
+of the component with frequency 0.  but what does that mean?
+
+try this experiment:
+
+
+
+
+  * make a triangle signal with frequency 440 and make
+a wave with duration 0.01 seconds.  plot the waveform.
+
+
+  * make a spectrum object and print spectrum.hs[0].
+what is the amplitude and phase of this component?
+
+
+  * set spectrum.hs[0] = 100.  make a wave from the
+modified spectrum and plot it.  what effect does this operation
+have on the waveform?
+
+
+
+
+
+
+
+write a function that takes a spectrum as a parameter and modifies
+it by dividing each element of hs by the corresponding frequency
+from fs.  hint: since division by zero is undefined, you
+might want to set spectrum.hs[0] = 0.
+
+test your function using a square, triangle, or sawtooth wave.
+
+
+
+
+  * compute the spectrum and plot it.
+
+
+  * modify the spectrum using your function and plot it again.
+
+
+  * make a wave from the modified spectrum and listen to it.  what
+effect does this operation have on the signal?
+
+
+
+
+
+
+triangle and square waves have odd harmonics only; the sawtooth
+wave has both even and odd harmonics.  the harmonics of the
+square and sawtooth waves drop off in proportion to 1/f; the
+harmonics of the triangle wave drop off like 1/f^2.  can you
+find a waveform that has even and odd harmonics that drop off
+like 1/f^2?
+
+hint: there are two ways you could approach this: you could
+construct the signal you want by adding up sinusoids, or you
+could start with a signal that is similar to what you want and
+modify it.
+
+
+
+
+
+CHAPTER: NON-PERIODIC SIGNALS
+
+
+
+the signals we have worked with so far are periodic, which means
+that they repeat forever.  it also means that the frequency
+components they contain do not change over time.
+in this chapter, we consider non-periodic signals,
+whose frequency components do change over time.
+in other words, pretty much all sound signals.
+
+this chapter also presents spectrograms, a common way to visualize
+non-periodic signals.
+
+the code for this chapter is in chap03.ipynb, which is in the
+repository for this book (see section ).
+you can also view it at <
+
+
+
+
+§ LINEAR CHIRP
+
+
+
+
+
+
+chirp waveform near the beginning, middle, and end.
+
+
+
+we'll start with a chirp, which is a signal with variable
+frequency.  thinkdsp provides a signal called chirp that
+makes a sinusoid that sweeps linearly through a range of
+frequencies.
+
+here's an example that sweeps from 220 to 880 hz, which
+is two octaves from a3 to a5:
+
+
+
+figure  shows segments of this wave near the
+beginning, middle, and end.  it's clear that the frequency is
+increasing.
+
+before we go on, let's see how chirp is implemented.  here
+is the class definition:
+
+
+
+start and end are the frequencies, in hz, at the start
+and end of the chirp.  amp is amplitude.
+
+here is the function that evaluates the signal:
+
+
+
+ts is the sequence of points in time where the signal should be
+evaluated; to keep this function simple, i assume they are equally-spaced.
+
+to compute the frequency at each point in time, i use np.linspace, which returns a numpy array of n values between start and end.
+
+np.diff computes the difference between adjacent elements
+of ts, returning the length of each interval in seconds.
+if the elements of ts are equally spaced,
+the dts are all the same.
+
+the next step is to figure out how much the phase changes during
+each interval.  in section  we saw that when frequency is
+constant, the phase, ϕ, increases linearly over time:
+
+
+    ϕ = 2 π f t
+
+
+when frequency is a function of time, the change in phase
+during a short time interval, δ t is:
+
+
+    δϕ = 2 π f(t) δ t
+
+
+in python, since freqs contains f(t) and dts
+contains the time intervals, we can write
+
+
+
+now, since dphis contains the changes in phase, we can
+get the total phase at each timestep by adding up the changes:
+
+
+
+np.cumsum computes the cumulative sum, which is almost
+what we want, but it doesn't start at 0.  so i use np.insert
+to add a 0 at the beginning.
+
+the result is a numpy array where the ith element contains the
+sum of the first i terms from dphis; that is, the total
+phase at the end of the ith interval.  finally, np.cos
+computes the amplitude of the wave as a function of phase (remember
+that phase is expressed in radians).
+
+if you know calculus, you might notice that the limit as
+δ t gets small is
+
+
+    dϕ = 2 π f(t) dt
+
+
+dividing through by dt yields
+
+
+    dϕ/dt = 2 π f(t)
+
+
+in other words, frequency is the derivative of phase.  conversely,
+phase is the integral of frequency.  when we used cumsum
+to go from frequency to phase, we were approximating integration.
+
+
+
+
+§ EXPONENTIAL CHIRP
+
+
+when you listen to this chirp, you might notice that the pitch
+rises quickly at first and then slows down.
+the chirp spans two octaves, but it only takes 2/3 s to span
+the first octave, and twice as long to span the second.
+
+the reason is that our perception of pitch depends on the logarithm of
+frequency.  as a result, the interval we hear between two notes
+depends on the ratio of their frequencies, not the difference.
+“interval” is the musical term for the perceived difference between
+two pitches.
+
+for example, an octave is an interval where the ratio of two
+pitches is 2.  so the interval from 220 to 440 is one octave
+and the interval from 440 to 880 is also one octave.  the difference
+in frequency is bigger, but the ratio is the same.
+
+as a result, if frequency increases linearly, as in a linear
+chirp, the perceived pitch increases logarithmically.
+
+if you want the perceived pitch to increase linearly, the frequency
+has to increase exponentially.  a signal with that shape is called
+an exponential chirp.
+
+here's the code that makes one:
+
+
+
+instead of np.linspace, this version of evaluate uses
+np.logspace, which creates a series of frequencies
+whose logarithms are equally spaced, which means that they increase
+exponentially.
+
+that's it; everything else is the same as chirp.  here's the code
+that makes one:
+
+
+
+you can listen to these examples in chap03.ipynb and compare
+the linear and exponential chirps.
+
+
+
+
+§ SPECTRUM OF A CHIRP
+
+
+
+
+
+
+
+spectrum of a one-second one-octave chirp.
+
+
+
+what do you think happens if you compute the spectrum of a chirp?
+here's an example that constructs a one-second, one-octave chirp and
+its spectrum:
+
+
+
+figure  shows the result.  the spectrum has
+components at every frequency from 220 to 440 hz, with variations
+that look a little like the eye of sauron
+(see <
+
+the spectrum is approximately flat between 220 and 440 hz, which
+indicates that the signal spends equal time at each frequency in this
+range.  based on that observation, you should be able to guess what
+the spectrum of an exponential chirp looks like.
+
+the spectrum gives hints about the structure of the signal,
+but it obscures the relationship between frequency and time.
+for example, we cannot tell by looking at this spectrum whether
+the frequency went up or down, or both.
+
+
+
+
+§ SPECTROGRAM
+
+
+
+
+
+
+spectrogram of a one-second one-octave chirp.
+
+
+
+to recover the relationship between frequency and time, we can break
+the chirp into segments and plot the spectrum of each segment.  the
+result is called a short-time fourier transform (stft).
+
+there are several ways to visualize a stft, but the most common
+is a spectrogram, which shows time on the x-axis and frequency
+on the y-axis.  each column in the spectrogram shows the spectrum of
+a short segment, using color or grayscale to represent amplitude.
+
+as an example, i'll compute the spectrogram of this chirp:
+
+
+
+wave provides , which returns a
+spectrogram object:
+
+
+
+ is the number of samples in each segment.  i chose
+512 because fft is most efficient when the number of samples is a
+power of 2.
+
+figure  shows the result.  the x-axis shows time from
+0 to 1 seconds.  the y-axis shows frequency from 0 to 700 hz.  i cut
+off the top part of the spectrogram; the full range goes to 5512.5 hz,
+which is half of the framerate.
+
+the spectrogram shows clearly that frequency increases linearly
+over time.  similarly, in the spectrogram of an exponential chirp, we
+can see the shape of the exponential curve.
+
+however, notice that the peak in each column is blurred across 2–3
+cells.  this blurring reflects the limited resolution of the
+spectrogram.
+
+
+
+
+§ THE GABOR LIMIT
+
+
+
+the time resolution of the spectrogram is the duration of the
+segments, which corresponds to the width of the cells in the
+spectrogram.  since each segment is 512 frames, and there are 11,025
+frames per second, the duration of each segment is about 0.046 seconds.
+
+the frequency resolution is the frequency range between
+elements in the spectrum, which corresponds to the height of the
+cells.  with 512 frames, we get 256 frequency components over a range
+from 0 to 5512.5 hz, so the range between components is 21.6 hz.
+
+more generally, if n is the segment length, the spectrum contains
+n/2 components.  if the framerate is r, the maximum frequency in
+the spectrum is r/2.  so the time resolution is n/r and the
+frequency resolution is
+
+
+    r/2/n/2
+
+
+which is r/n.
+
+ideally we would like time resolution to be small, so we can see rapid
+changes in frequency.  and we would like frequency resolution to be
+small so we can see small changes in frequency.  but you can't have
+both.  notice that time resolution, n/r, is the inverse of frequency
+resolution, r/n.  so if one gets smaller, the other gets bigger.
+
+for example, if you double the segment length, you cut frequency
+resolution in half (which is good), but you double time resolution
+(which is bad).  even increasing the framerate doesn't help.  you get
+more samples, but the range of frequencies increases at
+the same time.
+
+this tradeoff is called the gabor limit and it is a fundamental
+limitation of this kind of time-frequency analysis.
+
+
+
+
+§ LEAKAGE
+
+
+
+
+
+
+spectrum of a periodic segment of a sinusoid (left), a
+  non-periodic segment (middle), a windowed non-periodic segment
+  (right).
+
+
+
+in order to explain how  works, i have
+to explain windowing; and in order to explain windowing, i have to
+show you the problem it is meant to address, which is leakage.
+
+the discrete fourier transform (dft), which we use to compute
+spectrums, treats waves as if they are periodic; that is, it assumes
+that the finite segment it operates on is a complete period from an
+infinite signal that repeats over all time.  in practice, this
+assumption is often false, which creates problems.
+
+one common problem is discontinuity at the beginning and end of the
+segment.  because dft assumes that the signal is periodic, it
+implicitly connects the end of the segment back to the beginning to
+make a loop.  if the end does not connect smoothly to the beginning,
+the discontinuity creates additional frequency components in the
+segment that are not in the signal.
+
+as an example, let's start with a sine signal that contains only
+one frequency component at 440 hz.
+
+
+
+if we select a segment that happens to be an integer multiple of
+the period, the end of the segment connects smoothly with the
+beginning, and dft behaves well.
+
+
+
+figure  (left) shows the result.  as expected,
+there is a single peak at 440 hz.
+
+but if the duration is not a multiple of the period, bad things
+happen.  with duration = signal.period * 30.25, the signal
+starts at 0 and ends at 1.
+
+figure  (middle) shows
+the spectrum of this segment.  again, the peak is at 440 hz, but now
+there are additional components spread out from 240 to 640 hz.  this
+spread is called spectral leakage, because some of the energy that
+is actually at the fundamental frequency leaks into other frequencies.
+
+in this example, leakage happens because we are using dft on a segment
+that becomes discontinuous when we treat it as periodic.
+
+
+
+
+§ WINDOWING
+
+
+
+
+
+
+segment of a sinusoid (top), hamming window (middle), product
+of the segment and the window (bottom).
+
+
+
+we can reduce leakage by smoothing out the discontinuity between
+the beginning and end of the segment, and one way to do that is
+windowing.
+
+a “window” is a function designed to transform a non-periodic
+segment into something that can pass for periodic.
+figure  (top) shows a segment where the end does not
+connect smoothly to the beginning.
+
+figure  (middle) shows a “hamming window”, one of the
+more common window functions.  no window function is perfect, but some
+can be shown to be optimal for different applications, and hamming
+is a good, all-purpose window.
+
+figure  (bottom) shows the result of multiplying the
+window by the original signal.  where the window is close to 1, the
+signal is unchanged.  where the window is close to 0, the signal is
+attenuated.  because the window tapers at both ends, the end of the
+segment connects smoothly to the beginning.
+
+figure  (right) shows the spectrum of the windowed
+signal.  windowing has reduced leakage substantially, but not
+completely.
+
+here's what the code looks like.  wave provides window,
+which applies a hamming window:
+
+
+
+and numpy provides hamming, which computes a hamming window
+with a given length:
+
+
+
+numpy provides functions to compute other window
+functions, including bartlett, blackman, hanning,
+and kaiser.  one of the exercises at the end of this chapter
+asks you to experiment with these other windows.
+
+
+
+
+§ IMPLEMENTING SPECTROGRAMS
+
+
+
+
+
+
+overlapping hamming windows.
+
+
+
+now that we understand windowing, we can understand the
+implementation of spectrogram.
+here is the wave method that computes spectrograms:
+
+
+
+this is the longest function in the book, so if you can handle
+this, you can handle anything.
+
+the parameter, self, is a wave object.
+ is the number of samples in each segment.
+
+window is a hamming window with the same length as the segments.
+
+i and j are the slice indices that select segments from
+the wave.  step is the offset between segments.  since step is half of , the segments overlap by half.
+figure  shows what these overlapping windows look
+like.
+
+ is a dictionary that maps from a timestamp to
+a spectrum.
+
+inside the while loop, we select a slice from the wave and apply
+the window; then we construct a spectrum
+object and add it to .  the nominal time of
+each segment, t, is the midpoint.
+
+then we advance i and j, and continue as long as j
+doesn't go past the end of the wave.
+
+finally, the method constructs and returns a spectrogram.  here
+is the definition of spectrogram:
+
+
+
+like many init methods, this one just stores the
+parameters as attributes.
+
+spectrogram provides plot, which generates a
+pseudocolor plot with time along the x-axis and frequency along
+the y-axis.
+
+and that's how spectrograms are implemented.
+
+
+
+
+§ EXERCISES
+
+
+solutions to these exercises are in chap03soln.ipynb.
+
+
+run and listen to the examples in chap03.ipynb, which is
+in the repository for this book, and also available at
+<
+
+in the leakage example, try replacing the hamming window with one of
+the other windows provided by numpy, and see what effect they have on
+leakage.  see
+<
+
+
+
+
+write a class called sawtoothchirp that extends chirp
+and overrides evaluate to generate a sawtooth waveform with
+frequency that increases (or decreases) linearly.
+
+hint: combine the evaluate functions from chirp and
+sawtoothsignal.
+
+draw a sketch of what you think the spectrogram of this signal
+looks like, and then plot it.  the effect of aliasing should be
+visually apparent, and if you listen carefully, you can hear it.
+
+
+
+
+make a sawtooth chirp that sweeps from 2500 to 3000 hz, then use it to
+make a wave with duration 1 s and framerate 20 khz.  draw a sketch of
+what you think the spectrum will look like.  then plot the
+spectrum and see if you got it right.
+
+
+
+
+in musical terminology, a “glissando” is a note that slides from one
+pitch to another, so it is similar to a chirp.
+
+find or make a recording of a glissando and plot a spectrogram of the
+first few seconds.  one suggestion: george gershwin's rhapsody in
+  blue starts with a famous clarinet glissando, which you can download
+from <
+
+
+
+
+a trombone player can play a glissando by extending the trombone
+slide while blowing continuously.  as the slide extends, the total
+length of the tube gets longer, and the resulting pitch is inversely
+proportional to length.
+
+assuming that the player moves the slide at a constant speed, how
+does frequency vary with time?
+
+write a class called trombonegliss that extends chirp and
+provides evaluate.  make a wave that simulates a trombone
+glissando from c3 up to f3 and back down to c3.  c3 is 262 hz; f3 is
+349 hz.
+
+plot a spectrogram of the resulting wave.  is a trombone glissando
+more like a linear or exponential chirp?
+
+
+
+
+make or find a recording of a series of vowel sounds and look at the
+spectrogram.  can you identify different vowels?
+
+
+
+
+
+CHAPTER: NOISE
+
+
+in english, “noise” means an unwanted or unpleasant sound.  in the
+context of signal processing, it has two different senses:
+
+
+
+
+  * as in english, it can mean an unwanted signal of any kind.  if
+two signals interfere with each other, each signal would consider
+the other to be noise.
+
+
+  * “noise” also refers to a signal that contains components at
+many frequencies, so it lacks the harmonic structure of the periodic
+signals we saw in previous chapters.
+
+
+
+this chapter is about the second kind.
+
+the code for this chapter is in chap04.ipynb, which is in the
+repository for this book (see section ).
+you can also view it at <
+
+
+
+
+§ UNCORRELATED NOISE
+
+
+
+
+
+
+waveform of uncorrelated uniform noise.
+
+
+
+the simplest way to understand noise is to generate it, and the
+simplest kind to generate is uncorrelated uniform noise (uu noise).
+“uniform” means the signal contains random values from a uniform
+distribution; that is, every value in the range is equally likely.
+“uncorrelated” means that the values are independent; that is,
+knowing one value provides no information about the others.
+
+here's a class that represents uu noise:
+
+
+
+uncorrelateduniformnoise inherits from , which
+inherits from signal.
+
+as usual, the evaluate function takes ts, the times when the
+signal should be evaluated.  it uses
+np.random.uniform, which generates values from a
+uniform distribution.  in this example, the values are in
+the range between -amp to amp.
+
+the following example generates uu noise with duration 0.5
+seconds at 11,025 samples per second.
+
+
+
+if you play this wave, it sounds like the static you hear if you tune
+a radio between channels.  figure  shows what the
+waveform looks like.  as expected, it looks pretty random.
+
+
+
+
+
+power spectrum of uncorrelated uniform noise.
+
+
+
+now let's take a look at the spectrum:
+
+
+
+ is similar to ,
+except that it plots power instead of amplitude.
+power is the square of amplitude.
+i am switching from amplitude to power in this chapter because
+it is more conventional in the context of noise.
+
+figure  shows the result.  like the signal, the
+spectrum looks pretty random.  in fact, it is random, but we have to
+be more precise about the word “random”.  there are at least three
+things we might like to know about a noise signal or its spectrum:
+
+
+
+
+  * distribution: the distribution of a random signal is the set of
+  possible values and their probabilities.  for example, in the
+  uniform noise signal, the set of values is the range from -1 to 1,
+  and all values have the same probability.  an alternative is
+  gaussian noise, where the set of values is the range from negative
+  to positive infinity, but values near 0 are the most likely, with
+  probability that drops off according to the gaussian or
+  “bell” curve.
+
+
+  * correlation: is each value in the signal independent of the
+  others, or are there dependencies between them?  in uu noise, the
+  values are independent.
+  an alternative is brownian noise, where each value is the sum
+  of the previous value and a random “step”.  so if the value of the
+  signal is high at a particular point in time, we expect it to stay
+  high, and if it is low, we expect
+  it to stay low.
+
+
+  * relationship between power and frequency: in the spectrum of uu
+  noise, the power at all frequencies is drawn from the same
+  distribution; that is, the average power is the same for all
+  frequencies.  an alternative is pink noise, where power is
+  inversely related to frequency; that is, the power at frequency f
+  is drawn from a distribution whose mean is proportional to 1/f.
+
+
+
+
+
+
+§ INTEGRATED SPECTRUM
+
+
+for uu noise we can see the relationship between power and frequency
+more clearly by looking at the integrated spectrum, which
+is a function of frequency, f, that shows the cumulative power in
+the spectrum up to f.
+
+
+
+
+
+integrated spectrum of uncorrelated uniform noise.
+
+
+
+spectrum provides a method that computes the integratedspectrum:
+
+
+
+self.power is a numpy array containing power for each frequency.
+np.cumsum computes the cumulative sum of the powers.
+dividing through by the last element normalizes the integrated
+spectrum so it runs from 0 to 1.
+
+the result is an integratedspectrum.  here is the class definition:
+
+
+
+like spectrum, integratedspectrum provides , so
+we can compute and plot the integrated spectrum like this:
+
+
+
+the result, shown in figure , is a straight line,
+which indicates that power at all frequencies is constant, on average.
+noise with equal power at all frequencies is called white noise
+by analogy with light, because an equal mixture of light at all
+visible frequencies is white.
+
+
+
+
+
+§ BROWNIAN NOISE
+
+
+
+
+
+
+
+waveform of brownian noise.
+
+
+
+uu noise is uncorrelated, which means that each value does not depend
+on the others.  an alternative is brownian noise, in which each value
+is the sum of the previous value and a random “step”.
+
+it is called “brownian” by analogy with brownian motion, in which a
+particle suspended in a fluid moves apparently at random, due to
+unseen interactions with the fluid.  brownian motion is often
+described using a random walk, which is a mathematical model
+of a path where the distance between steps is characterized by a
+random distribution.
+
+in a one-dimensional random walk, the particle moves up or down
+by a random amount at each time step.  the location of the particle
+at any point in time is the sum of all previous steps.
+
+this observation suggests a way to generate brownian noise:
+generate uncorrelated random steps and then add them up.
+here is a class definition that implements this algorithm:
+
+
+
+evaluate uses np.random.uniform to generate an
+uncorrelated signal and np.cumsum to compute their cumulative
+sum.
+
+since the sum is likely to escape the range from -1 to
+1, we have to use unbias to shift the mean to 0, and normalize to get the desired maximum amplitude.
+
+here's the code that generates a browniannoise object and plots the
+waveform.
+
+
+
+figure  shows the result.  the waveform
+wanders up and down, but there is a clear correlation between
+successive values.  when the amplitude is high, it tends to stay
+high, and vice versa.
+
+
+
+
+
+spectrum of brownian noise on a linear scale (left) and
+  log-log scale (right).
+
+
+
+if you plot the spectrum of brownian noise on a linear scale, as
+in figure  (left), it
+doesn't look like much.  nearly all of the power is at the lowest
+frequencies; the higher frequency components are not visible.
+
+to see the shape of the spectrum more clearly, we can plot power
+and frequency on a log-log scale.  here's the code:
+
+
+
+
+the result is in figure  (right).  the relationship between
+power and frequency is noisy, but roughly linear.
+
+spectrum provides , which uses scipy to compute
+a least squares fit to the power spectrum:
+
+
+
+it discards the first component of the spectrum because
+this component corresponds to f=0, and log 0 is undefined.
+
+ returns the result from scipy.stats.linregress which is an object that contains the
+estimated slope and intercept, coefficient of determination (r^2),
+p-value, and standard error.  for our purposes, we only need the
+slope.
+
+for brownian noise, the slope of the power spectrum is -2 (we'll see
+why in chapter ), so we can write this relationship:
+
+
+    log p = k -2 log f
+
+
+where p is power, f is frequency, and k is the intercept
+of the line, which is not important for our purposes.
+exponentiating both sides yields:
+
+
+    p = k / f^2
+
+
+where k is e^k, but still not important.  more relevant is
+that power is proportional to 1/f^2, which is characteristic
+of brownian noise.
+
+brownian noise is also called red noise, for the same reason that
+white noise is called “white”.  if you combine visible light with
+power proportional to 1/f^2, most of the power
+would be at the low-frequency end of the spectrum, which is red.
+brownian noise is also sometimes called “brown noise”, but i think
+that's confusing, so i won't use it.
+
+
+
+
+
+
+§ PINK NOISE
+
+
+
+
+
+
+
+waveform of pink noise with β=1.
+
+
+
+for red noise, the relationship between frequency
+and power is
+
+
+    p = k / f^2
+
+
+there is nothing special about the exponent 2.  more generally,
+we can synthesize noise with any exponent, β.
+
+
+    p = k / f^β
+
+
+when β = 0, power is constant at all frequencies,
+so the result is white noise.  when β=2 the result is red noise.
+
+when β is between 0 and 2, the result is between white and
+red noise, so it is called pink noise.
+
+there are several ways to generate pink noise.  the simplest is to
+generate white noise and then apply a low-pass filter with the
+desired exponent.  thinkdsp provides a class that represents
+a pink noise signal:
+
+
+
+amp is the desired amplitude of the signal.
+beta is the desired exponent.  pinknoise provides
+, which generates a wave.
+
+
+
+duration is the length of the wave in seconds.  start is
+the start time of the wave; it is included so that 
+has the same interface for all types of signal, but for random noise,
+start time is irrelevant.  and framerate is the number of
+samples per second.
+
+
+
+
+
+spectrum of white, pink, and red noise on a log-log scale.
+
+
+
+ creates a white noise wave, computes its spectrum,
+applies a filter with the desired exponent, and then converts the
+filtered spectrum back to a wave.  then it unbiases and normalizes
+the wave.
+
+spectrum provides :
+
+
+
+ divides each element of the spectrum by
+f^β/2.  since power is the square of amplitude, this
+operation divides the power at
+each component by f^β.  it treats the component
+at f=0 as a special case, partly to avoid dividing by 0, and partly
+because this element represents the bias of the signal,
+which we are going to set to 0 anyway.
+
+figure  shows the resulting waveform.  like
+brownian noise, it wanders up and down in a way that suggests
+correlation between successive values, but at least visually, it looks
+more random.  in the next chapter we will come back to this
+observation and i will be more precise about what i mean by
+“correlation” and “more random”.
+
+finally, figure  shows a spectrum for
+white, pink, and red noise on the same log-log scale.
+the relationship between the exponent, β, and the slope
+of the spectrum is apparent in this figure.
+
+
+
+
+§ GAUSSIAN NOISE
+
+
+
+
+
+
+normal probability plot for the real and imaginary parts
+of the spectrum of gaussian noise.
+
+
+
+we started with uncorrelated uniform (uu) noise and showed that,
+because its spectrum has equal power at all frequencies, on
+average, uu noise is white.
+
+but when people talk about “white noise”, they don't always
+mean uu noise.  in fact, more often they mean uncorrelated
+gaussian (ug) noise.
+
+thinkdsp provides an implementation of ug noise:
+
+
+
+np.random.normal returns a numpy array of values from a
+gaussian distribution, in this case with mean 0 and standard deviation
+self.amp.  in theory the range of values is from negative to
+positive infinity, but we expect about 99% of the values to be
+between -3 and 3.
+
+ug noise is similar in many ways to uu noise.  the spectrum has
+equal power at all frequencies, on average, so ug is also white.
+and it has one other interesting property: the spectrum of ug
+noise is also ug noise.  more precisely, the real and imaginary
+parts of the spectrum are uncorrelated gaussian values.
+
+to test that claim, we can generate the spectrum of ug noise and
+then generate a “normal probability plot”, which is a graphical
+way to test whether a distribution is gaussian.
+
+
+
+normalprobabilityplot is provided by thinkstats2, which is
+included in the repository for this book.  if you are not familiar
+with normal probability plots, you can read about them in chapter 5
+of think stats at <
+
+figure  shows the results.  the gray lines
+show a linear model fit to the data; the dark lines show the
+data.
+
+a straight line on a normal probability plot indicates
+that the data come from a gaussian distribution.  except for
+some random variation at the extremes, these lines are straight,
+which indicates that the spectrum of ug noise is ug noise.
+
+the spectrum of uu noise is also ug noise, at least approximately.  in
+fact, by the central limit theorem, the spectrum of almost any
+uncorrelated noise is approximately gaussian, as long as the
+distribution has finite mean and standard deviation, and the number of
+samples is large.
+
+
+
+
+§ EXERCISES
+
+
+solutions to these exercises are in chap04soln.ipynb.
+
+
+“a soft murmur” is a web site that plays a mixture of natural
+noise sources, including rain, waves, wind, etc.  at
+< you can find their list
+of recordings, most of which are at <
+
+download a few of these files and compute the spectrum of each
+signal.  does the power spectrum look like white noise, pink noise,
+or brownian noise?  how does the spectrum vary over time?
+
+
+
+
+in a noise signal, the mixture of frequencies changes over time.
+in the long run, we expect the power at all frequencies to be equal,
+but in any sample, the power at each frequency is random.
+
+to estimate the long-term average power at each frequency, we can
+break a long signal into segments, compute the power spectrum
+for each segment, and then compute the average across
+the segments.  you can read more about this algorithm at
+<
+
+implement bartlett's method and use it to estimate the power
+spectrum for a noise wave.  hint: look at the implementation
+of .
+
+
+
+
+at < you can download the daily
+price of a bitcoin as a csv file.  read this file and compute
+the spectrum of bitcoin prices as a function of time.
+does it resemble white, pink, or brownian noise?
+
+
+
+
+a geiger counter is a device that detects radiation.
+when an ionizing particle strikes the detector, it outputs a surge of
+current.  the total output at a point in time can be modeled as
+uncorrelated poisson (up) noise, where each sample is
+a random quantity from a poisson distribution, which corresponds to the
+number of particles detected during an interval.
+
+write a class called uncorrelatedpoissonnoise that inherits
+from  and provides evaluate.  it should
+use np.random.poisson to generate random values from a poisson
+distribution.  the parameter of this function, lam, is the
+average number of particles during each interval.  you can use the
+attribute amp to specify lam.  for example, if the
+framerate is 10 khz and amp is 0.001, we expect about 10
+“clicks” per second.
+
+generate about a second of up noise and listen to it.  for low values
+of amp, like 0.001, it should sound like a geiger counter.  for
+higher values it should sound like white noise.  compute and plot the
+power spectrum to see whether it looks like white noise.
+
+
+
+
+the algorithm in this chapter for generating pink noise is
+conceptually simple but computationally expensive.  there are
+more efficient alternatives, like the voss-mccartney algorithm.
+research this method, implement it, compute the spectrum of
+the result, and confirm that it has the desired relationship
+between power and frequency.
+
+
+
+
+
+CHAPTER: AUTOCORRELATION
+
+
+in the previous chapter i characterized white noise as “uncorrelated”,
+which means that each value is independent of the others, and brownian
+noise as “correlated”, because each value depends on the preceding
+value.  in this chapter i define these terms more precisely and
+present the autocorrelation function, which is a useful tool
+for signal analysis.
+
+the code for this chapter is in chap05.ipynb, which is in the
+repository for this book (see section ).
+you can also view it at <
+
+
+
+
+§ CORRELATION
+
+
+in general, correlation between variables means that if you know the
+value of one, you have some information about the other.  there are
+several ways to quantify correlation, but the most common is the
+pearson product-moment correlation coefficient, usually denoted
+ρ.  for two variables, x and y, that each contain n values:
+
+
+    ρ = ∑_i (x_i - μ_x) (y_i - μ_y)/n σ_x σ_y
+
+
+where μ_x and μ_y are the means of x and y, and
+σ_x and σ_y are their standard deviations.
+
+pearson's correlation is always between -1 and +1 (including both).
+if ρ is positive, we say that the correlation is positive,
+which means that when one variable is high, the other tends to be
+high.  if ρ is negative, the correlation is negative, so
+when one variable is high, the other tends to be low.
+
+the magnitude of ρ indicates the strength of the correlation.  if
+ρ is 1 or -1, the variables are perfectly correlated, which means
+that if you know one, you can make a perfect prediction about the
+other.  if ρ is near zero, the correlation is probably weak, so
+if you know one, it doesn't tell you much about the others.
+
+i say “probably weak” because it is also possible that there is
+a nonlinear relationship that is not captured by the coefficient
+of correlation.  nonlinear relationships are often important in
+statistics, but less often relevant for signal processing, so i
+won't say more about them here.
+
+python provides several ways to compute correlations.  np.corrcoef takes any number of variables and computes a correlation matrix that includes correlations between each pair of
+variables.
+
+
+
+
+
+two sine waves that differ by a phase offset of 1 radian;
+their coefficient of correlation is 0.54.
+
+
+
+i'll present an example with only two variables.  first, i define
+a function that constructs sine waves with different phase offsets:
+
+
+
+next i instantiate two waves with different offsets:
+
+
+
+figure  shows what the first few periods of these
+waves look like.  when one wave is high, the other is usually high, so we
+expect them to be correlated.
+
+
+
+the option ddof=0 indicates that corrcoef should divide by
+n, as in the equation above, rather than use the default, n-1.
+
+the result is a correlation matrix:
+the first element is the correlation of wave1
+with itself, which is always 1.  similarly, the last element
+is the correlation of wave2 with itself.
+
+
+
+
+
+the correlation of two sine waves as a function of the
+phase offset between them.  the result is a cosine.
+
+
+
+the off-diagonal elements contain the value we're interested in,
+the correlation of wave1 and wave2.  the value 0.54
+indicates that the strength of the correlation is moderate.
+
+as the phase offset increases, this correlation decreases until
+the waves are 180 degrees out of phase, which yields correlation
+-1.  then it increases until the offset differs by 360 degrees.
+at that point we have come full circle and the correlation is 1.
+
+figure  shows the relationship between correlation and
+phase offset for a sine wave.  the shape of that curve should look
+familiar; it is a cosine.
+
+thinkdsp provides a simple interface for computing the
+correlation between waves:
+
+
+
+
+
+
+§ SERIAL CORRELATION
+
+
+signals often represent measurements of quantities that vary in
+time.  for example, the sound signals we've worked with represent
+measurements of voltage (or current), which correspond to the changes
+in air pressure we perceive as sound.
+
+measurements like this almost always have serial correlation, which
+is the correlation between each element and the next (or the previous).
+to compute serial correlation, we can shift a signal and then compute
+the correlation of the shifted version with the original.
+
+
+
+ takes a wave object and
+lag, which is the integer number of places to shift the wave.
+it computes the correlation of the wave with a shifted version
+of itself.
+
+we can test this function with the noise signals from the previous
+chapter.  we expect uu noise to be uncorrelated, based on the
+way it's generated (not to mention the name):
+
+
+
+when i ran this example, i got 0.006, which indicates a very
+small serial correlation.  you might get a different value when you run
+it, but it should be comparably small.
+
+in a brownian noise signal, each value is the sum of the previous
+value and a random “step”, so we expect a strong serial
+correlation:
+
+
+
+sure enough, the result i got is greater than 0.999.
+
+
+
+
+
+serial correlation for pink noise with a range of
+parameters.
+
+
+
+since pink noise is in some sense between brownian noise and uu noise,
+we might expect an intermediate correlation:
+
+
+
+with parameter β=1, i got a serial correlation of 0.851.
+as we vary the parameter from β=0, which is uncorrelated
+noise, to β=2, which is brownian, serial correlation
+ranges from 0 to almost 1, as shown in figure .
+
+
+
+
+§ AUTOCORRELATION
+
+
+
+in the previous section we computed the correlation between each
+value and the next, so we shifted the elements of the array by 1.
+but we can easily compute serial correlations with
+different lags.
+
+
+
+
+
+autocorrelation functions for pink noise with a range
+of parameters.
+
+
+
+you can think of  as a function that
+maps from each value of lag to the corresponding correlation, and we
+can evaluate that function by looping through values of lag:
+
+
+
+autocorr takes a wave object and returns the autocorrelation
+function as a pair of sequences: lags is a sequence of
+integers from 0 to half the length of the wave; corrs
+is the sequence of serial correlations for each lag.
+
+figure  shows autocorrelation functions for pink
+noise with three values of β.  for low values of β, the
+signal is less correlated, and the autocorrelation function drops
+off to zero quickly.  for larger values, serial correlation
+is stronger and drops off more slowly.  with β=1.7 serial
+correlation is strong even for long lags; this phenomenon is called
+long-range dependence, because it indicates that each value in
+the signal depends on many preceding values.
+
+
+
+
+§ AUTOCORRELATION OF PERIODIC SIGNALS
+
+
+the autocorrelation of pink noise has interesting mathematical
+properties, but limited applications.  the autocorrelation of
+periodic signals is more useful.
+
+
+
+
+
+spectrogram of a vocal chirp.
+
+
+
+as an example, i downloaded from <freesound.org> a recording of
+someone singing a chirp; the repository for this book includes the
+file: <28042__bcjordan__voicedownbew.wav>.  you can use the
+jupyter notebook for this chapter, chap05.ipynb, to play it.
+
+figure  shows the spectrogram of this wave.
+the fundamental frequency and some of the harmonics show up clearly.
+the chirp starts near 500 hz and drops down to about 300 hz, roughly
+from c5 to e4.
+
+
+
+
+
+spectrum of a segment from a vocal chirp.
+
+
+
+to estimate pitch at a particular point in time, we could use the
+spectrum, but it doesn't work very well.  to see why not, i'll take
+a short segment from the wave and plot its spectrum:
+
+
+
+this segment starts at 0.2 seconds and lasts 0.01 seconds.
+figure  shows its spectrum.  there is a clear peak
+near 400 hz, but it is hard to identify the pitch precisely.  the
+length of the segment is 441 samples at a framerate of 44100 hz, so
+the frequency resolution is 100 hz (see section ).
+that means the estimated pitch might be off by 50 hz; in musical
+terms, the range from 350 hz to 450 hz is about 5 semitones, which is
+a big difference!
+
+we could get better frequency resolution by taking a longer segment,
+but since the pitch is changing over time, we would also get “motion
+blur”; that is, the peak would spread between the start and end pitch of
+the segment, as we saw in section .
+
+we can estimate pitch more precisely using autocorrelation.
+if a signal is periodic, we expect the autocorrelation to spike
+when the lag equals the period.
+
+
+
+
+
+two segments from a chirp, one starting 0.0023 seconds
+after the other.
+
+
+
+to show why that works, i'll plot two segments from the same
+recording.
+
+
+
+one segment starts at 0.2 seconds; the other starts 0.0023 seconds
+later.  figure  shows the result.  the segments
+are similar, and their correlation is 0.99.  this result suggests
+that the period is near 0.0023 seconds, which corresponds to a frequency
+of 435 hz.
+
+
+
+
+
+autocorrelation function for a segment from a chirp.
+
+
+
+for this example, i estimated the period by trial and error.  to automate
+the process, we can use the autocorrelation function.
+
+
+
+figure  shows the autocorrelation function for
+the segment starting at t=0.2 seconds.  the first peak occurs at
+lag=101.  we can compute the frequency that corresponds
+to that period like this:
+
+
+
+the estimated fundamental frequency is 437 hz.  to evaluate the
+precision of the estimate, we can run the same computation with
+lags 100 and 102, which correspond to frequencies 432 and 441 hz.
+the frequency precision using autocorrelation is less than 10 hz,
+compared with 100 hz using the spectrum.  in musical terms, the
+expected error is about 30 cents (a third of a semitone).
+
+
+
+
+§ CORRELATION AS DOT PRODUCT
+
+
+
+i started the chapter with this definition of pearson's
+correlation coefficient:
+
+
+    ρ = ∑_i (x_i - μ_x) (y_i - μ_y)/n σ_x σ_y
+
+
+then i used ρ to define serial correlation and autocorrelation.
+that's consistent with how these terms are used in statistics,
+but in the context of signal processing, the definitions are
+a little different.
+
+in signal processing, we are often working with unbiased signals,
+where the mean is 0, and normalized signals, where the standard
+deviation is 1.  in that case, the definition of ρ simplifies to:
+
+
+    ρ = 1/n∑_i x_i y_i
+
+
+and it is common to simplify even further:
+
+
+    r = ∑_i x_i y_i
+
+
+this definition of correlation is not “standardized”, so it doesn't
+generally fall between -1 and 1.  but it has other useful properties.
+
+if you think of x and y as vectors, you might recognize this
+formula as the dot product, x · y.  see
+<
+
+
+
+the dot product indicates the degree to which the signals are similar.
+if they are normalized so their standard deviations are 1,
+
+
+    x · y = cosθ
+
+
+where θ is the angle between the vectors.  and that explains
+why figure  is a cosine curve.
+
+
+
+
+§ USING NUMPY
+
+
+
+
+
+
+
+autocorrelation function computed with np.correlate.
+
+
+
+numpy provides a function, correlate, that computes
+the correlation of two functions or the autocorrelation of one
+function.  we can use it to compute the autocorrelation of
+the segment from the previous section:
+
+
+
+the option mode tells correlate what range
+of lag to use.  with the value 'same', the
+range is from -n/2 to n/2, where n is the length of the
+wave array.
+
+figure  shows the result.  it is symmetric because
+the two signals are identical, so a negative lag on one has the same
+effect as a positive lag on the other.  to compare with the results
+from autocorr, we can select the second half:
+
+
+
+if you compare figure  to figure ,
+you'll notice that the correlations computed by np.correlate
+get smaller as the lags increase.  that's because np.correlate
+uses the unstandardized definition of correlation;
+as the lag gets bigger, the
+overlap between the two signals gets smaller, so the magnitude of
+the correlations decreases.
+
+we can correct that by dividing through by the lengths:
+
+
+
+finally, we can standardize the results so the correlation with
+lag=0 is 1.
+
+
+
+with these adjustments, the results computed by autocorr and
+np.correlate are nearly the same.  they still differ by
+1-2%.  the reason is not important, but if you are curious: autocorr
+standardizes the correlations independently for each lag; for
+np.correlate, we standardized them all at the end.
+
+more importantly, now you know what autocorrelation is, how to
+use it to estimate the fundamental period of a signal, and two
+ways to compute it.
+
+
+
+
+§ EXERCISES
+
+
+solutions to these exercises are in chap05soln.ipynb.
+
+
+the jupyter notebook for this chapter, chap05.ipynb, includes
+an interaction that lets you compute autocorrelations for different
+lags.  use this interaction to estimate the pitch of the vocal chirp
+for a few different start times.
+
+
+
+
+the example code in  shows how to use autocorrelation
+to estimate the fundamental frequency of a periodic signal.
+encapsulate this code in a function called ,
+and use it to track the pitch of a recorded sound.
+
+to see how well it works, try superimposing your pitch estimates on a
+spectrogram of the recording.
+
+
+
+
+if you did the exercises in the previous chapter, you downloaded
+the historical price of bitcoins and estimated the power spectrum
+of the price changes.  using the same data, compute the autocorrelation
+of bitcoin prices.  does the autocorrelation function drop off quickly?
+is there evidence of periodic behavior?
+
+
+
+
+in the repository for this book you will find a jupyter notebook
+called  that explores autocorrelation,
+pitch perception, and a phenomenon called the missing fundamental.
+read through this notebook and run the examples.  try selecting
+a different segment of the recording and running the examples again.
+
+vi hart has an excellent video called “what is up with noises? (the
+science and mathematics of sound, frequency, and pitch)”; it
+demonstrates the missing fundamental phenomenon and explains how pitch
+perception works (at least, to the degree that we know).  watch it at
+<
+
+
+
+
+
+
+
+
+
+CHAPTER: DISCRETE COSINE TRANSFORM
+
+
+
+the topic of this chapter is the discrete cosine
+  transform (dct), which is used in mp3 and related formats for
+compressing music; jpeg and similar formats for images; and the mpeg
+family of formats for video.
+
+dct is similar in many ways to the discrete fourier transform (dft),
+which we have been using for spectral analysis.
+once we learn how dct works, it will be easier to explain dft.
+
+here are the steps to get there:
+
+
+
+
+  * we'll start with the synthesis problem: given a set of frequency
+  components and their amplitudes, how can we construct a wave?
+
+
+  * next we'll rewrite the synthesis problem using numpy arrays.
+  this move is good for performance, and also provides insight
+  for the next step.
+
+
+  * we'll look at the analysis problem: given a signal and a
+  set of frequencies, how can we find the amplitude of each frequency
+  component?  we'll start with a solution that is conceptually simple
+  but slow.
+
+
+  * finally, we'll use some principles from linear algebra to find a
+  more efficient algorithm.  if you already know linear algebra,
+  that's great, but i'll explain what you need as we go.
+
+
+
+the code for this chapter is in chap06.ipynb which is in the repository for this book (see
+section ).
+you can also view it at <
+
+
+
+
+§ SYNTHESIS
+
+
+
+suppose i give you a list of amplitudes and a list of frequencies,
+and ask you to construct a signal that is the sum of these frequency
+components.  using objects in the thinkdsp module, there is
+a simple way to perform this operation, which is called synthesis:
+
+
+
+amps is a list of amplitudes, fs is the list
+of frequencies, and ts is the sequence
+of times where the signal should be evaluated.
+
+components is a list of cossignal objects, one for
+each amplitude-frequency pair.  sumsignal represents the
+sum of these frequency components.
+
+finally, evaluate computes the value of the signal at each
+time in ts.
+
+we can test this function like this:
+
+
+
+this example makes a signal that contains a fundamental frequency at
+100 hz and three harmonics (100 hz is a sharp g2).  it renders the
+signal for one second at 11,025 frames per second and puts the results
+into a wave object.
+
+conceptually, synthesis is pretty simple.  but in this form it doesn't
+help much with analysis, which is the inverse problem: given the
+wave, how do we identify the frequency components and their amplitudes?
+
+
+
+
+§ SYNTHESIS WITH ARRAYS
+
+
+
+
+
+
+synthesis with arrays.
+
+
+
+here's another way to write synthesize:
+
+
+
+this function looks very different, but it does the same thing.
+let's see how it works:
+
+
+
+
+  * np.outer computes the outer product of ts and
+  fs.  the result is an array with one row for each element
+  of ts and one column for each element of fs.  each
+  element in the array is the product of a frequency and a time, f
+  t.
+
+
+  * we multiply args by 2 π and apply cos, so each
+  element of the result is cos (2 π f t).  since the ts run
+  down the columns, each column contains a cosine signal at a
+  particular frequency, evaluated at a sequence of times.
+
+
+  * np.dot multiplies each row of m by amps,
+  element-wise, and then adds up the products.  in terms of linear
+  algebra, we are multiplying a matrix, m, by a vector, amps.  in terms of signals, we are computing the weighted sum
+  of frequency components.
+
+
+
+figure  shows the structure of this computation.
+each row of the matrix, m, corresponds to a time
+from 0.0 to 1.0 seconds; t_n is the time of the nth row.
+each column corresponds to a frequency from
+100 to 400 hz; f_k is the frequency of the kth column.
+
+i labeled the nth row with the letters a through d; as an
+example, the value of a is cos [2 π (100) t_n].
+
+the result of the dot product, ys, is a vector with one element
+for each row of m.  the nth element, labeled e, is the sum
+of products:
+
+
+    e = 0.6 a + 0.25 b + 0.1 c + 0.05 d
+
+
+and likewise with the other elements of ys.  so each element
+of ys is the sum of four frequency components, evaluated at
+a point in time, and multiplied by the corresponding amplitudes.
+and that's exactly what we wanted.
+
+we can use the code from the previous section to check that the two
+versions of synthesize produce the same results.
+
+
+
+the biggest difference between ys1 and ys2 is about 1e-13, which is what we expect due to floating-point errors.
+
+writing this computation in terms of linear algebra makes the code
+smaller and faster.  linear algebra
+provides concise notation for operations on matrices and vectors.  for
+example, we could write synthesize like this:
+
+
+    m    =   cos (2 π t ⊗ f) 
+    
+    y    =    m a
+
+
+where a is a vector of amplitudes,
+t is a vector of times, f is a vector of frequencies, and
+⊗ is the symbol for the outer product of two vectors.
+
+
+
+
+§ ANALYSIS
+
+
+
+now we are ready to solve the analysis problem.  suppose i give you
+a wave and tell you that it is the sum of cosines with a given set
+of frequencies.  how would you find the amplitude for each frequency
+component?  in other words, given ys, ts and fs,
+can you recover amps?
+
+in terms of linear algebra, the first step is the same as for
+synthesis: we compute m = cos (2 π t ⊗ f).  then we want
+to find a so that y = m a; in other words, we want to solve a
+linear system.  numpy provides linalg.solve, which does
+exactly that.
+
+here's what the code looks like:
+
+
+
+the first two lines use ts and fs to build the
+matrix, m.  then np.linalg.solve computes amps.
+
+but there's a hitch.  in general we can only solve a system of linear
+equations if the matrix is square; that is, the number of equations
+(rows) is the same as the number of unknowns (columns).
+
+in this example, we have only 4 frequencies, but we evaluated the
+signal at 11,025 times.  so we have many more equations than unknowns.
+
+in general if ys
+contains more than 4 elements, it is unlikely that we can analyze it
+using only 4 frequencies.
+
+but in this case, we know that the ys were actually generated by
+adding only 4 frequency components, so we can use any 4 values from
+the wave array to recover amps.
+
+for simplicity, i'll use the first 4 samples from the signal.
+using the values of ys, fs and ts from
+the previous section, we can run analyze1 like this:
+
+
+
+and sure enough, amps2 is
+
+
+
+this algorithm works, but it is slow.  solving a linear
+system of equations takes time proportional to n^3, where n is
+the number of columns in m.  we can do better.
+
+
+
+
+§ ORTHOGONAL MATRICES
+
+
+one way to solve linear systems is by inverting matrices.  the
+inverse of a matrix m is written m^-1, and it has the property
+that m^-1m = i.  i is the identity matrix, which has
+the value 1 on all diagonal elements and 0 everywhere else.
+
+so, to solve the equation y = ma, we can multiply both sides by
+m^-1, which yields:
+
+
+    m^-1y = m^-1 m a
+
+
+on the right side, we can replace m^-1m with i:
+
+
+    m^-1y = i a
+
+
+if we multiply i by any vector a, the result is a, so
+
+
+    m^-1y = a
+
+
+this implies that if we can compute m^-1 efficiently, we can find
+a with a simple matrix multiplication (using np.dot).  that
+takes time proportional to n^2, which is better than n^3.
+
+inverting a matrix is slow, in general, but some special cases are
+faster.  in particular, if m is orthogonal, the inverse of m
+is just the transpose of m, written m^t.  in numpy
+transposing an array is a constant-time operation.  it
+doesn't actually move the elements of the array; instead, it creates a
+“view” that changes the way the elements are accessed.
+
+again, a matrix is orthogonal if its transpose is also its inverse;
+that is, m^t = m^-1.  that implies that m^tm = i, which means we
+can check whether a matrix is orthogonal by computing m^tm.
+
+so let's see what the matrix looks like in synthesize2.  in
+the previous example, m has 11,025 rows, so it might be a good idea
+to work with a smaller example:
+
+
+
+amps is the same vector of amplitudes we saw before.
+since we have 4 frequency components, we'll sample the signal
+at 4 points in time.  that way, m is square.
+
+ts is a vector of equally spaced sample times in the range from
+0 to 1 time unit.  i chose the time unit to be 1 millisecond, but it
+is an arbitrary choice, and we will see in a minute that it drops out
+of the computation anyway.
+
+since the frame rate is n samples per time unit, the nyquist
+frequency is , which is 2000 hz in this
+example.  so fs is a vector of equally spaced frequencies
+between 0 and 2000 hz.
+
+with these values of ts and fs, the matrix, m, is:
+
+
+
+you might recognize 0.707 as an approximation of √(2)/2,
+which is cosπ/4.  you also might notice that this matrix
+is symmetric, which means that the element at (j, k) always
+equals the element at (k, j).  this implies that m is its own
+transpose; that is, m^t = m.
+
+but sadly, m is not orthogonal.  if we compute m^tm, we get:
+
+
+
+and that's not the identity matrix.
+
+
+
+
+§ DCT-IV
+
+
+
+but if we choose ts and fs carefully,
+we can make m orthogonal.  there are several ways to do it, which
+is why there are several versions of the discrete cosine transform (dct).
+
+one simple option is to shift ts and fs by a half unit.
+this version is called dct-iv, where “iv” is a roman numeral
+indicating that this is the fourth of eight versions of the dct.
+
+here's an updated version of test1:
+
+
+
+if you compare this to the previous version, you'll notice
+two changes.  first, i added 0.5 to ts and fs.
+second, i canceled out , which simplifies
+the expression for fs.
+
+with these values, m is
+
+
+
+and m^tm is
+
+
+
+some of the off-diagonal elements are displayed as -0, which means
+that the floating-point representation is a small negative number.
+this matrix is very close to 2i, which means m is almost
+orthogonal; it's just off by a factor of 2.  and for our purposes,
+that's good enough.
+
+because m is symmetric and (almost) orthogonal, the inverse of m
+is just m/2.  now we can write a more efficient version of analyze:
+
+
+
+instead of using np.linalg.solve, we just multiply
+by m/2.
+
+combining test2 and analyze2, we can write an
+implementation of dct-iv:
+
+
+
+again, ys is the wave array.  we don't have to pass
+ts and fs as parameters;  can
+figure them out based on n, the length of ys.
+
+if we've got it right, this function should solve the analysis
+problem; that is, given ys it should be able to recover
+amps.  we can test it like this:
+
+
+
+starting with amps, we synthesize a wave array, then use
+ to compute amps2.  the biggest
+difference between amps and amps2 is about 1e-16,
+which is what we expect due to floating-point errors.
+
+
+
+
+§ INVERSE DCT
+
+
+finally, notice that analyze2 and synthesize2 are almost
+identical.  the only difference is that analyze2 divides the
+result by 2.  we can use this insight to compute the inverse dct:
+
+
+
+ solves the synthesis problem: it
+takes the vector of amplitudes and returns
+the wave array, ys.  we can test it by starting
+with amps, applying  and ,
+and testing that we get back what we started with.
+
+
+
+again, the biggest difference is about 1e-16.
+
+
+
+
+§ THE DCT CLASS
+
+
+
+
+
+
+dct of a triangle signal at 400 hz, sampled at 10 khz.
+
+
+
+thinkdsp provides a dct class that encapsulates the
+dct in the same way the spectrum class encapsulates the fft.
+to make a dct object, you can invoke  on a wave.
+
+
+
+the result is the dct of a triangle wave at 400 hz, shown in
+figure .  the values of the dct can be positive or negative;
+a negative value in the dct corresponds to a negated cosine or,
+equivalently, to a cosine shifted by 180 degrees.
+
+ uses dct-ii, which is the most common type of dct,
+provided by scipy.fftpack.
+
+
+
+the results from dct are stored in hs.  the corresponding
+frequencies, computed as in section , are stored in fs.
+and then both are used to initialize the dct object.
+
+dct provides , which performs the inverse dct.
+we can test it like this:
+
+
+
+the biggest difference between ys1 and ys2 is about 1e-16, which is what we expect due to floating-point errors.
+
+ uses scipy.fftpack.idct:
+
+
+
+by default, the inverse dct doesn't normalize the result, so we have
+to divide through by 2n.
+
+
+
+
+§ EXERCISES
+
+
+for the following exercises, i provide some starter code in
+chap06starter.ipynb.
+solutions are in chap06soln.ipynb.
+
+
+in this chapter i claim that analyze1 takes time proportional
+to n^3 and analyze2 takes time proportional to n^2.  to
+see if that's true, run them on a range of input sizes and time
+them.  in jupyter, you can use the “magic command” .
+
+if you plot run time versus input size on a log-log scale, you
+should get a straight line with slope 3 for  analyze1 and
+slope 2 for analyze2.
+
+you also might want to test 
+and scipy.fftpack.dct.
+
+
+
+
+
+one of the major applications of the dct is compression for both
+sound and images.  in its simplest form, dct-based compression
+works like this:
+
+
+
+
+  * break a long signal into segments.
+
+
+  * compute the dct of each segment.
+
+
+  * identify frequency components with amplitudes so low they are
+  inaudible, and remove them.  store only the frequencies and
+  amplitudes that remain.
+
+
+  * to play back the signal, load the frequencies and amplitudes
+  for each segment and apply the inverse dct.
+
+
+
+implement a version of this algorithm and apply it to a recording
+of music or speech.  how many components can you eliminate before
+the difference is perceptible?
+
+in order to make this method practical, you need some way to store a
+sparse array; that is, an array where most of the elements are zero.
+numpy provides several implementations of sparse arrays, which you can
+read about at
+<
+
+
+
+
+in the repository for this book you will find a jupyter notebook
+called  that explores the effect of phase on sound
+perception.
+read through this notebook and run the examples.
+choose another segment of sound and run the same experiments.
+can you find any general relationships between the phase structure
+of a sound and how we perceive it?
+
+
+
+
+
+
+
+CHAPTER: DISCRETE FOURIER TRANSFORM
+
+
+
+we've been using the discrete fourier transform (dft) since
+chapter , but i haven't explained how it works.  now is
+the time.
+
+if you understand the discrete cosine transform (dct), you will
+understand the dft.  the only difference is that instead of using the
+cosine function, we'll use the complex exponential function.  i'll
+start by explaining complex exponentials, then i'll follow the
+same progression as in chapter :
+
+
+
+
+  * we'll start with the synthesis
+  problem: given a set of frequency components and their amplitudes,
+  how can we construct a signal?  the synthesis problem is
+  equivalent to the inverse dft.
+
+
+  * then i'll rewrite the synthesis problem in the form of matrix
+  multiplication using numpy arrays.
+
+
+  * next we'll solve the analysis problem, which is equivalent to
+  the dft: given a signal, how to we find the amplitude and phase
+  offset of its frequency components?
+
+
+  * finally, we'll use linear algebra to find a more efficient way
+  to compute the dft.
+
+
+
+the code for this chapter is in chap07.ipynb, which is in the
+repository for this book (see section ).
+you can also view it at <
+
+
+
+
+§ COMPLEX EXPONENTIALS
+
+
+one of the more interesting moves in mathematics is the generalization
+of an operation from one type to another.  for example, factorial is a
+function that operates on integers; the natural definition for
+factorial of n is the product of all integers from 1 to n.
+
+if you are of a certain inclination, you might wonder how to compute
+the factorial of a non-integer like 3.5.  since the natural definition
+doesn't apply, you might look for other ways to compute the factorial
+function, ways that would work with non-integers.
+
+in 1730, leonhard euler found one, a generalization of the factorial
+function that we know as the gamma function (see
+<
+
+euler also found one of the most useful generalizations in applied
+mathematics, the complex exponential function.
+
+the natural definition of exponentiation is repeated multiplication.
+for example, ϕ^3 = ϕ·ϕ·ϕ.  but this
+definition doesn't apply to non-integer exponents.
+
+however, exponentiation can also be expressed as a power series:
+
+
+    e^ϕ = 1 + ϕ + ϕ^2/2! + ϕ^3/3! + ...
+
+
+this definition works with real numbers, imaginary numbers and, by a simple
+extension, with complex numbers.  applying this definition
+to a pure imaginary number, iϕ, we get
+
+
+    e^iϕ = 1 + iϕ - ϕ^2/2! - iϕ^3/3! + ...
+
+
+by rearranging terms, we can show that this is equivalent to:
+
+
+    e^iϕ = cosϕ + i sinϕ
+
+
+you can see the derivation at
+<
+
+this formula
+implies that e^iϕ is a complex number with magnitude 1; if you
+think of it as a point in the complex plane, it is always on the unit
+circle.  and if you think of it as a vector, the angle in radians
+between the vector and the positive x-axis is the argument, ϕ.
+
+in the case where the exponent is a complex number, we have:
+
+
+    e^a + iϕ = e^a e^iϕ = a e^iϕ
+
+
+where a is a real number that indicates amplitude and
+e^iϕ is a unit complex number that indicates angle.
+
+numpy provides a version of exp that works with complex numbers:
+
+
+
+python uses j to represent the imaginary unit, rather
+than i.  a number ending in j is considered imaginary,
+so 1j is just i.
+
+when the argument to np.exp is imaginary or complex, the
+result is a complex number; specifically, a np.complex128,
+which is represented by two 64-bit floating-point numbers.
+in this example, the result is 0.0707+0.997j.
+
+complex numbers have attributes real and imag:
+
+
+
+to get the magnitude, you can use the built-in function abs
+or np.absolute:
+
+
+
+to get the angle, you can use np.angle:
+
+
+
+this example confirms that e^i ϕ is a complex number with
+magnitude 1 and angle ϕ radians.
+
+
+
+
+§ COMPLEX SIGNALS
+
+
+if ϕ(t) is a function of time, e^i ϕ(t) is also a function
+of time.  specifically,
+
+
+    e^i ϕ(t) = cosϕ(t) + i sinϕ(t)
+
+
+this function describes a quantity that varies in time, so it is
+a signal.  specifically, it is a complex exponential signal.
+
+in the special case where the frequency of the signal is constant,
+ϕ(t) is 2 π f t and the result is a complex sinusoid:
+
+
+    e^i 2 π f t = cos 2 π f t + i sin 2 π f t
+
+
+or more generally, the signal might start at a phase offset
+ϕ_0, yielding
+
+
+    e^i (2 π f t + ϕ_0)
+
+
+thinkdsp provides an implementation of this signal,
+complexsinusoid:
+
+
+
+complexsinusoid inherits  from
+sinusoid.  it provides a version of evaluate
+that is almost identical to sinusoid.evaluate; the
+only difference is that it uses np.exp instead of
+np.sin.
+
+the result is a numpy array of complex numbers:
+
+
+
+the frequency of this signal is 1 cycle per second, the amplitude
+is 0.6 (in unspecified units), and the phase offset is 1 radian.
+
+this example evaluates the signal at 4 places equally spaced between
+0 and 1 second.  the resulting samples are complex numbers.
+
+
+
+
+§ THE SYNTHESIS PROBLEM
+
+
+just as we did with real sinusoids, we can create compound signals
+by adding up complex sinusoids with different frequencies.  and that
+brings us to the complex version of the synthesis problem: given the
+frequency and amplitude of each complex component, how do we evaluate the
+signal?
+
+the simplest solution is to create complexsinusoid objects and
+add them up.
+
+
+
+this function is almost identical to synthesize1 in
+section ; the only difference is that i replaced
+cossignal with complexsinusoid.
+
+here's an example:
+
+
+
+the result is:
+
+
+
+at the lowest level, a complex signal is a sequence of complex
+numbers.  but how should we interpret it?  we have some intuition for
+real signals: they represent quantities that vary in time; for
+example, a sound signal represents changes in air pressure.
+but nothing we measure in the world yields complex numbers.
+
+
+
+
+
+real and imaginary parts of a mixture of complex sinusoids.
+
+
+
+so what is a complex signal?  i don't have a satisfying answer to this
+question.  the best i can offer is two unsatisfying
+answers:
+
+
+
+
+  * a complex signal is a mathematical abstraction that is useful
+  for computation and analysis, but it does not correspond directly
+  with anything in the real world.
+
+
+  * if you like, you can think of a complex signal as a sequence of
+  complex numbers that contains two signals as its real and imaginary
+  parts.
+
+
+
+taking the second point of view, we can split the previous
+signal into its real and imaginary parts:
+
+
+
+figure  shows a segment of the result.  the
+real part is a sum of cosines; the imaginary part is
+a sum of sines.  although the waveforms look different, they
+contain the same frequency components in the same proportions.
+to our ears, they sound the same (in general, we don't hear
+phase offsets).
+
+
+
+
+§ SYNTHESIS WITH MATRICES
+
+
+
+as we saw in section , we can also express the synthesis
+problem in terms of matrix multiplication:
+
+
+
+again, amps is a numpy array that contains a sequence of
+amplitudes.
+
+fs is a sequence containing the frequencies of the
+components.  ts contains the times where we will evaluate
+the signal.
+
+args contains the outer product of ts and fs,
+with the ts running down the rows and the fs running
+across the columns (you might want to refer back to
+figure ).
+
+each column of matrix m contains a complex sinusoid with
+a particular frequency, evaluated at a sequence of ts.
+
+when we multiply m by the amplitudes, the result is a vector
+whose elements correspond to the ts; each element is the sum of
+several complex sinusoids, evaluated at a particular time.
+
+here's the example from the previous section again:
+
+
+
+the result is the same.
+
+in this example the amplitudes are real, but they could also be
+complex.  what effect does a complex amplitude have on the result?
+remember that we can think of a complex number in two ways: either the
+sum of a real and imaginary part, x + i y, or the product of a real
+amplitude and a complex exponential, a e^i ϕ_0.  using the
+second interpretation, we can see what happens when we multiply
+a complex amplitude by a complex sinusoid.  for each frequency, f,
+we have:
+
+
+    a expi ϕ_0·expi 2 π f t = a expi (2 π f t + ϕ_0)
+
+
+multiplying by a e^i ϕ_0 multiplies the amplitude by a
+and adds the phase offset ϕ_0.
+
+
+
+
+
+real part of two complex signals that differ by a phase
+offset.
+
+
+
+we can test that claim by running the previous example with
+ϕ_0 = 1.5 for all frequency components:
+
+
+
+since amps
+is an array of reals, multiplying by np.exp(1j * phi) yields
+an array of complex numbers with phase offset phi radians, and
+the same magnitudes as amps.
+
+figure  shows the result.  the phase offset
+ϕ_0 = 1.5 shifts the wave to the left by about one quarter of
+a cycle; it also changes the waveform, because the same phase
+offset applied to different frequencies changes how the frequency
+components line up with each other.
+
+now that we have the more general solution to the synthesis problem –
+one that handles complex amplitudes – we are ready for the analysis
+problem.
+
+
+
+
+§ THE ANALYSIS PROBLEM
+
+
+the analysis problem is the inverse of the synthesis problem: given a
+sequence of samples, y, and knowing the frequencies
+that make up the signal, can we compute the complex amplitudes of the
+components, a?
+
+as we saw in section , we can solve this problem by forming
+the synthesis matrix, m, and solving the system of linear
+equations, m a = y for a.
+
+
+
+analyze1 takes a (possibly complex) wave array, ys, a
+sequence of real frequencies, fs, and a sequence of real
+times, ts.  it returns a sequence of complex amplitudes, amps.
+
+continuing the previous example, we can confirm that analyze1
+recovers the amplitudes we started with.  for the linear system
+solver to work, m has to be square, so we need ys, fs and ts to have the same length.  i'll insure that by
+slicing ys and ts down to the length of fs:
+
+
+
+these are approximately the amplitudes we started with, although
+each component has a small imaginary part due to
+floating-point errors.
+
+
+
+
+§ EFFICIENT ANALYSIS
+
+
+unfortunately, solving a linear system of equations is slow.  for the
+dct, we were able to speed things up by choosing fs and ts so that m is orthogonal.  that way, the inverse of m
+is the transpose of m, and we can compute both dct and inverse
+dct by matrix multiplication.
+
+we'll do the same thing for the dft, with one small change.
+since m is complex, we need it to be unitary, rather
+than orthogonal, which means that the inverse of m is
+the conjugate transpose of m, which we can compute by
+transposing the matrix and negating the imaginary part of each
+element.  see <
+
+the numpy methods conj and transpose do what we
+want.  here's the code that computes m for n=4 components:
+
+
+
+if m is unitary, m^*m = i, where m^* is the conjugate transpose
+of m, and i is the identity matrix.  we can test whether m
+is unitary like this:
+
+
+
+the result, within the tolerance of floating-point error, is
+4 i, so m is unitary except for an extra factor of n,
+similar to the extra factor of 2 we found with the dct.
+
+we can use this result to write a faster version of analyze1:
+
+
+
+and test it with appropriate values of fs and ts:
+
+
+
+again, the result is correct within the tolerance of floating-point
+arithmetic.
+
+
+
+
+
+
+§ DFT
+
+
+
+as a function, analyze2 would be hard to use because it
+only works if fs and ts are chosen correctly.
+instead, i will rewrite it to take just ys and compute fs
+and ts itself.
+
+first, i'll make a function to compute the synthesis matrix, m:
+
+
+
+then i'll write the function that takes ys and returns
+amps:
+
+
+
+we are almost done; analyze3 computes something very
+close to the dft, with one difference.  the conventional definition
+of dft does not divide by n:
+
+
+
+now we can confirm that my version yields the same result as
+fft:
+
+
+
+the result is close to amps * n.
+and here's the version in np.fft:
+
+
+
+they are the same, within floating point error.
+
+the inverse dft is almost the same, except we don't have to transpose
+and conjugate m, and now we have to divide through by n:
+
+
+
+finally, we can confirm that dft(idft(amps)) yields amps.
+
+
+
+if i could go back in time, i might change the definition of
+dft so it divides by n and the inverse dft doesn't.  that would
+be more consistent with my presentation of the synthesis and analysis
+problems.
+
+or i might change the definition so that both operations divide
+through by √(n).  then the dft and inverse dft would be
+more symmetric.
+
+but i can't go back in time (yet!), so we're stuck with a slightly
+weird convention.  for practical purposes it doesn't really
+matter.
+
+
+
+
+§ THE DFT IS PERIODIC
+
+
+in this chapter i presented the dft in the form of matrix multiplication.
+we compute the synthesis matrix, m, and the analysis matrix, m^*.
+when we multiply m^* by the wave array, y, each element of the
+result is the product of a row from m^* and y, which we can
+write in the form of a summation:
+
+
+    dft(y)[k] = ∑_n y[n] exp(-2 π i n k / n)
+
+
+where k is an index of frequency from
+0 to n-1 and n is an index of time from 0 to n-1.
+so dft(y)[k] is the kth element of the dft of y.
+
+normally we evaluate this summation for n values of k, running from
+0 to n-1.  we could evaluate it for other values of k, but
+there is no point, because they start to repeat.  that is, the value at
+k is the same as the value at k+n or k+2n or k-n, etc.
+
+we can see that mathematically by plugging k+n into the summation:
+
+
+    dft(y)[k+n] = ∑_n y[n] exp(-2 π i n (k+n) / n)
+
+
+since there is a sum in the exponent, we can break it into two parts:
+
+
+    dft(y)[k+n] = ∑_n y[n] exp(-2 π i n k / n)  exp(-2 π i n n / n)
+
+
+in the second term, the exponent is always an integer multiple of
+2 π, so the result is always 1, and we can drop it:
+
+
+    dft(y)[k+n] = ∑_n y[n] exp(-2 π i n k / n)
+
+
+and we can see that this summation is equivalent to dft(y)[k].
+so the dft is periodic, with period n.  you will need this result
+for one of the exercises below, which asks you to implement the fast fourier
+transform (fft).
+
+as an aside, writing the dft in the form of a summation provides an
+insight into how it works.  if you review the diagram in
+section , you'll see that each column of the synthesis matrix
+is a signal evaluated at a sequence of times.  the analysis matrix is
+the (conjugate) transpose of the synthesis matrix, so each row
+is a signal evaluated at a sequence of times.
+
+therefore, each summation is the correlation of y with one of the
+signals in the array (see section ).  that is, each
+element of the dft is a correlation that quantifies the similarity of
+the wave array, y, and a complex exponential at a particular
+frequency.
+
+
+
+
+§ DFT OF REAL SIGNALS
+
+
+
+
+
+
+dft of a 500 hz sawtooth signal sampled at 10 khz.
+
+
+
+the spectrum class in thinkdsp is based on np.fft.rfft,
+which computes the “real dft”; that is, it works with real signals.
+but the dft as presented in this chapter is more general than that; it
+works with complex signals.
+
+so what happens when we apply the “full dft” to a real signal?
+let's look at an example:
+
+
+
+this code makes a sawtooth wave with frequency 500 hz, sampled at
+framerate 10 khz.  hs contains the complex dft of the wave;
+amps contains the amplitude at each frequency.  but what
+frequency do these amplitudes correspond to?  if we look at the
+body of dft, we see:
+
+
+
+it's tempting to think that these values are the right frequencies.
+the problem is that dft doesn't know the sampling rate.  the dft
+assumes that the duration of the wave is 1 time unit, so it thinks the
+sampling rate is n per time unit.  in order to interpret the
+frequencies, we have to convert from these arbitrary time units back
+to seconds, like this:
+
+
+
+with this change, the range of frequencies is from 0 to the actual
+framerate, 10 khz.  now we can plot the spectrum:
+
+
+
+figure  shows the amplitude of the signal for each
+frequency component from 0 to 10 khz.  the left half of the figure
+is what we should expect: the dominant frequency is at 500 hz, with
+harmonics dropping off like 1/f.
+
+but the right half of the figure is a surprise.  past 5000 hz, the
+amplitude of the harmonics start growing again, peaking at 9500 hz.
+what's going on?
+
+the answer: aliasing.  remember that with framerate 10000 hz, the
+folding frequency is 5000 hz.  as we saw in section ,
+a component at 5500 hz is indistinguishable from a component
+at 4500 hz.  when we evaluate the dft at 5500 hz, we get the same
+value as at 4500 hz.  similarly, the value at 6000 hz is the same
+as the one at 4000 hz, and so on.
+
+the dft of a real signal is symmetric around the folding frequency.
+since there is no additional information past this point, we can
+save time by evaluating only the first half of the dft,
+and that's exactly what np.fft.rfft does.
+
+
+
+
+
+§ EXERCISES
+
+
+solutions to these exercises are in chap07soln.ipynb.
+
+
+
+the notebook for this chapter, chap07.ipynb, contains
+additional examples and explanations.  read through it and run
+the code.
+
+
+
+
+in this chapter, i showed how we can express the dft and inverse dft
+as matrix multiplications.  these operations take time proportional to
+n^2, where n is the length of the wave array.  that is fast enough
+for many applications, but there is a faster
+algorithm, the fast fourier transform (fft), which takes time
+proportional to n log n.
+
+the key to the fft is the danielson-lanczos lemma:
+
+
+    dft(y)[n] = dft(e)[n] + exp(-2 π i n / n) dft(o)[n]
+
+
+where dft(y)[n] is the nth element of the dft of y; e is a
+wave array containing the even elements of y, and o contains the
+odd elements of y.
+
+this lemma suggests a recursive algorithm for the dft:
+
+
+
+
+  * given a wave array, y, split it into its even elements, e,
+  and its odd elements, o.
+
+
+  * compute the dft of e and o by making recursive calls.
+
+
+  * compute dft(y) for each value of n using the
+  danielson-lanczos lemma.
+
+
+
+for the base case of this recursion, you could wait until the length
+of y is 1.  in that case, dft(y) = y.  or if the length of y
+is sufficiently small, you could compute its dft by matrix multiplication,
+possibly using a precomputed matrix.
+
+hint: i suggest you implement this algorithm incrementally by starting
+with a version that is not truly recursive.  in step 2, instead of
+making a recursive call, use dft, as defined by
+section , or np.fft.fft.  get step 3 working,
+and confirm that the results are consistent with the other
+implementations.  then add a base case and confirm that it works.
+finally, replace step 2 with recursive calls.
+
+one more hint: remember that the dft is periodic; you might find np.tile useful.
+
+you can read more about the fft at
+<
+
+
+
+
+
+
+CHAPTER: FILTERING AND CONVOLUTION
+
+
+in this chapter i present one of the most important and useful
+ideas related to signal processing: the convolution theorem.
+but before we can understand the convolution theorem, we have to understand
+convolution.  i'll start with a simple example, smoothing, and
+we'll go from there.
+
+the code for this chapter is in chap08.ipynb, which is in the
+repository for this book (see section ).
+you can also view it at <
+
+
+
+
+§ SMOOTHING
+
+
+
+
+
+
+
+daily closing price of facebook stock and a 30-day moving
+average.
+
+
+
+smoothing is an operation that tries to remove short-term variations
+from a signal in order to reveal long-term trends.  for example, if
+you plot daily changes in the price of a stock, it would look noisy;
+a smoothing operator might make it easier to see whether the price
+was generally going up or down over time.
+
+a common smoothing algorithm is a moving average, which computes
+the mean of the previous n values, for some value of n.
+
+for example, figure  shows the daily
+closing price of facebook from may 17, 2012 to december 8,
+2015.  the gray line
+is the raw data, the darker line shows the 30-day moving average.
+smoothing removes the most
+extreme changes and makes it easier to see long-term trends.
+
+smoothing operations also apply to sound signals.  as an example, i'll
+start with a square wave at 440 hz.  as we saw in
+section , the harmonics of a square wave drop off
+slowly, so it contains many high-frequency components.
+
+
+
+wave is a 1-second segment of the signal; segment
+is a shorter segment i'll use for plotting.
+
+to compute the moving average of this signal, i'll create
+a window with 11 elements and normalize it so the elements
+add up to 1.
+
+
+
+now i can compute the average of the first 11 elements by
+multiplying the window by the wave array:
+
+
+
+padded is a version of the window with zeros added to
+the end so it has the same length as segment.ys.
+
+prod is the product of the window and the wave array.
+
+the sum of the elementwise products is the average of the first 11
+elements of the array.  since these elements are all -1, their average
+is -1.
+
+
+
+
+
+a square signal at 400 hz (gray) and an 11-element
+moving average.
+
+
+
+to compute the next element of the smoothed signal, we shift the
+window to the right and compute the average of the next 11 elements of
+the wave array, starting with the second.
+
+
+
+the result is -1 again.
+to compute the moving average, we repeat this process and store
+the result in an array named smoothed:
+
+
+
+rolled is a copy of padded that gets shifted to
+the right by one element each time through the loop.  inside
+the loop, we multiply the segment by rolled to select
+11 elements, and then add them up.
+
+figure  shows the result.  the gray line
+is the original signal; the darker line is the smoothed signal.
+the smoothed signal starts to ramp up when the leading edge of
+the window reaches the first transition, and levels off when
+the window crosses the transition.  as a result, the transitions
+are less abrupt, and the corners less sharp.  if you listen
+to the smoothed signal, it sounds less buzzy and slightly muffled.
+
+
+
+
+§ CONVOLUTION
+
+
+
+the operation we just computed is called convolution,
+and it is such a common operation that numpy provides an
+implementation that is simpler and faster than my version:
+
+
+
+np.convolve computes the convolution of the wave
+array and the window.  the mode flag valid indicates
+that it should only compute values when the window and the
+wave array overlap completely, so it stops when the right
+edge of the window reaches the end of the wave array.  other
+than that, the result is the same as in figure .
+
+
+
+actually, there is one other difference.  the loop in the
+previous section actually computes cross-correlation:
+
+
+    (f ⋆ g)[n] = ∑_m=0^n-1 f[m] g[n+m]
+
+
+where f is a wave array with length n, g is the window,
+and ⋆ is the symbol for cross-correlation.  to
+compute the nth element of the result, we shift g to
+the right, which is why the index is n+m.
+
+the definition of convolution is slightly different:
+
+
+    (f  g)[n] = ∑_m=0^n-1 f[m] g[n-m]
+
+
+the symbol  represents convolution.  the difference is in the
+index of g: m has been negated, so the summation iterates the
+elements of g backward (assuming that negative indices wrap around
+to the end of the array).
+
+because the window we used in this example is symmetric,
+cross-correlation and convolution yield the same result.  when we use
+other windows, we will have to be more careful.
+
+you might wonder why convolution is defined the way it is.  there
+are two reasons:
+
+
+
+
+  * this definition comes up naturally for several applications,
+especially analysis of signal-processing systems, which is
+the topic of chapter .
+
+
+  * also, this definition is the basis of the convolution theorem,
+coming up very soon.
+
+
+
+
+
+
+§ THE FREQUENCY DOMAIN
+
+
+
+
+
+
+spectrum of the square wave before and after smoothing.
+
+
+
+smoothing makes the transitions in a square signal less abrupt,
+and makes the sound slightly muffled.  let's see what effect this
+operation has on the spectrum.  first i'll plot the spectrum
+of the original wave:
+
+
+
+then the smoothed wave:
+
+
+
+the mode flag same indicates that the result should have the
+same length as the input.  in this example, it will include a few values
+that “wrap around”, but that's ok for now.
+
+figure  shows the result.  the fundamental
+frequency is almost unchanged; the first few harmonics are
+attenuated, and the higher harmonics are almost eliminated.  so
+smoothing has the effect of a low-pass filter, which we
+saw in section  and section .
+
+to see how much each component has been attenuated, we can
+compute the ratio of the two spectrums:
+
+
+
+ratio is the ratio of the amplitude before and after
+smoothing.  when amps is small, this ratio can be big
+and noisy, so for simplicity i set the ratio to 0 except
+where the harmonics are.
+
+
+
+
+
+ratio of spectrums for the square wave, before and after smoothing.
+
+
+
+figure  shows the result.  as expected, the
+ratio is high for low frequencies and drops off at a cutoff frequency
+near 4000 hz.  but there is another feature we did not expect: above
+the cutoff, the ratio bounces around between 0 and 0.2.
+what's up with that?
+
+
+
+
+§ THE CONVOLUTION THEOREM
+
+
+
+
+
+
+
+ratio of spectrums for the square wave, before and after
+  smoothing, along with the dft of the smoothing window.
+
+
+
+
+
+
+the answer is the convolution theorem.  stated mathematically:
+
+
+    (f  g) = (f) ·(g)
+
+
+where f is a wave array and g is a window.  in words,
+the convolution theorem says that if we convolve f and g,
+and then compute the dft, we get the same answer as computing
+the dft of f and g, and then multiplying the results
+element-wise.  more concisely, convolution in the time
+domain corresponds to multiplication in the frequency domain.
+
+and that explains figure , because when we
+convolve a wave and a window, we multiply the spectrum of
+the wave with the spectrum of the window.  to see how that works,
+we can compute the dft of the window:
+
+
+
+padded contains the window, padded with zeros to be the
+same length as wave.   contains the
+dft of the smoothing window.
+
+
+
+figure  shows the result, along with the
+ratios we computed in the previous section.  the ratios are
+exactly the amplitudes in .  mathematically:
+
+
+    ((f  g)) / ((f)) = ((g))
+
+
+in this context, the dft of a window is called a filter.
+for any convolution window in the time domain, there is a
+corresponding filter in the frequency domain.  and for any
+filter that can be expressed by element-wise multiplication in
+the frequency domain, there is a corresponding window.
+
+
+
+
+§ GAUSSIAN FILTER
+
+
+
+
+
+
+boxcar and gaussian windows.
+
+
+
+the moving average window we used in the previous section is a
+low-pass filter, but it is not a very good one.  the dft drops off
+steeply at first, but then it bounces around.  those bounces are
+called sidelobes, and they are there because the moving average
+window is like a square wave, so its spectrum contains high-frequency
+harmonics that drop off proportionally to 1/f, which is relatively
+slow.
+
+we can do better with a gaussian window.  scipy provides functions
+that compute many common convolution windows, including gaussian:
+
+
+
+m is the number of elements in the window; std
+is the standard deviation of the gaussian distribution used to
+compute it.  figure  shows the shape
+of the window.  it is a discrete approximation of the gaussian
+“bell curve”.  the figure also shows the moving average window
+from the previous example, which is sometimes called a
+boxcar window because it looks like a rectangular railway car.
+
+
+
+
+
+ratio of spectrums before and after gaussian smoothing, and
+  the dft of the window.
+
+
+
+i ran the computations from the previous sections again
+with this curve, and generated figure ,
+which shows the ratio of the spectrums before and after
+smoothing, along with the dft of the gaussian window.
+
+as a low-pass filter, gaussian smoothing is better than a simple
+moving average.  after the ratio drops off, it stays low, with almost
+none of the sidelobes we saw with the boxcar window.  so it does a
+better job of cutting off the higher frequencies.
+
+the reason it does so well is that the dft of a gaussian curve is also a
+gaussian curve.  so the ratio drops off in proportion to exp(-f^2),
+which is much faster than 1/f.
+
+
+
+
+§ EFFICIENT CONVOLUTION
+
+
+
+one of the reasons the fft is such an important algorithm is that,
+combined with the convolution theorem, it provides an efficient
+way to compute convolution, cross-correlation, and autocorrelation.
+
+again, the convolution theorem states
+
+
+    (f  g) = (f) ·(g)
+
+
+so one way to compute a convolution is:
+
+
+    f  g = ((f) ·(g))
+
+
+where idft is the inverse dft.  a simple implementation of
+convolution takes time proportional to n^2; this algorithm,
+using fft, takes time proportional to n log n.
+
+we can confirm that it works by computing the same convolution
+both ways.  as an example, i'll apply it to the bitcoin data
+shown in figure .
+
+
+
+this example uses pandas to read the data from the csv file (included
+in the repository for this book).  if you are not familiar with
+pandas, don't worry: i'm not going to do much with it in this book.
+but if you're interested, you can learn more about it in
+think stats at <
+
+the result, df, is a dataframe, one of the data structures
+provided by pandas.  ys is a numpy array that contains daily
+closing prices.
+
+next i'll create a gaussian window and convolve it with ys:
+
+
+
+ computes the same thing using fft:
+
+
+
+we can test it by padding the window to the same length
+as ys and then computing the convolution:
+
+
+
+the result has m-1 bogus values at the beginning, where m is the
+length of the window.  if we slice off the bogus values, the result
+agrees with  with about 12 digits of precision.
+
+
+
+
+
+
+§ EFFICIENT AUTOCORRELATION
+
+
+
+
+
+
+autocorrelation functions computed by numpy and
+  fft_correlate.
+
+
+
+in section  i presented definitions of
+cross-correlation and convolution, and we saw that they are
+almost the same, except that in convolution the window is
+reversed.
+
+now that we have an efficient algorithm for convolution, we
+can also use it to compute cross-correlations and autocorrelations.
+using the data from the previous section, we can compute the
+autocorrelation facebook stock prices:
+
+
+
+with mode='same', the result has the same length as close,
+corresponding to lags from -n/2 to n/2-1.
+the gray line in figure  shows the result.
+except at lag=0, there are no peaks, so there is no apparent
+periodic behavior in this signal.  however, the autocorrelation
+function drops off slowly, suggesting that this signal resembled
+pink noise, as we saw in section .
+
+to compute autocorrelation using convolution,
+we have to zero-pad the signal to double the length.
+this trick is necessary because the fft is based
+on the assumption that the signal is periodic; that is, that it wraps
+around from the end to the beginning.  with time-series data like
+this, that assumption is invalid.  adding zeros, and then trimming
+the results, removes the bogus values.
+
+also, remember that convolution reverse the direction of the window.
+in order to cancel that effect, we reverse the direction of the
+window before calling , using np.flipud,
+which flips a numpy array.  the result is a view of the array,
+not a copy, so this operation is fast.
+
+
+
+the result from  has length 2n.  of those,
+the first and last n/2 are valid; the rest are the result of
+zero-padding.  to select the valid element, we roll the results
+and select the first n, corresponding to lags from -n/2 to
+n/2-1.
+
+as shown in figure  the results from
+ and np.correlate are identical (with
+about 9 digits of precision).
+
+notice that the correlations in figure  are
+large numbers; we could normalize them (between -1 and 1) as shown
+in section .
+
+the strategy we used here for auto-correlation also works for
+cross-correlation.  again, you have to prepare the signals by flipping
+one and padding both, and then you have to trim the invalid parts of
+the result.  this padding and trimming is a nuisance, but that's why
+libraries like numpy provide functions to do it for you.
+
+
+
+
+§ EXERCISES
+
+
+solutions to these exercises are in chap08soln.ipynb.
+
+
+the notebook for this chapter is chap08.ipynb.
+read through it and run the code.
+
+it contains an interactive widget that lets you
+experiment with the parameters of the gaussian window to see
+what effect they have on the cutoff frequency.
+
+what goes wrong when you increase the width of the gaussian,
+std, without increasing the number of elements in the window,
+m?
+
+
+
+
+in this chapter i claimed that the fourier transform of a gaussian
+curve is also a gaussian curve.  for discrete fourier transforms,
+this relationship is approximately true.
+
+try it out for a few examples.  what happens to the fourier transform
+as you vary std?
+
+
+
+
+if you did the exercises in chapter , you saw the
+effect of the hamming window, and some of the other windows provided
+by numpy, on spectral leakage.  we can get some insight into the
+effect of these windows by looking at their dfts.
+
+in addition to the gaussian window we used in this chapter, create a
+hamming window with the same size.  zero pad the windows and plot
+their dfts.  which window acts as a better low-pass filter?  you might
+find it useful to plot the dfts on a log-y scale.
+
+experiment with a few different windows and a few different sizes.
+
+
+
+
+
+
+CHAPTER: DIFFERENTIATION AND INTEGRATION
+
+
+
+this chapter picks up where the previous chapter left off,
+looking at the relationship between windows in the time domain
+and filters in the frequency domain.
+
+in particular, we'll look at the effect of a finite difference
+window, which approximates differentiation, and the cumulative
+sum operation, which approximates integration.
+
+the code for this chapter is in chap09.ipynb, which is in the
+repository for this book (see section ).
+you can also view it at <
+
+
+
+
+§ FINITE DIFFERENCES
+
+
+
+in section , we applied a smoothing window to
+the stock price of facebook and found that a smoothing
+window in the time domain corresponds to a low-pass filter in
+the frequency domain.
+
+in this section, we'll look at daily price changes and
+see that computing the difference between successive elements,
+in the time domain, corresponds to a high-pass filter.
+
+here's the code to read the data, store it as a wave, and compute its
+spectrum.
+
+
+
+this example uses pandas to read the csv file; the
+result is a dataframe, df, with columns for the opening
+price, closing price, and high and low prices.  i select the closing
+prices and save them in a wave object.
+the framerate is 1 sample per day.
+
+figure  shows
+this time series and its spectrum.
+visually, the time series resembles brownian noise (see
+section ).
+and the spectrum looks like a straight
+line, albeit a noisy one.  the estimated slope is -1.9,
+which is consistent with brownian noise.
+
+
+
+
+
+daily closing price of facebook and the spectrum of this time
+  series.
+
+
+
+now let's compute the daily price change using np.diff:
+
+
+
+figure  shows the resulting wave and its spectrum.
+the daily changes resemble white noise, and the estimated slope of the
+spectrum, -0.06, is near zero, which is what we expect for white
+noise.
+
+
+
+
+
+daily price change of facebook and the spectrum of this time series.
+
+
+
+
+
+
+§ THE FREQUENCY DOMAIN
+
+
+computing the difference
+between successive elements is the same as convolution with
+the window [1, -1].
+if the order of those elements seems backward,
+remember that convolution reverses the window before applying it
+to the signal.
+
+we can see the effect of this operation in the frequency domain
+by computing the dft of the window.
+
+
+
+
+
+
+
+filters corresponding to the diff and differentiate operators (left) and integration operator (right, log-y scale).
+
+
+
+figure  shows the result.  the finite difference
+window corresponds to a high pass filter: its amplitude increases with
+frequency, linearly for low frequencies, and then sublinearly after
+that.  in the next section, we'll see why.
+
+
+
+
+§ DIFFERENTIATION
+
+
+
+the window we used in the previous section is a
+numerical approximation of the first derivative, so the filter
+approximates the effect of differentiation.
+
+differentiation in the time domain corresponds to a simple filter
+in the frequency domain; we can figure out what it is with a little
+math.
+
+suppose we have a complex sinusoid with frequency f:
+
+
+    e_f(t) = e^2 π i f t
+
+
+the first derivative of e_f is
+
+
+    d/dt e_f(t) = 2 π i f e^2 π i f t
+
+
+which we can rewrite as
+
+
+    d/dt e_f(t) = 2 π i f e_f(t)
+
+
+in other words, taking the derivative of e_f is the same
+as multiplying by 2 π i f, which is a complex number
+with magnitude 2 π f and angle π/2.
+
+we can compute the filter that corresponds to differentiation,
+like this:
+
+
+
+i started with the spectrum of close, which has the right
+size and framerate, then replaced the hs with 2 π i f.
+figure  (left) shows this filter; it is a straight line.
+
+as we saw in section , multiplying a complex sinusoid
+by a complex number has two effects: it multiplies
+the amplitude, in this case by 2 π f, and shifts the phase
+offset, in this case by π/2.
+
+if you are familiar with the language of operators and eigenfunctions,
+each e_f is an eigenfunction of the differentiation operator, with the
+corresponding eigenvalue 2 π i f.  see
+<
+
+if you are not familiar with that language, here's what it
+means:
+
+
+
+
+
+
+  * an operator is a function that takes a function and returns
+another function.  for example, differentiation is an operator.
+
+
+  * a function, g, is an eigenfunction of an operator, , if
+applying  to g has the effect of multiplying the function by
+a scalar.  that is, g = λ g.
+
+
+  * in that case, the scalar λ is the eigenvalue that
+corresponds to the eigenfunction g.
+
+
+  * a given operator might have many eigenfunctions, each with
+a corresponding eigenvalue.
+
+
+
+because complex sinusoids are eigenfunctions of the differentiation
+operator, they are easy to differentiate.  all we have to do is
+multiply by a complex scalar.
+
+for signals with more than one
+component, the process is only slightly harder:
+
+
+
+
+  * express the signal as the sum of complex sinusoids.
+
+
+  * compute the derivative of each component by multiplication.
+
+
+  * add up the differentiated components.
+
+
+
+if that process sounds familiar, that's because it is identical
+to the algorithm for convolution in section : compute
+the dft, multiply by a filter, and compute the inverse dft.
+
+spectrum provides a method that applies the differentiation
+filter:
+
+
+
+we can use it to compute the derivative of the facebook time series:
+
+
+
+
+
+
+
+comparison of daily price changes computed by
+np.diff and by applying the differentiation filter.
+
+
+
+figure  compares the daily price changes computed by
+np.diff with the derivative we just computed.
+i selected the first 50 values in the time series so we can see the
+differences more clearly.
+
+the derivative is noisier, because it amplifies the high frequency
+components more, as shown in figure  (left).  also, the
+first few elements of the derivative are very noisy.  the problem
+there is that the dft-based derivative is based on the assumption that
+the signal is periodic.  in effect, it connects the last element in
+the time series back to the first element, which creates artifacts at
+the boundaries.
+
+to summarize, we have shown:
+
+
+
+
+  * computing the difference between successive values in a signal
+  can be expressed as convolution with a simple window.  the result is
+  an approximation of the first derivative.
+
+
+  * differentiation in the time domain corresponds to a simple
+  filter in the frequency domain.  for periodic signals, the result is
+  the first derivative, exactly.  for some non-periodic signals, it
+  can approximate the derivative.
+
+
+
+using the dft to compute derivatives is the basis of spectral
+  methods for solving differential equations (see
+<
+
+in particular, it is useful for the analysis of linear, time-invariant
+systems, which is coming up in chapter .
+
+
+
+
+§ INTEGRATION
+
+
+
+
+
+
+comparison of the original time series and the integrated
+derivative.
+
+
+
+in the previous section, we showed that differentiation in the time
+domain corresponds to a simple filter in the frequency domain: it
+multiplies each component by 2 π i f.  since integration is
+the inverse of differentiation, it also corresponds to a simple
+filter: it divides each component by 2 π i f.
+
+we can compute this filter like this:
+
+
+
+figure  (right) shows this filter on a log-y scale,
+which makes it easier to see.
+
+spectrum provides a method that applies the integration filter:
+
+
+
+we can confirm that the integration filter is correct by applying it
+to the spectrum of the derivative we just computed:
+
+
+
+but notice that at f=0, we are dividing by 0.  the result in
+numpy is nan, which is a special floating-point value that
+represents “not a number”.  we can partially deal with this
+problem by setting this value to 0 before converting the
+spectrum back to a wave:
+
+
+
+figure  shows this integrated derivative along with
+the original time series.  they are almost identical, but the
+integrated derivative has been shifted down.  the problem is that when
+we clobbered the f=0 component, we set the bias of the signal to 0.
+but that should not be surprising; in general, differentiation loses
+information about the bias, and integration can't recover it.  in some
+sense, the nan at f=0 is telling us that this element is unknown.
+
+
+
+
+
+a sawtooth wave and its spectrum.
+
+
+
+if we provide this “constant of integration”, the results are
+identical, which confirms that this integration filter is the correct
+inverse of the differentiation filter.
+
+
+
+§ CUMULATIVE SUM
+
+
+
+in the same way that the diff operator approximates differentiation,
+the cumulative sum approximates integration.
+i'll demonstrate with a sawtooth signal.
+
+
+
+figure  shows this wave and its spectrum.
+
+wave provides a method that computes the cumulative sum of
+a wave array and returns a new wave object:
+
+
+
+we can use it to compute the cumulative sum of :
+
+
+
+
+
+
+
+a parabolic wave and its spectrum.
+
+
+
+figure  shows the resulting wave and its spectrum.
+if you did the exercises in chapter , this waveform should
+look familiar: it's a parabolic signal.
+
+comparing the spectrum of the parabolic signal to the spectrum of the
+sawtooth, the amplitudes of the components drop off more quickly.  in
+chapter , we saw that the components of the sawtooth
+drop off in proportion to 1/f.  since the cumulative sum
+approximates integration, and integration filters components in
+proportion to 1/f, the components of the parabolic wave drop off in
+proportion to 1/f^2.
+
+we can see that graphically by computing the filter that corresponds
+to the cumulative sum:
+
+
+
+because cumsum is the inverse operation of diff, we
+start with a copy of , which is the filter
+that corresponds to the diff operation, and then invert the
+hs.
+
+
+
+
+
+filters corresponding to cumulative sum and integration.
+
+
+
+figure  shows the filters corresponding to
+cumulative sum and integration.  the cumulative sum is a good
+approximation of integration except at the highest frequencies,
+where it drops off a little faster.
+
+to confirm that this is the correct filter for the cumulative
+sum, we can compare it to the ratio of the spectrum
+ to the spectrum of :
+
+
+
+
+
+
+
+filter corresponding to cumulative sum and actual ratios of
+  the before-and-after spectrums.
+
+
+
+and here's the method that computes the ratios:
+
+
+
+when denom.amps is small, the resulting ratio is noisy,
+so i set those values to nan.
+
+figure  shows the ratios and the filter
+corresponding to the cumulative sum.  they agree, which confirms that
+inverting the filter for diff yields the filter for cumsum.
+
+finally, we can confirm that the convolution theorem applies by
+applying the cumsum filter in the frequency domain:
+
+
+
+within the limits of floating-point error,  is
+identical to , which we computed using cumsum, so
+the convolution theorem works!  but note that this demonstration only
+works with periodic signals.
+
+
+
+
+§ INTEGRATING NOISE
+
+
+in section , we generated brownian noise by computing the
+cumulative sum of white noise.
+now that we understand the effect of cumsum in the frequency
+domain, we have some insight into the spectrum of brownian noise.
+
+white noise has equal power at all frequencies, on average.  when we
+compute the cumulative sum, the amplitude of each component is divided
+by f.  since power is the square of magnitude, the power of each
+component is divided by f^2.  so on average, the power at frequency
+f is proportional to 1 / f^2:
+
+
+    p_f = k / f^2
+
+
+where k is a constant that's not important.
+taking the log of both sides yields:
+
+
+    log p_f = log k - 2 log f
+
+
+and that's why, when we plot the spectrum of brownian noise on a
+log-log scale, we expect to see a straight line with slope -2, at
+least approximately.
+
+in section  we plotted the spectrum of closing prices for
+facebook, and estimated that the slope is -1.9, which is consistent
+with brownian noise.  many stock prices have similar spectrums.
+
+when we use the diff operator to compute daily changes, we
+multiplied the amplitude of each component by a filter proportional to
+f, which means we multiplied the power of each component by f^2.
+on a log-log scale, this operation adds 2 to the slope of the
+power spectrum, which is why the estimated slope of the result
+is near 0.1 (but a little lower, because diff only approximates
+differentiation).
+
+
+
+
+
+§ EXERCISES
+
+
+the notebook for this chapter is chap09.ipynb.
+you might want to read through it and run the code.
+
+solutions to these exercises are in chap09soln.ipynb.
+
+
+the goal of this exercise is to explore the effect of diff and
+differentiate on a signal. create a triangle wave and plot
+it. apply diff and plot the result. compute the spectrum of the
+triangle wave, apply differentiate, and plot the result. convert
+the spectrum back to a wave and plot it. are there differences between
+the effect of diff and differentiate for this wave?
+
+
+
+the goal of this exercise is to explore the effect of cumsum and
+integrate on a signal. create a square wave and plot it. apply
+cumsum and plot the result. compute the spectrum of the square
+wave, apply integrate, and plot the result. convert the spectrum
+back to a wave and plot it. are there differences between the effect
+of cumsum and integrate for this wave?
+
+
+
+the goal of this exercise is the explore the effect of integrating
+twice. create a sawtooth wave, compute its spectrum, then apply integrate twice. plot the resulting wave and its spectrum. what is
+the mathematical form of the wave? why does it resemble a sinusoid?
+
+
+
+the goal of this exercise is to explore the effect of the 2nd
+difference and 2nd derivative. create a cubicsignal, which is
+defined in thinkdsp. compute the second difference by applying
+diff twice. what does the result look like?  compute the second
+derivative by applying differentiate to the spectrum twice.
+does the result look the same?
+
+plot the filters that corresponds to the 2nd difference and the 2nd
+derivative and compare them. hint: in order to get the filters on the
+same scale, use a wave with framerate 1.
+
+
+
+
+
+
+
+CHAPTER: LTI SYSTEMS
+
+
+
+this chapter presents the theory of signals and systems, using
+musical acoustics as an example.  it explains an
+important application of the convolution theorem, characterization
+of linear, time-invariant systems (which i'll define soon).
+
+the code for this chapter is in chap10.ipynb, which is in the
+repository for this book (see section ).
+you can also view it at <
+
+
+
+
+
+§ SIGNALS AND SYSTEMS
+
+
+in the context of signal processing, a system is an abstract
+representation of anything that takes a signal as input and produces
+a signal as output.
+
+for example, an electronic amplifier is a circuit that takes an
+electrical signal as input and produces a (louder) signal as output.
+
+as another example, when you listen to a musical performance, you
+can think of the room as a system that takes the sound of the
+performance at the location where it is generated and produces a
+somewhat different sound at the location where you hear it.
+
+a linear, time-invariant system[my presentation here
+  follows < is a
+system with these two properties:
+
+
+
+
+  * linearity: if you put two inputs into the system at the same
+  time, the result is the sum of their outputs.  mathematically, if an
+  input x_1 produces output y_1 and another input x_2 produces
+  y_2, then a x_1 + b x_2 produces a y_1 + b y_2, where a and
+  b are scalars.
+
+
+  * time invariance: the
+  effect of the system doesn't vary over time, or depend on the state
+  of the system.  so if inputs x_1 and x_2 differ by a shift in time,
+  their outputs y_1 and y_2 differ by the same shift, but are otherwise
+  identical.
+
+
+
+many physical systems have these properties, at least approximately.
+
+
+
+
+  * circuits that contain only resistors, capacitors and inductors are
+lti, to the degree that the components behave like their idealized
+models.
+
+
+  * mechanical systems that contain springs, masses and
+dashpots are also lti, assuming linear springs (force proportional
+to displacement) and dashpots (force proportional to velocity).
+
+
+  * also, and most relevant to applications in this book,
+the media that transmit sound (including air, water
+and solids) are well-modeled by lti systems.
+
+
+
+lti systems are described by linear differential equations, and
+the solutions of those equations are complex sinusoids (see
+<
+
+this result provides an algorithm for computing the effect of
+an lti system on an input signal:
+
+
+
+
+  * express the signal as the sum of complex sinusoid components.
+
+
+  * for each input component, compute the corresponding output component.
+
+
+  * add up the output components.
+
+
+
+at this point, i hope this algorithm sounds familiar.  it's the
+same algorithm we used for convolution in section , and
+for differentiation in section .  this process
+is called spectral decomposition because we “decompose”
+the input signal into its spectral components.
+
+in order to apply this process to an lti system, we have to characterize the system by finding its effect on each component
+of the input signal.  for mechanical systems, it turns out that there
+is a simple and efficient way to do that: you kick it and record
+the output.
+
+technically, the “kick” is called an impulse and the
+output is called the impulse response.  you might wonder
+how a single impulse can completely characterize a system.  you
+can see the answer by computing the dft of an impulse.  here's
+a wave array with an impulse at t=0:
+
+
+
+here's the wave array:
+
+
+
+and here's its spectrum:
+
+
+
+the spectrum is all ones; that is, an impulse is the sum of components
+with equal magnitudes at all frequencies.  this
+spectrum should not be confused with white noise, which has the same
+average power at all frequencies, but varies around that
+average.
+
+when you test a system by inputting
+an impulse, you are testing the response of the
+system at all frequencies.  and you can test them all at the same
+time because the system is linear, so simultaneous tests don't
+interfere with each other.
+
+
+
+
+§ WINDOWS AND FILTERS
+
+
+
+to show why this kind of system characterization works, i
+will start with a simple example: a 2-element moving average.
+we can think of this operation as a system that takes a signal
+as an input and produces a slightly smoother signal as an output.
+
+in this example we know what the window is, so we can compute
+the corresponding filter.  but that's not usually the case; in the
+next section we'll look at an example where we don't know the
+window or the filter ahead of time.
+
+
+
+
+
+dft of a 2-element moving average window.
+
+
+
+here's a window that computes a
+2-element moving average (see section ):
+
+
+
+we can find the corresponding filter by computing the dft of the
+window:
+
+
+
+figure  shows the result.  the filter that corresponds to a
+moving average window is a low-pass filter with the approximate shape
+of a gaussian curve.
+
+now imagine that we did not know the window or the corresponding filter,
+and we wanted to characterize this system.  we would do that by
+inputting an impulse and measuring the impulse response.
+
+in this example, we can compute the impulse response by multiplying
+the spectrum of the impulse and the filter, and then converting the result
+from a spectrum to a wave:
+
+
+
+since  is all ones, the product is
+identical to the filter, and the filtered wave is identical to the
+window.
+
+this example demonstrates two things:
+
+
+
+
+  * because the spectrum of an impulse is all ones, the dft
+of the impulse response is identical to the filter that
+characterizes the system.
+
+
+  * therefore, the impulse response is identical to the
+convolution window that characterizes the system.
+
+
+
+
+
+
+§ ACOUSTIC RESPONSE
+
+
+
+to characterize the acoustic response of a room or open space, a
+simple way to generate an impulse is to pop a balloon or
+fire a gun.  a gunshot puts an impulse into
+the system; the sound you hear is the impulse response.
+
+
+
+
+
+waveform of a gunshot.
+
+
+
+as an example, i'll use a recording of a gunshot to characterize
+the room where the gun was fired, then use the impulse response
+to simulate the effect of that room on a violin recording.
+
+this example is in chap10.ipynb, which is in the repository
+for this book; you can also view it, and listen to the examples,
+at <
+
+here's the gunshot:
+
+
+
+i select a segment starting at 0.26 seconds to remove the silence
+before the gunshot.  figure  (left) shows the
+waveform of the gunshot.  next we compute the dft of response:
+
+
+
+figure  (right) shows the result.  this spectrum
+encodes the response of the room; for each frequency, the spectrum
+contains a complex number that represents an amplitude multiplier and
+a phase shift.  this spectrum is called a transfer
+function because it contains information about how the system transfers
+the input to the output.
+
+now we can simulate the effect this room would have on the sound
+of a violin.  here is the violin recording we used in section :
+
+
+
+the violin and gunshot waves were sampled at the same framerate,
+44,100 hz.  and coincidentally, the duration of both is about the
+same.  i trimmed the violin wave to the same length as the gunshot.
+
+next i compute the dft of the violin wave:
+
+
+
+now i know the magnitude and phase of each component in the
+input, and i know the transfer function of the system.  their
+product is the dft of the output, which we can use to compute the
+output wave:
+
+
+
+
+
+
+
+the waveform of the violin recording before and after convolution.
+
+
+
+figure  shows the input (top) and output (bottom) of
+the system.  they are substantially different, and the differences are
+clearly audible.  load chap10.ipynb and listen to them.  one
+thing i find striking about this example is that you can get a sense
+of what the room was like; to me, it sounds like a long, narrow room
+with hard floors and ceilings.  that is, like a firing range.
+
+there's one thing i glossed over in this example that i'll mention
+in case it bothers anyone.  the violin recording i started with
+has already been transformed by one system: the room where it was
+recorded.  so what i really computed in my example is the sound
+of the violin after two transformations.  to properly simulate
+the sound of a violin in a different room, i should have characterized
+the room where the violin was recorded and applied the inverse
+of that transfer function first.
+
+
+
+
+§ SYSTEMS AND CONVOLUTION
+
+
+
+
+
+
+
+sum of a wave and a shifted, scaled copy.
+
+
+
+if you think the previous example is black magic,
+you are not alone.  i've been thinking about it for a while and it
+still makes my head hurt.
+
+in the previous section, i suggested one way to think about it:
+
+
+
+
+  * an impulse is made up of components with amplitude 1 at all
+  frequencies.
+
+
+  * the impulse response contains the sum of the responses of the
+  system to all of these components.
+
+
+  * the transfer function, which is the dft of the impulse response,
+  encodes the effect of the system on each frequency component in the form
+  of an amplitude multiplier and a phase shift.
+
+
+  * for any input, we can compute the response of the system
+  by breaking the input into components, computing the response to
+  each component, and adding them up.
+
+
+
+but if you don't like that, there's another way to think about
+it altogether: convolution!  by the convolution theorem, multiplication
+in the frequency domain corresponds to convolution in the time
+domain.  in this example, the output of the system is the convolution
+of the input and the system response.
+
+here are the keys to understanding why that works:
+
+
+
+
+  * you can think of the samples in the input wave as a sequence
+of impulses with varying amplitude.
+
+
+  * each impulse in the input yields a copy of the impulse response,
+  shifted in time (because the system is time-invariant) and scaled by
+  the amplitude of the input.
+
+
+  * the output is the sum of the shifted, scaled copies of the
+  impulse response.  the copies add up because the system is linear.
+
+
+
+let's work our way up gradually: suppose that instead of firing one
+gun, we fire two: a big one with amplitude 1 at t=0 and a
+smaller one with amplitude 0.5 at t=1.
+
+we can compute the response of the system by adding up
+the original impulse response and a scaled, shifted copy of itself.
+here's a function that makes a shifted, scaled copy of
+a wave:
+
+
+
+the parameter shift is a time shift in seconds; factor
+is a multiplicative factor.
+
+here's how we use it to compute the response to a two-gun salute:
+
+
+
+figure  shows the result.  you can hear what
+it sounds like in chap10.ipynb.  not surprisingly, it
+sounds like two gunshots, the first one louder than the second.
+
+now suppose instead of two guns, you add up 100 guns fired at a rate
+of 441 shots per second.
+this loop computes the result:
+
+
+
+with 441 shots per second,
+so you don't hear the individual shots.  instead, it sounds
+like a periodic signal at 441 hz.  if you play this example, it
+sounds like a car horn in a garage.
+
+and that brings us to a key insight: you can think of any wave as a
+series of samples, where each sample is an impulse with a different
+amplitude.
+
+as a example, i'll generate a sawtooth signal at 441 hz:
+
+
+
+now i'll loop through the series of impulses that make up the
+sawtooth, and add up the impulse responses:
+
+
+
+the result is what it would sound like to play a sawtooth wave in a
+firing range.  again, you can listen to it in chap10.ipynb.
+
+
+
+
+diagram of the sum of scaled and shifted copies of g.
+
+
+
+figure  shows a diagram of this computation,
+where f is the sawtooth, g is the impulse response, and h
+is the sum of the shifted, scaled copies of g.
+
+for the example shown:
+
+
+    h[2] = f[0]g[2] + f[1]g[1] + f[2]g[0]
+
+
+and more generally,
+
+
+    h[n] = ∑_m=0^n-1 f[m] g[n-m]
+
+
+you might recognize this equation from section .  it
+is the convolution of f and g.  this shows that if the input is f
+and the impulse response of the system is g, the output is the
+convolution of f and g.
+
+in summary, there are two ways to think about the effect of a system
+on a signal:
+
+
+
+
+  * the input is a sequence of impulses, so the output is the sum of
+  scaled, shifted copies of the impulse response; that sum is the
+  convolution of the input and the impulse response.
+
+
+  * the dft of the impulse response is a transfer function that
+  encodes the effect of the system on each frequency component as a
+  magnitude and phase offset.  the dft of the input encodes the
+  magnitude and phase offset of the frequency components it contains.
+  multiplying the dft of the input by the transfer function yields
+  the dft of the output.
+
+
+
+the equivalence of these descriptions should not be a surprise;
+it is basically a statement of the convolution theorem:
+convolution of f and g in the time
+domain corresponds to multiplication in the frequency domain.
+and if you wondered why convolution is defined as it is, which
+seemed backwards when we talked about smoothing and difference
+windows, now you know the reason: the definition of convolution
+appears naturally in the response of an lti system to a signal.
+
+
+
+
+§ PROOF OF THE CONVOLUTION THEOREM
+
+
+well, i've put it off long enough.  it's time to prove the convolution
+theorem (ct), which states:
+
+
+    (f  g) = (f) (g)
+
+
+where f and g are vectors with the same length, n.
+
+i'll proceed in two steps:
+
+
+
+
+  * i'll show that in the special case where f is a complex
+exponential, convolution with g has the effect of multiplying
+f by a scalar.
+
+
+  * in the more general case where f is not a complex exponential,
+we can use the dft to express it as a sum of exponential components,
+compute the convolution of each component (by multiplication) and
+then add up the results.
+
+
+
+together these steps prove the convolution theorem.  but first, let's
+assemble the pieces we'll need.  the dft of g, which i'll call g
+is:
+
+
+    dft(g)[k] = g[k] = ∑_n g[n] exp(-2 π i n k / n)
+
+
+where k is an index of frequency from
+0 to n-1 and n is an index of time from 0 to n-1.
+the result is a vector of n complex numbers.
+
+the inverse dft of f, which i'll call f, is:
+
+
+    idft(f)[n] = f[n] = ∑_k f[k] exp(2 π i n k / n)
+
+
+here's the definition of convolution:
+
+
+    (f  g)[n] = ∑_m f[m] g[n-m]
+
+
+where m is another index of time from 0 to n-1.
+convolution is commutative, so i could equivalently write:
+
+
+    (f  g)[n] = ∑_m f[n-m] g[m]
+
+
+now let's consider the special case where f is a complex
+exponential with frequency k, which i'll call e_k:
+
+
+    f[n] = e_k[n] = exp(2 π i n k / n)
+
+
+where k is an index of frequency and n is an index of time.
+
+plugging e_k into the second definition of convolution yields
+
+
+    (e_k  g)[n] = ∑_m exp(2 π i (n-m) k / n) g[m]
+
+
+we can split the first term into a product:
+
+
+    (e_k  g)[n] = ∑_m exp(2 π i n k / n) exp(-2 π i m k / n) g[m]
+
+
+the first half does not depend on m, so we can pull it out of the
+summation:
+
+
+    (e_k  g)[n] = exp(2 π i n k / n) ∑_m exp(-2 π i m k / n) g[m]
+
+
+now we recognize that the first term is e_k, and the summation is
+g[k] (using m as the index of time).  so we can write:
+
+
+    (e_k  g)[n] = e_k[n] g[k]
+
+
+which shows that for each complex exponential, e_k, convolution
+with g has the effect of multiplying e_k by g[k].  in mathematical
+terms, each e_k is an eigenvector of this operation, and
+g[k] is the corresponding eigenvalue (see section ).
+
+now for the second part of the proof.  if the input signal, f, doesn't
+happen to be a complex exponential, we can express it as a sum of
+complex exponentials by computing its dft, f.
+for each value of k from 0 to n-1, f[k] is the complex
+magnitude of the component with frequency k.
+
+each input component is a complex exponential with magnitude
+f[k], so each output component is a complex
+exponential with magnitude f[k] g[k], based on the first part of
+the proof.
+
+because the system is linear, the output is just the sum of the
+output components:
+
+
+    (f  g)[n] = ∑_k f[k] g[k] e_k[n]
+
+
+plugging in the definition of e_k yields
+
+
+    (f  g)[n] = ∑_k f[k] g[k] exp(2 π i n k / n)
+
+
+the right hand side is the inverse dft of the product f g.  thus:
+
+
+    (f  g) = ( f g )
+
+
+substituting f = (f) and g = (g):
+
+
+    (f  g) = ( (f) (g) )
+
+
+finally, taking the dft of both sides yields the convolution theorem:
+
+
+    (f  g) = (f) (g)
+
+
+qed
+
+
+
+
+§ EXERCISES
+
+
+solutions to these exercises are in chap10soln.ipynb.
+
+
+in section  i describe convolution as the sum of shifted,
+scaled copies of a signal.  strictly speaking, this operation is
+linear convolution, which does not assume that the signal
+is periodic.
+
+but in section , when we multiply the
+dft of the signal by the transfer function, that operation corresponds
+to circular convolution, which assumes that the signal is
+periodic.  as a result, you might notice that the output contains
+an extra note at the beginning, which wraps around from the end.
+
+fortunately, there is a standard solution to this problem.  if you
+add enough zeros to the end of the signal before computing the dft,
+you can avoid wrap-around and compute a linear convolution.
+
+modify the example in chap10.ipynb and confirm that zero-padding
+eliminates the extra note at the beginning of the output.
+
+
+
+
+the open air library provides a “centralized... on-line resource for
+anyone interested in auralization and acoustical impulse response
+data” (<  browse their collection
+of impulse response data and download one that sounds interesting.
+find a short recording that has the same sample rate as the impulse
+response you downloaded.
+
+simulate the sound of your recording in the space where the impulse
+response was measured, computed two way: by convolving the recording
+with the impulse response and by computing the filter that corresponds
+to the impulse response and multiplying by the dft of the recording.
+
+
+
+
+
+
+
+
+
+
+CHAPTER: MODULATION AND SAMPLING
+
+
+in section  we saw that when a signal is sampled at
+10,000 hz, a component at 5500 hz is indistinguishable from a
+component at 4500 hz.  in this example, the folding frequency, 5000 hz,
+is half of the sampling rate.  but i didn't explain why.
+
+this chapter explores the effect of sampling and presents the
+sampling theorem, which explains aliasing and the folding frequency.
+
+i'll start by exploring the effect of convolution with impulses;
+then i'll use that effect to explain amplitude modulation (am), which
+turns out to be useful for understanding the sampling theorem.
+
+the code for this chapter is in chap11.ipynb, which is in the
+repository for this book (see section ).
+you can also view it at <
+
+
+
+
+§ CONVOLUTION WITH IMPULSES
+
+
+as we saw in section , convolution of a signal with
+a series of impulses has the effect of making shifted, scaled
+copies of the signal.
+
+as an example, i'll read signal that sounds like a beep:
+
+
+
+and i'll construct a wave with four impulses:
+
+
+
+and then convolve them:
+
+
+
+
+
+
+
+the effect of convolving a signal (top left) with a series of
+  impulses (bottom left).  the result (right) is the sum of shifted,
+  scaled copies of the signal.
+
+
+
+figure  shows the results, with the signal in
+the top left, the impulses in the lower left, and the result on
+the right.
+
+you can hear the result in chap11.ipynb; it sounds like
+a series of four beeps with decreasing loudness.
+
+the point of this example is just to demonstrate that convolution
+with impulses makes shifted, scaled copies.  this result will be
+useful in the next section.
+
+
+
+
+§ AMPLITUDE MODULATION
+
+
+
+
+
+
+
+demonstration of amplitude modulation.  the top row is the
+spectrum of the signal; the next row is the spectrum after modulation;
+the next row is the spectrum after demodulation; the last row is the
+demodulated signal after low-pass filtering.
+
+
+
+amplitude modulation (am) is used to broadcast am radio, among other
+applications.  at the transmitter, the signal (which might contain
+speech, music, etc.) is “modulated” by multiplying it with a cosine
+signal that acts as a “carrier wave”.  the result is a
+high-frequency wave that is suitable for broadcast by radio.  typical
+frequencies for am radio in the united states are 500–1600 khz (see
+<
+
+at the receiving end, the broadcast signal is “demodulated” to
+recover the original signal.  surprisingly, demodulation works by
+multiplying the broadcast signal, again, by the same carrier wave.
+
+to see how that works, i'll modulate a signal with a carrier wave at
+10 khz.  here's the signal:
+
+
+
+and here's the carrier:
+
+
+
+we can multiply them using the * operator, which multiplies
+the wave arrays elementwise:
+
+
+
+the result sounds pretty bad.  you can hear it in chap11.ipynb.
+
+figure  shows what's happening in the frequency
+domain.  the top row is the spectrum of the original signal.  the
+next row is the spectrum of the modulated signal, after multiplying
+by the carrier.  it contains two copies of the original spectrum,
+shifted by plus and minus 10 khz.
+
+to understand why, recall that convolution in the time domain corresponds
+to multiplication in the frequency domain.  conversely, multiplication
+in the time domain corresponds to convolution in the frequency domain.
+when we multiply the signal by the carrier, we are convolving its
+spectrum with the dft of the carrier.
+
+since the carrier is a simple cosine wave, its dft is two impulses, at
+plus and minus 10 khz.  convolution with these impulses makes
+shifted, scaled copies of the spectrum.  notice that the amplitude of
+the spectrum is smaller after modulation.  the energy from the original
+signal is split between the copies.
+
+we demodulate the signal, by multiplying by the carrier wave again:
+
+
+
+the third row of figure  shows the result.  again,
+multiplication in the time domain corresponds to convolution in the
+frequency domain, which makes shifted, scaled copies of the spectrum.
+
+since the modulated spectrum contains two peaks, each peak gets split
+in half and shifted by plus and minus 20 khz.  two of the copies
+meet at 0 khz and get added together; the other two copies end up
+centered at plus and minus 20 khz.
+
+if you listen to the demodulated signal, it sounds pretty good.  the
+extra copies of the spectrum add high frequency components that were
+not it the original signal, but they are so high that your speakers
+probably can't play them, and most people can't hear them.  but if
+you have good speakers and good ears, you might.
+
+in that case, you can get rid of the extra components by applying a
+low-pass filter:
+
+
+
+the result is quite close to the original wave, although about half
+of the power is lost after demodulating and filtering.  but that's not
+a problem in practice, because much more of the power is lost in
+transmitting and receiving the broadcast signal.  we have to amplify
+the result anyway, another factor of 2 is not an issue.
+
+
+
+
+§ SAMPLING
+
+
+
+
+
+
+spectrum of a signal before (top) and after (bottom) sampling.
+
+
+
+i explained amplitude modulation in part because it is interesting, but
+mostly because it will help us understand sampling.  “sampling” is
+the process of measuring an analog signal at a series of points in
+time, usually with equal spacing.
+
+for example, the wav files we have used as examples were
+recorded by sampling the output of a microphone using an analog-to-digital
+converter (adc).  the sampling rate for most of them is 44.1 khz,
+which is the standard rate for “cd quality” sound, or 48 khz, which
+is the standard for dvd sound.
+
+at 48 khz, the folding frequency is 24 khz, which is higher than most
+people can hear (see <
+
+in most of these waves, each sample has 16 bits, so there
+are 2^16 distinct levels.  this “bit depth” turns out to be enough
+that adding more bits does not improve the sound quality noticeably
+(see <
+
+of course, applications other than audio signals might require higher
+sampling rates, in order to capture higher frequencies, or higher
+bit-depth, in order to reproduce waveforms with more fidelity.
+
+
+
+
+to demonstrate the effect of the sampling process, i am going to start
+with a wave sampled at 44.1 khz and select samples from it at about 11 khz.
+this is not exactly the same as sampling from an analog signal, but
+the effect is the same.
+
+first i'll load a recording of a drum solo:
+
+
+
+figure  (top) shows the spectrum of this wave.
+now here's the function that samples from the wave:
+
+
+
+i'll use it to select every fourth element:
+
+
+
+the result has the same framerate as  the original, but most of the
+elements are zero.  if you play the sampled wave, it doesn't sound
+very good.  the sampling process introduces high-frequency
+components that were not in the original.
+
+figure  (bottom) shows the spectrum of the sampled
+wave.  it contains four copies of the original spectrum (it looks like
+five copies because one is split between the highest and lowest
+frequencies).
+
+
+
+
+
+the dft of an impulse train is also an impulse train.
+
+
+
+to understand where these copies come from, we can think of the
+sampling process as multiplication with a series of impulses.  instead
+of using sample to select every fourth element, we could use
+this function to make a series of impulses, sometimes called an
+impulse train:
+
+
+
+and then multiply the original wave by the impulse train:
+
+
+
+the result is the same; it still doesn't sound very good, but now
+we understand why.  multiplication in the time domain corresponds
+to convolution in the frequency domain.  when we multiply
+by an impulse train, we are convolving with the dft of an
+impulse train.  as it turns out, the dft of an impulse
+train is also an impulse train.
+
+figure  shows two examples.  the top row is
+the impulse train in the example, with frequency 11,025 hz.
+the dft is a train of 4 impulses, which is why we get 4 copies
+of the spectrum.  the bottom row shows an impulse
+train with a lower frequency, about 5512 hz.  its dft is a train
+of 8 impulses.  in general, more impulses in the time
+domain correspond to fewer impulses in the frequency
+domain.
+
+in summary:
+
+
+
+
+  * we can think of sampling as multiplication by an impulse train.
+
+
+  * multiplying by an impulse train corresponds
+to convolution with an impulse train in the frequency domain.
+
+
+  * convolution with an impulse train makes multiple copies of the
+signal's spectrum.
+
+
+
+
+
+
+§ ALIASING
+
+
+
+
+
+
+spectrum of the drum solo (top), spectrum of the impulse
+train (second row), spectrum of the sampled wave (third row),
+after low-pass filtering (bottom).
+
+
+
+section , after demodulating an am signal we got rid of
+the extra copies of the spectrum by applying a low-pass filter.
+we can do the same thing after sampling, but it turns out
+not to be a perfect solution.
+
+figure  shows why not.  the top row is the spectrum
+of the drum solo.  it contains high frequency components that extend
+past 10 khz.  when we sample this wave, we convolve the spectrum
+with the impulse train (second row), which makes copies of the spectrum
+(third row).  the bottom row shows the result after applying a low-pass
+filter with a cutoff at the folding frequency, 5512 hz.
+
+if we convert the result back to a wave, it is similar to the original
+wave, but there are two problems:
+
+
+
+
+  * because of the low-pass filter, the components above 5500 hz
+have been lost, so the result sounds muted.
+
+
+  * even the components below 5500 hz are not quite right, because
+the include contributions from leftover from the spectral copies we
+tried to filter out.
+
+
+
+
+
+
+
+spectrum of a bass guitar solo (top), its spectrum after
+sampling (middle), and after filtering (bottom).
+
+
+
+if the spectral copies overlap after sampling, we lose information
+about the spectrum, and we won't be able to recover it.
+
+but if the copies don't overlap, things work out pretty well.  as
+a second example, i loaded a recording of a bass guitar solo.
+
+figure  shows its spectrum (top row), which contains
+no visible energy above 5512 hz.  the second row shows the spectrum of
+the sampled wave, and the third row shows the spectrum after the low
+pass filter.  the amplitude is lower because we've filtered out some
+of the energy, but the shape of the spectrum is almost exactly what we
+started with.  and if we convert back to a wave, it sounds the same.
+
+
+
+
+§ INTERPOLATION
+
+
+
+
+
+
+a brick wall low-pass filter (right) and the corresponding
+convolution window (left).
+
+
+
+the low pass filter i used in the last step is a so-called brick
+  wall filter; frequencies above the cutoff are removed completely,
+as if they hit a brick wall.
+
+figure  (right) shows what this filter looks like.
+of course, multiplication by this filter, in the frequency domain,
+corresponds to convolution with a window in the time domain.  we can
+find out what that window is by computing the inverse dft of the
+filter, which is shown in figure  (left).
+
+that function has a name; it is the normalized sinc function, or at
+least a discrete approximation of it (see
+<
+
+
+    sinc(x) = sinπ x/π x
+
+
+when we apply the low-pass filter, we are convolving with a sinc
+function.  we can think of this convolution as the sum of shifted,
+scaled copies of the sinc function.
+
+the value of sinc is 1 at 0 and 0 at every other integer
+value of x.  when we shift the sinc function, we move the zero point.
+when we scale it, we change the height at the zero point.
+so when we add up the shifted, scaled copies, they interpolate
+between the sampled points.
+
+
+
+
+
+example of interpolation by adding shifted, scaled copies of a sinc function.
+
+
+
+figure  shows how that works using a short segment
+of the bass guitar solo.  the line across the top is the original
+wave.  the vertical gray lines show the sampled values.  the thin
+curves are the shifted, scaled copies of the sinc function.
+the sum of these sinc functions is identical to the original wave.
+
+read that last sentence again, because it is more surprising than it
+might seem.  because we started with a signal that contained no energy
+above 5512 hz, and we sampled at 11,025 hz, we were able to recover
+the original spectrum exactly.
+
+in this example, i started with a wave that had already been
+sampled at 44,100 hz, and i resampled it at 11,025 hz.  after
+resampling, the gap between the spectral copies is the sampling
+rate, 11.025 khz.  if the original signal contains components that
+exceed half of the sampling rate, 5512 hz, the copies overlap
+and we lose information.
+
+but if the signal is “bandwidth limited”; that is, it contains no
+energy above 5512 hz, the spectral copies don't overlap, we don't lose
+information, and we can recover the original signal exactly.
+
+this result is known as the nyquist-shannon sampling theorem (see
+<
+
+this example does not prove the sampling theorem, but i hope it
+helps you understand what it says and why it works.
+
+notice that the argument i made does
+not depend on the original sampling rate, 44.1 khz.  the result
+would be the same if the original had been sampled at a higher
+frequency, or even if the original had been a continuous analog
+signal: if we sample at framerate f, we can recover the original
+signal exactly, as long as it contains no energy at frequencies
+above f/2.
+
+
+
+
+§ EXERCISES
+
+
+solutions to these exercises are in chap11soln.ipynb.
+
+
+the code in this chapter is in chap11.ipynb.  read through
+it and listen to the examples.
+
+
+
+
+chris “monty” montgomery has an excellent video called “d/a and a/d
+| digital show and tell”; it demonstrates the sampling theorem in
+action, and presents lots of other excellent information about
+sampling.  watch it at
+<
+
+
+
+
+as we have seen, if you sample a signal at too low a
+framerate, frequencies above the folding frequency get aliased.
+once that happens, it is no longer possible to filter out
+these components, because they are indistinguishable from
+lower frequencies.
+
+it is a good idea to filter out these frequencies before
+sampling; a low-pass filter used for this purpose is called
+an anti-aliasing filter.
+
+returning to the drum solo example, apply a low-pass filter
+before sampling, then apply the low-pass filter again to remove
+the spectral copies introduced by sampling.  the result should
+be identical to the filtered signal.
+
+
+
+
+
+
+
+

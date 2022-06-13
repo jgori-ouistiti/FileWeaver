@@ -1,0 +1,345 @@
+% LaTeX source for ``Think DSP: Digital Signal Processing for Programmers''
+% Copyright 2014  Allen B. Downey.
+
+% License: Creative Commons
+% Attribution-NonCommercial-ShareAlike 4.0 International
+% http://creativecommons.org/licenses/by-nc-sa/4.0/
+%
+
+\documentclass[12pt]{book}
+\usepackage[width=5.5in,height=8.5in,
+  hmarginratio=3:2,vmarginratio=1:1]{geometry}
+
+% for some of these packages, you might have to install
+% texlive-latex-extra (in Ubuntu)
+
+%\usepackage[T1]{fontenc}
+%\usepackage{textcomp}
+%\usepackage{mathpazo}
+%\usepackage{pslatex}
+
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{amsmath}
+\usepackage{amsthm}
+%\usepackage{amssymb}
+\usepackage{makeidx}
+\usepackage{setspace}
+\usepackage{hevea}
+\usepackage{upquote}
+
+% include this so we can compile without hyperref
+% https://tex.stackexchange.com/questions/44088/when-do-i-need-to-invoke-phantomsection
+\providecommand\phantomsection{}
+
+\title{Think DSP}
+\author{Allen B. Downey}
+
+\newcommand{\thetitle}{Think DSP}
+\newcommand{\thesubtitle}{Digital Signal Processing in Python}
+\newcommand{\theversion}{1.1.4}
+
+% these styles get translated in CSS for the HTML version
+\newstyle{a:link}{color:black;}
+\newstyle{p+p}{margin-top:1em;margin-bottom:1em}
+\newstyle{img}{border:0px}
+
+% change the arrows in the HTML version
+\setlinkstext
+  {\imgsrc[alt="Previous"]{back.png}}
+  {\imgsrc[alt="Up"]{up.png}}
+  {\imgsrc[alt="Next"]{next.png}}
+
+\makeindex
+
+\newif\ifplastex
+\plastexfalse
+
+\begin{document}
+
+\frontmatter
+
+
+
+\ifplastex
+    \usepackage{localdef}
+    \maketitle
+
+\newcount\anchorcnt
+\newcommand*{\Anchor}[1]{%
+  \@bsphack%
+    \Hy@GlobalStepCount\anchorcnt%
+    \edef\@currentHref{anchor.\the\anchorcnt}%
+    \Hy@raisedlink{\hyper@anchorstart{\@currentHref}\hyper@anchorend}%
+    \M@gettitle{}\label{#1}%
+    \@esphack%
+}
+\else
+
+\newtheoremstyle{exercise}% name of the style to be used
+  {\topsep}% measure of space to leave above the theorem. E.g.: 3pt
+  {\topsep}% measure of space to leave below the theorem. E.g.: 3pt
+  {}% name of font to use in the body of the theorem
+  {}% measure of space to indent
+  {\bfseries}% name of head font
+  {}% punctuation between head and body
+  { }% space after theorem head; " " = normal interword space
+  {}% Manually specify head
+
+\theoremstyle{exercise}
+\newtheorem{exercise}{Exercise}[chapter]
+
+\input{latexonly}
+
+\begin{latexonly}
+
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\blankpage}{\thispagestyle{empty} \quad \newpage}
+
+% TITLE PAGES FOR LATEX VERSION
+
+%-half title--------------------------------------------------
+\thispagestyle{empty}
+
+\begin{flushright}
+\vspace*{2.0in}
+
+\begin{spacing}{3}
+{\huge \thetitle}\\
+{\Large \thesubtitle}
+\end{spacing}
+
+\vspace{0.25in}
+
+Version \theversion
+
+\vfill
+
+\end{flushright}
+
+%--verso------------------------------------------------------
+
+\blankpage
+\blankpage
+
+%--title page--------------------------------------------------
+\pagebreak
+\thispagestyle{empty}
+
+\begin{flushright}
+\vspace*{2.0in}
+
+\begin{spacing}{3}
+{\huge \thetitle}\\
+{\Large \thesubtitle}
+\end{spacing}
+
+\vspace{0.25in}
+
+Version \theversion
+
+\vspace{1in}
+
+
+{\Large
+Allen B. Downey\\
+}
+
+
+\vspace{0.5in}
+
+{\Large Green Tea Press}
+
+{\small Needham, Massachusetts}
+
+\vfill
+
+\end{flushright}
+
+
+%--copyright--------------------------------------------------
+\pagebreak
+\thispagestyle{empty}
+
+Copyright \copyright ~2014 Allen B. Downey.
+
+
+\vspace{0.2in}
+
+\begin{flushleft}
+Green Tea Press       \\
+9 Washburn Ave \\
+Needham MA 02492
+\end{flushleft}
+
+Permission is granted to copy, distribute, and/or modify this document
+under the terms of the Creative Commons
+Attribution-NonCommercial-ShareAlike 4.0 International License, which
+is available at
+\url{http://creativecommons.org/licenses/by-nc-sa/4.0/}.
+
+
+The \LaTeX\ source for this book is available from
+\url{http://think-dsp.com}.
+
+\vspace{0.2in}
+
+\end{latexonly}
+
+
+% HTMLONLY
+
+\begin{htmlonly}
+
+% TITLE PAGE FOR HTML VERSION
+
+{\Large \thetitle: \thesubtitle}
+
+{\large Allen B. Downey}
+
+Version \theversion
+
+\vspace{0.25in}
+
+Copyright 2014 Allen B. Downey
+
+\vspace{0.25in}
+
+Permission is granted to copy, distribute, and/or modify this document
+under the terms of the Creative Commons
+Attribution-NonCommercial-ShareAlike 4.0 International License,
+which is available at
+\url{http://creativecommons.org/licenses/by-nc-sa/4.0/}.
+
+\setcounter{chapter}{-1}
+
+\end{htmlonly}
+
+\fi
+% END OF THE PART WE SKIP FOR PLASTEX
+
+\chapter{Preface}
+\label{preface}
+Signal processing is one of my favorite topics.  It is useful
+in many areas of science and engineering, and if you understand
+the fundamental ideas, it provides insight into many things
+we see in the world, and especially the things we hear.
+
+But unless you studied electrical or mechanical engineering, you
+probably haven't had a chance to learn about signal processing.  The
+problem is that most books (and the classes that use them) present the
+material bottom-up, starting with mathematical abstractions like
+phasors.  And they tend to be theoretical, with few applications and
+little apparent relevance.
+
+The premise of this book is that if you know how to program, you
+can use that skill to learn other things, and have fun doing it.
+
+With a programming-based approach, I can present the most important
+ideas right away.  By the end of the first chapter, you can analyze
+sound recordings and other signals, and generate new sounds.  Each
+chapter introduces a new technique and an application you can
+apply to real signals.  At each step you learn how to use a
+technique first, and then how it works.
+
+This approach is more practical and, I hope you'll agree, more fun.
+
+
+\section{Who is this book for?}
+
+The examples and supporting code for this book are in Python.  You
+should know core Python and you should be
+familiar with object-oriented features, at least using objects if not
+defining your own.
+
+If you are not already familiar with Python, you might want to start
+with my other book, {\it Think Python}, which is an introduction to
+Python for people who have never programmed, or Mark
+Lutz's {\it Learning Python}, which might be better for people with
+programming experience.
+
+I use NumPy and SciPy extensively.  If you are familiar with them
+already, that's great, but I will also explain the functions
+and data structures I use.
+
+I assume that the reader knows basic mathematics, including complex
+numbers.  You don't need much calculus; if you understand the concepts
+of integration and differentiation, that will do.
+I use some linear algebra, but I will explain it as we
+go along.
+
+
+\section{Using the code}
+\label{code}
+
+The code and sound samples used in this book are available from
+\url{https://github.com/AllenDowney/ThinkDSP}.  Git is a version
+control system that allows you to keep track of the files that
+make up a project.  A collection of files under Git's control is
+called a ``repository''.  GitHub is a hosting service that provides
+storage for Git repositories and a convenient web interface.
+\index{repository}
+\index{Git}
+\index{GitHub}
+
+The GitHub homepage for my repository provides several ways to
+work with the code:
+
+\begin{itemize}
+
+\item You can create a copy of my repository
+on GitHub by pressing the {\sf Fork} button.  If you don't already
+have a GitHub account, you'll need to create one.  After forking, you'll
+have your own repository on GitHub that you can use to keep track
+of code you write while working on this book.  Then you can
+clone the repo, which means that you copy the files
+to your computer.
+\index{fork}
+
+\item Or you could clone
+my repository.  You don't need a GitHub account to do this, but you
+won't be able to write your changes back to GitHub.
+\index{clone}
+
+\item If you don't want to use Git at all, you can download the files
+in a Zip file using the button in the lower-right corner of the
+GitHub page.
+
+\end{itemize}
+
+All of the code is written to work in both Python 2 and Python 3
+with no translation.
+
+I developed this book using Anaconda from
+Continuum Analytics, which is a free Python distribution that includes
+all the packages you'll need to run the code (and lots more).
+I found Anaconda easy to install.  By default it does a user-level
+installation, not system-level, so you don't need administrative
+privileges.  And it supports both Python 2 and Python 3.  You can
+download Anaconda from \url{https://www.anaconda.com/distribution/}.
+\index{Anaconda}
+
+If you don't want to use Anaconda, you will need the following
+packages:
+
+\begin{itemize}
+
+\item NumPy for basic numerical computation, \url{http://www.numpy.org/};
+\index{NumPy}
+
+\item SciPy for scientific computation,
+  \url{http://www.scipy.org/};
+\index{SciPy}
+
+\item matplotlib for visualization, \url{http://matplotlib.org/}.
+\index{matplotlib}
+
+\end{itemize}
+
+Although these are commonly used packages, they are not included with
+all Python installations, and they can be hard to install in some
+environments.  If you have trouble installing them, I
+r
