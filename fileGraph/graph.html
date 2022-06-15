@@ -8,7 +8,6 @@
 	<script src="lib/anime.min.js"></script>
 	<script src="lib/graphView.js"></script>
 	<script src="lib/menu.js"></script>
-
 	<script type="text/javascript">
 
 		let contextMenus = {
@@ -178,33 +177,42 @@
 			let uri = `git.html?path=${encodeURIComponent(node.path)}&tag=${encodeURIComponent(node.tag)}`
 			require('nw.gui').Window.open(uri, win => { win.x = 100; win.y = 100})
 		}
-
+		
+		function graph_cb(graph){
+			global.graph.layout(graph, updateGraph)
+			return "end"
+		}
+		
+					var thing = undefined;
+		
 		function init() {
 			 inspectPage();
 			 //inspectBgPage()
 
-			//graphEl = document.getElementById('graph');
-			//console.log(global.aaa);
+			graphEl = document.getElementById('graph');
 			//global.backend.start(data => console.log('Backend: '+data))
-			//global.exchange.watch(graph, graph => global.graph.layout(graph, updateGraph))
+			const ws = new WebSocket("ws://localhost:4000");
+			ws.addEventListener('open', function (event) {
+    				console.log('Connected!');
+			});
 			
-			
-			var ws = new WebSocket('ws://localhost:4000');
+
 			
 			ws.onmessage = function(event){
-				console.log("Received");
-				console.log(typeof(event.data));
-				const data = JSON.parse(event.data);
-				console.log("Voici l'objet parsed!");
+				console.log("Received a socket message, displaying the message");
+				console.log(event.data)
+				
+				console.log("Get the string")
+				var data = event.data
 				console.log(data);
-				var message = document.getElementById('message');
-				message.innerHTML = data;
-				//const data = JSON.parse(event.data);
-				//console.log(data.message);
-				console.log(ws)
-				loadGraph("/home/gozea/.cookbook/graph")
+				
+				console.log("Get it as a json thing")
+				thing = JSON.parse(data)
+				thing = JSON.parse(thing)
+				
+				console.log(thing)
+				global.exchange.processExchange(graph,thing,graph => global.graph.layout(graph, updateGraph))
                     };
-		
 		}
 
 	</script>
