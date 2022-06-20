@@ -1,3 +1,8 @@
+import yake
+from pylatexenc.latex2text import LatexNodes2Text
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.decomposition import LatentDirichletAllocation
+
 import gi
 
 gi.require_version("Nautilus", "3.0")
@@ -89,6 +94,28 @@ class FlexFile:
 
     def update_param(self, key, value):
         self.params[key] = value
+        
+    def keyword_extract(self, nkeywords):        
+        f = open(self.filename, "r")
+        print(f"filename {self.filename}")
+        print(f)
+
+        text = f.read().lower()
+        w = LatexNodes2Text().latex_to_text(text)
+
+        vectorizer = CountVectorizer()
+        X = vectorizer.fit_transform([w])
+
+
+        kw_extractor = yake.KeywordExtractor(lan="en", n=3, dedupLim=0.9, top=nkeywords)
+        keywords = kw_extractor.extract_keywords(text)
+        lkw = []
+        for k, s in keywords :
+           lkw.append(k) 
+        self.update_param("cluster", lkw)
+
+
+
 
 def fn_to_cbp(filename):
     linkname = generate_linkname(filename)

@@ -353,7 +353,8 @@ def new_link(file, restore=True):
     try:
         FFobject = linking.FlexFile(file)
         filename, linkname, cookbookpage, cookbookleftpage = FFobject._get()
-        FFobject.update_param("cluster", "chat")
+        if ".tex" in filename:
+            FFobject.keyword_extract(3)
         params = FFobject.get_params()
 
         flags = [1, -2, -2]
