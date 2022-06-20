@@ -48,6 +48,7 @@ vertex_properties = [
     ("emptyout", "float"),
     ("emptyin", "float"),
     ("version", "string"),
+    ("cluster", "string"),
 ]
 edge_properties = [
     ("update_time", "float"),
@@ -106,6 +107,9 @@ def init_graph():
     )  # If 1 then the node is linked, else it is unlinked. Restoring or removing a file is just a question of changing this flag
     g.vp.emptyout = g.new_vertex_property("double")
     g.vp.emptyin = g.new_vertex_property("double")
+    g.vp.cluster = g.new_vertex_property("string")
+
+
     g.ep.update_time = g.new_edge_property("double")
     g.ep.edge_dir_up = g.new_edge_property("bool")
     g.ep.update_bool = g.new_edge_property("bool")
@@ -133,6 +137,7 @@ def init_graph():
     g.vp.emptyin[v] = 0
     g.vp.status[v] = 1  ### This is a special node that can trigger actions
     g.vp.version[v] = "NA"
+    g.vp.cluster[v] = "cat"
 
     w = g.add_vertex()
     g.vp.path[w] = "NA"
@@ -147,6 +152,7 @@ def init_graph():
     g.vp.emptyin[w] = 0
     g.vp.status[w] = 0
     g.vp.version[w] = "NA"
+    g.vp.cluster[w] = "cat"
 
     e = g.add_edge(g.vertex(v), g.vertex(w))
     g.ep.update_time[e] = 0.0
@@ -201,6 +207,7 @@ def copy_node(node_copied_from, node_copied_to_path, node_copied_to_symlink, sen
         g.vp.recipe[v],
         g.vp.trace[v],
         g.vp.interact[v],
+        g.vp.cluster[v],
     ]
 
     new_v, g, namemap = adding_vertex(props, True, g, namemap)
@@ -340,7 +347,8 @@ def remote_add_vertex(id, vdic, g, namemap):
         recipe = vdic["recipe"]
         trace = vdic["trace"]
         interact = vdic["interact"]
-        props = path, tag, target, smlk, flags, recipe, trace, interact
+        cluster = vdic["cluster"]
+        props = path, tag, target, smlk, flags, recipe, trace, interact, cluster
         return adding_vertex(props, False, g, namemap)
     return True, g, namemap
 
@@ -360,7 +368,8 @@ def adding_vertex(props, send=True, *args):
 
 
     """
-    path, tag, target, smlk, flags, recipe, trace, interact = props
+    print(f"propos \n {props}")
+    path, tag, target, smlk, flags, recipe, trace, interact, cluster = props
     linkname = os.path.dirname(path).split("/")[-1]
     FLAG_OPENED = 0
     try:
@@ -417,6 +426,11 @@ def adding_vertex(props, send=True, *args):
     else:
         g.vp.interact[v] = interact
 
+    if isinstance(cluster, str):
+        g.vp.cluster[v] = cluster.rstrip("]").lstrip("[").split(",")
+    else:
+        g.vp.cluster[v] = cluster
+
     g.vp.emptyout[v] = 0
     g.vp.emptyin[v] = 0
     g.vp.status[v] = 1
@@ -431,6 +445,7 @@ def adding_vertex(props, send=True, *args):
         vdic["recipe"] = str(recipe)
         vdic["trace"] = str(trace)
         vdic["interact"] = str(interact)
+        vdic["cluster"] = str(cluster)
         vdic["emptyout"] = 0
         vdic["emptyin"] = 0
         vdic["status"] = 1

@@ -186,7 +186,7 @@
 			//graphEl = document.getElementById('graph');
 			//console.log(global.aaa);
 			//global.backend.start(data => console.log('Backend: '+data))
-			//global.exchange.watch(graph, graph => global.graph.layout(graph, updateGraph))
+			global.exchange.watch(graph, graph => global.graph.layout(graph, updateGraph))
 			
 			
 			var ws = new WebSocket('ws://localhost:4000');

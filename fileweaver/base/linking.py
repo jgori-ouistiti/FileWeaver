@@ -78,10 +78,17 @@ class FlexFile:
             #     linkname = args[0]
             #     g, namemap = graph.open_graph()
             #     self.__init__(namemap[linkname])
+        self.params = {}
+        self.params["cluster"] = ""
 
     def _get(self):
         return self.filename, self.linkname, self.cookbookpage, self.cookbookleftpage
 
+    def get_params(self):
+        return self.params
+
+    def update_param(self, key, value):
+        self.params[key] = value
 
 def fn_to_cbp(filename):
     linkname = generate_linkname(filename)
