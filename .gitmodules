@@ -1,0 +1,3 @@
+[submodule "nautilusGit"]
+	path = nautilusGit
+	url = https://github.com/jlinoff/git2dot

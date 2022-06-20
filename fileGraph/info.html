@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>History Graph</title>
+
+	<link rel="stylesheet" href="node_modules/highlight.js/styles/github.css" />
+	<link rel="stylesheet" type="text/css" href="node_modules/diff2html/bundles/css/diff2html.min.css" />
+	<script type="text/javascript" src="node_modules/diff2html/bundles/js/diff2html-ui-slim.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="lib/menu.css">
+	<style type="text/css">
+		#info {
+			background-color: darkgrey;
+			color: white;
+			font-family: sans-serif;
+			padding-left: 10px;
+		}
+	</style>
+	<script src="lib/menu.js"></script>
+
+	<script type="text/javascript">
+		var searchString = window.location.search.substring(1) || 'path=.&tag=.'
+		let m = searchString.match(/^path=([^&]*)\&tag=([^&]*)$/)
+		let path = null
+		let tag = null
+		if (m) {
+			path = decodeURIComponent(m[1])
+			tag = decodeURIComponent(m[2])
+			document.title += ' for '+tag
+		}
+
+		const Path = require('path')
+
+		const params = require('./params.js')
+		if (params.mode === 'test')
+			path = 'test/files/2053_4982370/main.tex'
+
+		let dir = Path.resolve(Path.dirname(path))
+		let file = Path.basename(path)
+
+		const git = require('simple-git')(dir)
+		const hljs = require('highlight.js')
+		// require('node_modules/diff2html/lib/ui/js/highlight.js-slim.js')
+		hljs.configure({languages: ['tex']})
+
+		function getNode(elem) {
+			if (! elem.classList.contains('node'))
+				return null
+
+			let version = elem.getElementsByTagName('title')[0].textContent
+			let isMaster = version.endsWith('+master')
+			if (isMaster)
+				version = version.slice(0, -7)
+			let firstPoly = elem.getElementsByTagName('polygon')[0]
+			let stroke = firstPoly.getAttribute('stroke')
+			let fill = firstPoly.getAttribute('fill')
+			return {
+				elem,
+				version,
+				isMaster,
+				stroke,
+				fill,
+			}
+		}
+
+		let nodes = []
+		function parseNodes(svg) {
+			let groups = svg.getElementsByTagName('g')
+			for (var i = 0; i < groups.length; i++) {
+				let n = getNode(groups[i])
+				if (n)
+					nodes.push(n)
+			}
+		}
+
+		function closeInfo() {
+			document.getElementById('info').innerHTML = ''
+			document.getElementById('content').innerHTML = ''
+			unhighlightAll()
+		}
+
+		let highlighted = []
+		function highlightNode(node1, node2) {
+			unhighlightAll()
+			changeStroke(node1.elem, 'red')
+			highlighted.push(node1)
+			if (node2) {
+				changeStroke(node2.elem, 'red')
+				highlighted.push(node2)
+			}
+		}
+		function unhighlightAll() {
+			highlighted.forEach(n => changeStroke(n.elem, n.stroke))
+			highlighted = []
+		}
+
+		function openVersion(node) {
+			let what = node.version+':'+file
+			if (params.mode === 'test')
+				what = 'f80fcb1ca:main.tex'
+
+			git.show(what, (err, content) => {
+				if (err)
+					console.error(err)
+
+				highlightNode(node)
+
+				document.getElementById('info').innerHTML = `<h3>${file} at version ${node.version}<button style="float:right" onclick="closeInfo()">close</button></h3>`
+
+				content = hljs.highlightAuto(content).value
+				document.getElementById('content').innerHTML = '<pre>'+content+'</pre>'
+			})
+		}
+
+		function showDiff(node1, node2) {
+			let what = node1.version+'..'
+			if (node2)
+				what += node2.version
+			if (params.mode === 'test') {
+				what = 'f80fcb1ca'
+				file = 'main.tex'
+			}
+
+			let v1 = node1.version
+			let v2 = node2 ? ' to '+node2.version : ''
+
+			git.diff([what, file], (err, content) => {
+				if (err)
+					console.error(err)
+
+				if (node2)
+					highlightNode(node1, node2)
+				else
+					highlightNode(node1)
+
+				document.getElementById('info').innerHTML = `<h3>diff ${file} from version ${v1}${v2} <button style="float:right" onclick="closeInfo()">close</button></h3>`
+				// document.getElementById('content').innerHTML = '<pre>'+content+'</pre>'
+
+				const targetElement = document.getElementById('content')
+				const configuration = {
+					drawFileList: false, 
+					matching: 'lines',
+					highlight: true,
+				}
+				const diff2htmlUi = new Diff2HtmlUI(targetElement, content, configuration)
+				diff2htmlUi.draw()
+			})
+		}
+
+
+
+		let contextMenus = {
+			node: {
+				checkDisabled(info) {},
+				execute(info) { singleCommand(info) },
+			},
+			edge: {
+				checkDisabled(info) {},
+				execute(info) {},
+			},
+			graph: {
+				checkDisabled(info) {},
+				execute(info) { selectionCommand(info) },
+			}
+		}
+
+		function singleCommand(info) {
+			switch(info.cmd) {
+				case 'openVersion':
+					openVersion(getNode(info.target))
+					break
+			}
+		}
+
+		function selectionCommand(info) {
+			switch(info.cmd) {
+				case 'showDiff':
+					let sel = nodes.filter(n => n.isSelected)
+					if (sel.length === 1)
+						showDiff(sel[0])
+					else if (sel.length === 2)
+						showDiff(sel[0], sel[1])
+					break
+			}
+		}
+
+		function changeStroke(elem, color) {
+			let elems = [...elem.getElementsByTagName('polygon'), 
+						 ...elem.getElementsByTagName('polyline')]
+			elems.forEach(e => e.setAttribute('stroke', color))
+		}
+
+		function changeFill(elem, color) {
+			let poly = elem.getElementsByTagName('polygon')[0]
+			poly.setAttribute('fill', color)
+		}
+
+		function isSelected(node) {
+			let n = nodes.find(n => n.elem === node.elem)
+			return n ? n.isSelected : false
+		}
+
+		function selectNode(node) {
+			// changeStroke(node.elem, 'red')
+			changeFill(node.elem, 'yellow')
+			node.isSelected = true
+		}
+
+		function deselectNode(node) {
+			// changeStroke(node.elem, node.stroke)
+			changeFill(node.elem, node.fill)
+			node.isSelected = false
+		}
+
+		function deselectAllNodes() {
+			nodes.forEach(n => {
+				if (n.isSelected)
+					deselectNode(n)
+			})
+		}
+
+		let clickCommands = {
+			clickNode(e) {
+				let [target, type] = getTarget(e.target)
+				if (type !== 'node')
+					return
+				let node = nodes.find(n => target === n.elem )
+
+				if (e.shiftKey || e.ctrlKey || e.metaKey) {
+					if (isSelected(node))
+						deselectNode(node)
+					else
+						selectNode(node)
+				} else {
+					if (isSelected(node))
+						return
+					deselectAllNodes()
+					selectNode(node)
+				}
+			},
+			dblclickNode(e) {
+				let [target, type] = getTarget(e.target)
+				if (type !== 'node')
+					return
+				let node = nodes.find(n => target === n.elem )
+				openVersion(node)
+			},
+			clickGraph(e) {
+				deselectAllNodes()
+			}
+		}
+
+		function inspectPage() {
+			require('nw.gui').Window.get().showDevTools()
+		}
+
+		function inspectBgPage() {
+			chrome.developerPrivate.openDevTools({
+			    renderViewId: -1,
+			    renderProcessId: -1,
+			    extensionId: chrome.runtime.id
+			})
+		}
+
+		function init() {
+			initMenu()
+			var tbody = document.getElementById('tbody');
+			window.addEventListener('message', function(event) {
+			var data = JSON.parse(event.data);
+			
+			
+			// Maybe better performance with another method but couldn't make it work
+			//https://stackoverflow.com/questions/17684201/create-html-table-from-javascript-object
+			var lim = Object.keys(data).length;
+			
+			for (var i = 0; i < lim; i++) {
+				var tr = "<tr>";
+				var key = Object.keys(data)[i];
+				var value = Object.values(data)[i];
+				
+				tr += "<td>" + key + "</td>" + "<td>" + value + "</td></tr>";
+				tbody.innerHTML += tr;
+			} 
+			}, false);
+		}
+	</script>
+</head>
+<body onload="init()">
+
+		<div>	
+	<h1> LOL</h1>
+	</div>
+	
+	
+	<div id="graphMenu" class="menu">
+		<ul class="items">
+			<li id="showDiff">Show diff</li>
+		</ul>
+		<hr />
+		<ul class="items">
+			<li onmouseup="inspectPage()">Inspect page</li>
+			<li onmouseup="inspectBgPage()">Inspect background</li>
+		</ul>
+	</div>
+	<div id="nodeMenu" class="menu">
+		<ul class="items">
+			<li id="openVersion">Open</li>
+		</ul>
+		<hr />
+		<ul class="items">
+			<li onmouseup="inspectPage()">Inspect page</li>
+			<li onmouseup="inspectBgPage()">Inspect background</li>
+		</ul>
+	</div>
+	<div id="edgeMenu" class="menu">
+		<ul class="items">
+			<li onmouseup="inspectPage()">Inspect page</li>
+			<li onmouseup="inspectBgPage()">Inspect background</li>
+		</ul>
+	</div>
+	<div id="git">
+	</div>
+	<div id="info">
+	</div>
+	<div id="content">
+	</div>
+	
+	<table>
+    <tbody id="tbody"></tbody>
+</table>
+
+	
+</body>
