@@ -8,7 +8,6 @@
 	<script src="lib/anime.min.js"></script>
 	<script src="lib/graphView.js"></script>
 	<script src="lib/menu.js"></script>
-
 	<script type="text/javascript">
 
 		let contextMenus = {
@@ -34,7 +33,7 @@
 				let node = graph.nodes[target.id]
 				if (! node)
 					return
-
+				console.log("Node correctly selected")
 				if (e.shiftKey || e.ctrlKey || e.metaKey) {
 					if (node.isSelected) {
 						node.isSelected = false
@@ -172,39 +171,72 @@
 			node = getNodeUnderContextMenu()
 			console.log(`showHistory ${node.tag}`)
 			if (! node)
-				ocket
+				return
 
 
 			let uri = `git.html?path=${encodeURIComponent(node.path)}&tag=${encodeURIComponent(node.tag)}`
 			require('nw.gui').Window.open(uri, win => { win.x = 100; win.y = 100})
 		}
-
+		
+		function popInfoNode() {
+			node = getNodeUnderContextMenu()
+			if (!node)
+				return
+				
+			var message = document.getElementById('message');
+			message.innerHTML = Object.values(node);
+			
+			
+			var gui = require('nw.gui');
+			var newWindow; //we declare a global variable to store the handler for our new window
+			
+			window.addEventListener('message', function(event) {
+			    var data = JSON.parse(event.data);
+			    console.log(data);
+			}, false);
+			
+			let uri = `info.html?path=${encodeURIComponent(node.path)}&tag=${encodeURIComponent(node.tag)}`
+			
+			gui.Window.open(uri, {}, function(newWin) {
+    				newWindow = newWin;
+    				newWindow.on('loaded', function(){
+    				//We only post a message when the new window is ready to listen to events.
+    				newWindow.window.postMessage(JSON.stringify(node)); 
+    				//the second parameter specifies the message origin. afaik, this is merely a string and has no effect beyond being there
+				});
+			});
+			
+		}
+		
 		function init() {
+			initMenu();
 			 inspectPage();
 			 //inspectBgPage()
 
-			//graphEl = document.getElementById('graph');
-			//console.log(global.aaa);
+			graphEl = document.getElementById('graph');
 			//global.backend.start(data => console.log('Backend: '+data))
-			global.exchange.watch(graph, graph => global.graph.layout(graph, updateGraph))
+			const ws = new WebSocket("ws://localhost:4000");
+			ws.addEventListener('open', function (event) {
+    				console.log('Connected!');
+			});
 			
-			
-			var ws = new WebSocket('ws://localhost:4000');
+
 			
 			ws.onmessage = function(event){
-				console.log("Received");
-				console.log(typeof(event.data));
-				const data = JSON.parse(event.data);
-				console.log("Voici l'objet parsed!");
+				console.log("Received a socket message, displaying the message");
+				console.log(event.data)
+				
+				console.log("Get the string")
+				var data = event.data
 				console.log(data);
-				var message = document.getElementById('message');
-				message.innerHTML = data;
-				//const data = JSON.parse(event.data);
-				//console.log(data.message);
-				console.log(ws)
-				loadGraph("/home/gozea/.cookbook/graph")
+				
+				console.log("Get it as a json thing")
+				thing = JSON.parse(data)
+				thing = JSON.parse(thing)
+				
+				console.log(thing)
+				global.exchange.processExchange(graph,thing,graph => global.graph.layout(graph, updateGraph))
                     };
-		
 		}
 
 	</script>
@@ -235,6 +267,7 @@
 			<li id="tagFile">Tag</li>
 			<li onmouseup="collapseMorph()">Collapse morph</li>
 			<li onmouseup="expandMorph()">Expand morph</li>
+			<li onmouseup="popInfoNode()">Info Node</li>
 		</ul>
 		<hr />
 		<ul class="items">
@@ -252,12 +285,17 @@
 			<li onmouseup="inspectBgPage()">Inspect background</li>
 		</ul>
 	</div>
-
+	
 	<div>
 	<h1>Message:</h1>
-        <div id="message"></div>
+        <div id="message"></div>  
         </div>
-
+        
+        <table>
+    			<tbody id="tbody"></tbody>
+		</table>  
+        
+        
 	<svg class="graph" width="800" height="1200" viewBox="0 0 800 1200"
 		 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 		 <defs>
