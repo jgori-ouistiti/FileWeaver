@@ -1,4 +1,4 @@
-jnstallation
+Installation
 ===============
 
 To run FileWeaver, you will have to install graph-tool, nautilus-python and poetry:
