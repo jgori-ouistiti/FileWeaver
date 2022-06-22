@@ -167,7 +167,7 @@ def write_scripts():
     os.chmod(os.path.join(PATH_TO_LIBS, "scenarios", "scenario_two", "scnr.sh"), 0o777)
     os.chmod(os.path.join(PATH_TO_LIBS, "scripts", "startup_scenario_one.sh"), 0o777)
     os.chmod(os.path.join(PATH_TO_LIBS, "scripts", "startup_scenario_complex.sh"), 0o777)
-    subprocess.run("rm", "~/.local/bin/stracegawk")
+    subprocess.run(["rm",f"{os.environ['HOME']}/.local/bin/stracegawk"],check=False)
 
 
 def stracegawk():
