@@ -1,3 +1,4 @@
+import numpy as np
 import yake
 from pylatexenc.latex2text import LatexNodes2Text
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
@@ -10,6 +11,8 @@ from gi.repository import Nautilus, GObject
 
 from fileweaver.read_write import readwrite
 from fileweaver.base import graph
+
+import textract
 
 import os
 import configparser
@@ -95,20 +98,35 @@ class FlexFile:
     def update_param(self, key, value):
         self.params[key] = value
         
-    def keyword_extract(self, nkeywords):        
-        f = open(self.filename, "r")
+    def text_extract(self):
         print(f"filename {self.filename}")
-        print(f)
 
-        text = f.read().lower()
-        w = LatexNodes2Text().latex_to_text(text)
+        if ".tex" in self.filename:
+            f = open(self.filename, "r")
+            text = f.read().lower()
+            return LatexNodes2Text().latex_to_text(text)
+
+        format_list = [".odt", ".pdf", ".doc", ".doc", ".html", "txt", ".xls"]
+        if np.array([ext in self.filename for ext in format_list]).any():
+            return textract.process(self.filename)
+        return None
+
+
+    def keyword_extract(self, nkeywords):        
+        w  = self.text_extract()
+        if w == None:
+            return
+        print("iiiiiiiiiii")
+        print(f"I am {self.filename}")
+        print(f"I contain thetext {w}")
 
         vectorizer = CountVectorizer()
         X = vectorizer.fit_transform([w])
-
+        print(f"X factorrrr {X}")
 
         kw_extractor = yake.KeywordExtractor(lan="en", n=3, dedupLim=0.9, top=nkeywords)
-        keywords = kw_extractor.extract_keywords(text)
+        keywords = kw_extractor.extract_keywords(str(w))
+        print(f"keeeeeeeeeey {keywords}")
         lkw = []
         for k, s in keywords :
            lkw.append(k) 
