@@ -353,6 +353,9 @@ def new_link(file, restore=True):
     try:
         FFobject = linking.FlexFile(file)
         filename, linkname, cookbookpage, cookbookleftpage = FFobject._get()
+        if ".tex" in filename:
+            FFobject.keyword_extract(3)
+        params = FFobject.get_params()
 
         flags = [1, -2, -2]
 
@@ -371,6 +374,7 @@ def new_link(file, restore=True):
             linking.get_default_recipe(filename),
             linking.get_default_trace(filename),
             linking.get_default_interact(filename),
+            params
         ]
 
         ret = graph.adding_vertex(props)

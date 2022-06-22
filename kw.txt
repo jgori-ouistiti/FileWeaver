@@ -1,0 +1,498 @@
+0,265
+The topic would be 0
+'permission', 'copy distribute modify', 'distribute modify', 'distribute modify document', 'distribute', 'granted copy', 'version', 'available', 'png', 'alt
+The topic would be 1
+'new', 'ideas', 'signals', 'learn', 'things', 'use', 'chapter', 'allen downey', 'allen', 'downey
+-----------------------------------
+265,292
+The topic would be 0
+'oriented features using objects', 'oriented features', 'familiar object', 'features', 'using objects', 'objects', 'book', 'people', 'familiar', 'python
+The topic would be 1
+'including complex', 'mathematics', 'basic mathematics including complex', 'reader', 'assume reader knows', 'reader knows basic', 'knows', 'book', 'explain', 'use
+-----------------------------------
+292,428
+The topic would be 0
+'clone', 'provides', 'notebooks', 'files', 'jupyter', 'anaconda', 'use', 'github', 'repository', 'code
+The topic would be 1
+'code', 'book', 'don', 'need', 'anaconda', 'github', 'packages', 'jupyter', 'python', 'run
+-----------------------------------
+428,580
+The topic would be 0
+'time', 'like', 'error', 'using', 'user', 'prof', 'apply', 'sound', 'signal', 'book
+The topic would be 1
+'freesound users', 'users', 'suggestions', 'book', 'signal', 'dimensional', 'varies', 'freesound', 'sound', 'signals
+-----------------------------------
+580,651
+The topic would be 0
+'musical', 'number', 'second', 'shape', 'signal', 'periodic signals', 'complex', 'cycles', 'periodic', 'signals
+The topic would be 1
+'note', 'generates', 'segment', 'sound', 'frequency', 'period', 'periodic', 'shape', 'recording', 'signal
+-----------------------------------
+651,727
+The topic would be 0
+'decomposition', '2200', 'major', 'notes', 'make', 'harmonics', 'sinusoids', 'book', 'important', 'spectrum
+The topic would be 1
+'880', 'a5', 'perfect', 'perfect fifth', 'fifth', 'frequencies', 'octave', 'signal', 'fundamental', 'frequency
+-----------------------------------
+727,832
+The topic would be 0
+'object', 'returns', 'represents', 'number', 'periods', 'plot', 'signals', 'provides', 'signal', 'wave
+The topic would be 1
+'frames', 'starts', 'start', 'example', 'seconds', 'called', 'offset', 'time', 'signals', 'signal
+-----------------------------------
+832,859
+The topic would be 0
+'files unix', 'media', 'media player', 'player', 'wave', 'provides', 'wav', 'thinkdsp', 'thinkdsp provides', 'aplay
+The topic would be 1
+'write writes', 'provides write', 'wave provides', 'write', 'writes wav file', 'wav', 'provides', 'wave', 'file', 'player
+-----------------------------------
+859,910
+The topic would be 0
+'spectrum', 'plays', 'frequencies', 'attenuates components', 'cutoff', 'play', 'sounds', 'components', 'attenuates', 'wave
+The topic would be 1
+'filter means', 'high', 'low pass filter', 'low pass', 'low', 'provides', 'pass filter', 'filter', 'pass', 'spectrum
+-----------------------------------
+910,961
+The topic would be 0
+'contains', 'modify', 'time', 'unit', 'unit time', 'example', 'functions', 'thinkdsp', 'signal', 'ts
+The topic would be 1
+'numpy', 'read', 'methods', 'wave provides', 'spectrum', 'make', 'ys', 'given', 'provides', 'wave
+-----------------------------------
+961,1063
+The topic would be 0
+'np sin', 'self amp', 'time', 'second', 'cos', 'frequency', 'evaluate', 'like', 'np', 'self
+The topic would be 1
+'number', 'provides', 'amplitude', 'ts', 'radians', 'start time', 'cycles', 'start', 'time', 'signal
+-----------------------------------
+1063,1130
+The topic would be 0
+'harmonic structure', 'structure', 'harmonic', 'exercises', 'download', 'stretch', 'wave', 'sound', 'code', 'chapter
+The topic would be 1
+'ll', 'harmonics', 'exercises', 'view', 'wave', 'compute', 'plot', 'signal', 'ipynb', 'spectrum
+-----------------------------------
+1130,1228
+The topic would be 0
+'scales', 'number', 'number cycles', 'fundamental', 'waveform', 'figure', 'peaks', 'cycles', 'amplitude', 'frequency
+The topic would be 1
+'signal', 'ratio', '200 hz', 'use', 'wave', 'frequency', 'harmonics', '200', 'hz', 'triangle
+-----------------------------------
+1228,1282
+The topic would be 0
+'amp', 'ramps', '100 hz', '100', 'square signal', 'signal', 'frequency', 'hz', 'wave', 'square
+The topic would be 1
+'values multiplying amp yields', 'amp', 'values', 'frac', 'figure shows', 'figure', 'shows', 'squaresignal', 'cycles', 'square
+-----------------------------------
+1282,1365
+The topic would be 0
+'frequency', 'signal', 'harmonics', '4500 5500', '4500 5500 hz', 'indistinguishable', '100 hz', '100', '4500', 'hz
+The topic would be 1
+'signal', 'frequency', '10 000', '000', '10', '10 000 frames', '000 frames', 'frames', 'second', 'hz
+-----------------------------------
+1365,1450
+The topic would be 0
+'fourier', 'transform', 'fourier transform', 'corresponding', 'phase', 'fs', 'plot', 'think', 'wave', 'hs
+The topic would be 1
+'real imaginary', 'component', 'imaginary', 'numpy', 'provides', 'fft', 'frequency', 'real', 'spectrum', 'complex
+-----------------------------------
+1450,1571
+The topic would be 0
+'harmonics', 'hs', 'periodic', 'chapter', 'wave', 'triangle', 'frequency', 'signals', 'spectrum', 'make
+The topic would be 1
+'want', 'function', 'waveform', 'does', 'harmonics', 'plot', 'wave', 'signal', 'sawtooth', 'spectrum
+-----------------------------------
+1571,1673
+The topic would be 0
+'contains', 'signal', 'end', 'np', 'start', 'chirp', 'interval', 'time', 'phase', 'frequency
+The topic would be 1
+'equally spaced', 'equally', 'changes', 'ts', 'chirp', 'frequency', 'end', 'computes', 'function', 'phase
+-----------------------------------
+1673,1719
+The topic would be 0
+'result', 'increases', 'linearly', 'perceived pitch', 'np', 'increase', 'perceived', 'frequency', 'pitch', 'chirp
+The topic would be 1
+'listen', 'chirp', 'exponential chirp', 'exponentially', 'pitches', '440', 'difference', 'exponential', 'octave', 'interval
+-----------------------------------
+1719,1755
+The topic would be 0
+'time', 'signal', 'hz', '440', '440 hz', '220 440 hz', '220 440', '220', 'frequency', 'spectrum
+The topic would be 1
+'spectrum chirp', 'example', 'second', 'second octave chirp', 'second octave', 'octave', 'octave chirp', 'like', 'chirp', 'spectrum
+-----------------------------------
+1755,1804
+The topic would be 0
+'exponential', 'shows time', 'column', 'spectrum', 'axis shows', 'time', 'chirp', 'axis', 'shows', 'spectrogram
+The topic would be 1
+'shows', 'spectrogram shows', 'number samples', 'number', 'samples', 'short', 'segment', 'time', 'frequency', 'spectrogram
+-----------------------------------
+1804,1847
+The topic would be 0
+'512', '512 frames', 'frequency resolution', 'small', 'frames', 'segment', 'time resolution', 'time', 'frequency', 'resolution
+The topic would be 1
+'length', 'segment length', 'spectrum', 'frequency', 'limit', 'gabor limit', 'gabor', 'hz', 'components', 'range
+-----------------------------------
+1847,1907
+The topic would be 0
+'windowing', 'explain windowing', 'signal', 'segment', 'leakage', 'periodic', 'explain', 'dft', 'end', 'beginning
+The topic would be 1
+'non periodic', '440', '440 hz', 'frequency', 'periodic segment', 'hz', 'periodic', 'period', 'signal', 'segment
+-----------------------------------
+1907,1961
+The topic would be 0
+'function designed transform non', 'segment', 'hamming', 'periodic', 'window close', 'close', 'function', 'window function', 'signal', 'window
+The topic would be 1
+'provides', 'windowing', 'beginning', 'end', 'shows', 'figure', 'hamming window', 'window', 'hamming', 'segment
+-----------------------------------
+1961,2019
+The topic would be 0
+'plot', 'spectrogram', 'axis', 'like', 'segment', 'understand', 'overlapping', 'windows', 'time', 'spectrograms
+The topic would be 1
+'spectrum', 'handle', 'slice', 'select', 'half', 'step', 'spectrogram', 'window', 'segments', 'wave
+-----------------------------------
+2019,2125
+The topic would be 0
+'wave', 'hz', 'like', 'c3', 'make', 'trombone', 'spectrogram', 'plot', 'glissando', 'chirp
+The topic would be 1
+'exercises', 'make', 'frequency', 'evaluate', 'extends', 'chapter', 'ipynb', 'slide', 'signal', 'noise
+-----------------------------------
+2125,2223
+The topic would be 0
+'uncorrelated uniform', 'uncorrelated', 'looks', 'like', 'uu noise', 'uniform', 'uu', 'signal', 'random', 'noise
+The topic would be 1
+'set', 'uniform', 'range', 'spectrum', 'signal', 'value', 'distribution', 'power', 'noise', 'values
+-----------------------------------
+2223,2267
+The topic would be 0
+'computes cumulative', 'np cumsum computes cumulative', 'cumsum computes cumulative sum', 'computes', 'like', 'result', 'cumulative', 'integrated spectrum', 'integrated', 'spectrum
+The topic would be 1
+'light', 'power frequency', 'power frequencies', 'equal', 'integratedspectrum', 'frequency', 'frequencies', 'spectrum', 'noise', 'power
+-----------------------------------
+2267,2384
+The topic would be 0
+'random', 'power', 'steps', 'called', 'sum', 'value', 'spectrum', 'brownian noise', 'brownian', 'noise
+The topic would be 1
+'moves', 'np', 'waveform', 'figure', 'log log', 'particle', 'frequency', 'random', 'power', 'log
+-----------------------------------
+2384,2475
+The topic would be 0
+'desired exponent', 'exponent', 'result', 'start', 'white noise', 'pink', 'white', 'pink noise', 'wave', 'noise
+The topic would be 1
+'signal', 'random', 'exponent', 'red', 'red noise', 'power', 'pink', 'log', 'noise', 'spectrum
+-----------------------------------
+2475,2540
+The topic would be 0
+'straight', 'random', 'lines', 'values', 'plot', 'normal probability plot', 'probability plot', 'normal probability', 'probability', 'normal
+The topic would be 1
+'noise ug', 'uncorrelated', 'mean', 'uu', 'uu noise', 'gaussian', 'ug noise', 'spectrum', 'ug', 'noise
+-----------------------------------
+2540,2635
+The topic would be 0
+'compute', 'signal', 'does', 'chapter', 'white', 'time', 'random', 'poisson', 'spectrum', 'noise
+The topic would be 1
+'noise', 'spectrum', 'frequency', 'power frequency', 'algorithm', 'long', 'amp', 'compute', 'like', 'power
+-----------------------------------
+2635,2734
+The topic would be 0
+'say', 'coefficient', 'sine waves', 'phase offset', 'sine', 'high', 'offset', 'phase', 'waves', 'correlation
+The topic would be 1
+'μ_x', 'σ_x', 'σ_y', 'σ_x σ_y', 'provides', 'correlations', 'know', 'means', 'variables', 'correlation
+-----------------------------------
+2734,2794
+The topic would be 0
+'small', 'uncorrelated', 'shifted version', 'shifted', 'version', 'previous', 'expect', 'correlation', 'noise', 'value
+The topic would be 1
+'shift', 'brownian', 'wave', 'got', 'signals', 'measurements', 'noise', 'serial', 'serial correlation', 'correlation
+-----------------------------------
+2794,2835
+The topic would be 0
+'range', 'pink', 'autocorrelation functions pink', 'functions', 'autocorrelation functions', 'functions pink', 'wave', 'values', 'value', 'autocorrelation
+The topic would be 1
+'lag', 'serial correlations', 'correlations', 'sequence', 'drops', 'values', 'lags', 'correlation', 'serial', 'function
+-----------------------------------
+2835,2942
+The topic would be 0
+'near', 'period', 'starts', 'pitch', 'autocorrelation', 'frequency', 'chirp', 'segment', 'seconds', 'hz
+The topic would be 1
+'estimate', 'using', 'peak', 'hz', 'segment', 'spectrum', 'shows', 'figure shows', 'figure', 'autocorrelation
+-----------------------------------
+2942,2994
+The topic would be 0
+'y_i', '_i x_i', '_i', 'x_i', 'product', 'dot', 'dot product', 'x_i y_i', '_i x_i y_i', 'correlation
+The topic would be 1
+'product', 'x_i', '_i', '_i x_i', 'y_i', 'correlation', 'standard', 'normalized', 'signals', 'definition
+-----------------------------------
+2994,3055
+The topic would be 0
+'autocorr', 'correlation', 'correlations', 'function', 'computed', 'np', 'np correlate', 'autocorrelation', 'lag', 'correlate
+The topic would be 1
+'gets', 'correlate', 'np correlate', 'np', 'compare', 'signals', 'smaller', 'figure', 'results', 'lag
+-----------------------------------
+3055,3155
+The topic would be 0
+'ipynb', 'dct', 'works', 'using', 'code', 'problem', 'called', 'll', 'frequency', 'autocorrelation
+The topic would be 1
+'interaction', 'similar', 'fundamental', 'discrete', 'll', 'different', 'notebook', 'use', 'chapter', 'pitch
+-----------------------------------
+3155,3193
+The topic would be 0
+'sum frequency', 'frequency components', 'frequencies', 'list amplitudes', 'second', 'amplitudes', 'signal', 'components', 'frequency', 'list
+The topic would be 1
+'sharp', 'hz harmonics 100', 'harmonics 100', 'sharp g2 renders', 'simple', 'synthesis', 'signal', '100', 'hz', '100 hz
+-----------------------------------
+3193,3281
+The topic would be 0
+'sum', 'vector', 'ts', 'terms', 'linear', 'nth', 'cos', 'frequency', 'row', 'element
+The topic would be 1
+'frequency', 'ys', 'result', 'time', 'synthesize', 'outer', 'vector', 'element', 'column', 'product
+-----------------------------------
+3281,3336
+The topic would be 0
+'given', 'values', 'wave', 'frequency', 'ys', 'analysis', 'general', 'solve', 'use', 'linear
+The topic would be 1
+'linalg solve', 'linalg', 'ys', 'number', 'frequencies', 'amps', 'ts', 'fs', 'solve', 'equations
+-----------------------------------
+3336,3417
+The topic would be 0
+'written', 'matrix orthogonal', 'fs', '1y', 'transpose', 'inverse', 'example', 'vector', 'orthogonal', 'matrix
+The topic would be 1
+'array', 'inverting', 'tm', 'way', 'matrix', 'implies', 'elements', 'unit', 'time unit', 'time
+-----------------------------------
+3417,3483
+The topic would be 0
+'version', 'amps2', 'orthogonal', 'amps', 'dct iv', 'ts fs', 'ts', 'iv', 'dct', 'fs
+The topic would be 1
+'orthogonal', 'solve', 'means', 'point', 'floating point', 'floating', 'write', 'version', 'ys', 'just
+-----------------------------------
+3483,3505
+The topic would be 0
+'result use insight compute', 'compute', 'result', 'result use insight', 'use insight compute', 'use insight compute inverse', 'inverse dct', 'dct', 'inverse', 'difference
+The topic would be 1
+'ys', 'wave array', 'test', 'wave array ys', 'ys test', 'array ys test', 'test starting', 'array ys test starting', 'wave', 'analyze2
+-----------------------------------
+3505,3553
+The topic would be 0
+'triangle', 'hz', '400', 'negative', 'dct object', 'object', 'class', 'dct class', 'provides', 'dct
+The topic would be 1
+'inverse dct', 'inverse', 'wave', 'class', 'fftpack', 'scipy', 'scipy fftpack', 'uses', 'result', 'dct
+-----------------------------------
+3553,3671
+The topic would be 0
+'function', 'function ll', 'log', 'run', 'phase', 'problem', 'use', 'segment', 'dft', 'll
+The topic would be 1
+'using', 'components', 'dft', 'discrete', 'transform', 'sound', 'amplitudes', 'chapter', 'time', 'dct
+-----------------------------------
+3671,3765
+The topic would be 0
+'real', 'complex numbers', 'non', 'natural', 'natural definition', 'imaginary', 'complex', 'function', 'definition', 'numbers
+The topic would be 1
+'magnitude', 'angle', 'factorial', 'example', 'np', 'iϕ iϕ', 'complex number', 'number', 'complex', 'iϕ
+-----------------------------------
+3765,3816
+The topic would be 0
+'frequency signal', 'frequency', 'time', 'ϕ_0', 'function', 'specifically', 'result', 'sinusoid', 'complex', 'signal
+The topic would be 1
+'sinusoid', 'phase', 'offset', 'phase offset', 'function', 'evaluate', 'time', 'complexsinusoid', 'sin', 'np
+-----------------------------------
+3816,3889
+The topic would be 0
+'frequency', 'imaginary parts', 'real imaginary parts', 'complex signal', 'parts', 'real imaginary', 'imaginary', 'real', 'signal', 'complex
+The topic would be 1
+'signal', 'synthesis', 'problem', 'synthesis problem', 'different', 'numbers', 'sinusoids', 'signals', 'real', 'complex
+-----------------------------------
+3889,3971
+The topic would be 0
+'problem', 'running', 'expi', 'array', 'phase', 'amplitude', 'frequency', 'offset', 'ϕ_0', 'complex
+The topic would be 1
+'product', 'example', 'synthesis', 'fs', 'result', 'ts', 'contains', 'complex', 'amplitudes', 'real
+-----------------------------------
+3971,4003
+The topic would be 0
+'analyze1', 'amplitudes', 'analysis', 'analysis problem', 'ys', 'started', 'amplitudes started', 'linear', 'synthesis', 'problem
+The topic would be 1
+'length', 'frequencies', 'complex amplitudes', 'sequence real', 'real', 'complex', 'amplitudes', 'fs', 'ts', 'sequence
+-----------------------------------
+4003,4049
+The topic would be 0
+'use result', 'use result write', 'test', 'floating point', 'tolerance', 'tolerance floating', 'point', 'tolerance floating point', 'floating', 'result
+The topic would be 1
+'extra', 'extra factor', 'compute', 'transpose compute', 'orthogonal', 'matrix', 'inverse', 'unitary', 'transpose', 'dct
+-----------------------------------
+4049,4110
+The topic would be 0
+'yields', 'time', 'change', 'change definition', 'fft', 'divide', 'inverse', 'inverse dft', 'amps', 'dft
+The topic would be 1
+'compute', 'doesn', 'version', 'ts', 'close', 'result', 'synthesis', 'll', 'definition', 'function
+-----------------------------------
+4110,4172
+The topic would be 0
+'summation', 'result', 'array', 'element', 'dft _n exp', 'dft _n', '_n', '_n exp', 'exp', 'dft
+The topic would be 1
+'evaluated', 'signal evaluated sequence times', 'evaluated sequence times', 'sequence times', 'analysis matrix', 'analysis', 'synthesis matrix', 'synthesis', 'summation', 'matrix
+-----------------------------------
+4172,4240
+The topic would be 0
+'hz', 'dft real', 'frequencies', 'time', 'khz', '10 khz', '10', 'signal', 'real', 'dft
+The topic would be 1
+'4500', '4500 hz', 'value', 'component', '500', '500 hz', 'dft', 'wave', 'frequency', 'hz
+-----------------------------------
+4240,4327
+The topic would be 0
+'fft', 'length', 'lemma', 'array', 'wave array', 'wave', 'matrix', 'algorithm', 'elements', 'dft
+The topic would be 1
+'convolution theorem', 'useful', 'np', 'ipynb', 'fft', 'step', 'convolution', 'recursive', 'dft', 'chapter
+-----------------------------------
+4327,4423
+The topic would be 0
+'smoothed signal', 'smoothed', '11 elements', 'segment', 'compute', 'smoothing', 'elements', '11', 'signal', 'average
+The topic would be 1
+'signal', 'result', 'wave array', 'daily', 'term', 'average', 'moving', 'window', 'wave', 'array
+-----------------------------------
+4423,4488
+The topic would be 0
+'operation', 'right', 'symbol', '_m', 'end', 'difference', 'wave array', 'wave', 'array', 'window
+The topic would be 1
+'compute', 'actually', 'index', 'computes', 'cross', 'cross correlation', 'correlation', 'result', 'definition', 'convolution
+-----------------------------------
+4488,4547
+The topic would be 0
+'section', 'spectrums', 'ratio spectrums', 'square wave', 'square wave smoothing', 'wave smoothing', 'wave', 'square', 'smoothing', 'ratio
+The topic would be 1
+'figure shows', 'figure shows result', 'shows', 'shows result', 'figure', 'effect', 'low', 'result', 'spectrum', 'frequency
+-----------------------------------
+4547,4606
+The topic would be 0
+'corresponding', 'padded', 'ratios', 'filter', 'smoothing', 'frequency', 'frequency domain', 'dft', 'domain', 'window
+The topic would be 1
+'dft', 'figure', 'answer', 'spectrum', 'convolve', 'theorem', 'convolution theorem', 'window', 'convolution', 'wave
+-----------------------------------
+4606,4664
+The topic would be 0
+'boxcar', 'figure', 'shows', 'curve', 'ratio', 'moving', 'average', 'moving average', 'gaussian', 'window
+The topic would be 1
+'pass', 'pass filter', 'low pass filter', 'previous', 'low', 'better', 'filter', 'dft', 'window', 'gaussian
+-----------------------------------
+4664,4726
+The topic would be 0
+'proportional', 'takes time proportional', 'takes', 'time proportional', 'takes time', 'time', 'll', 'fft', 'ys', 'convolution
+The topic would be 1
+'efficient', 'computing convolution', 'computing', 'theorem', 'convolution theorem', 'book', 'length', 'pandas', 'window', 'convolution
+-----------------------------------
+4726,4797
+The topic would be 0
+'array', 'using', 'numpy', 'results', 'window', 'figure', 'padding', 'result', 'convolution', 'autocorrelation
+The topic would be 1
+'result length', 'saw', 'cross correlation', 'correlation', 'signal', 'compute', 'result', 'length', 'cross', 'section
+-----------------------------------
+4797,4863
+The topic would be 0
+'experiment', 'hamming', 'hamming window', 'code', 'different', 'window', 'windows', 'exercises', 'chapter', 'ipynb
+The topic would be 1
+'gaussian window', 'fourier transform', 'transform', 'curve', 'windows', 'fourier', 'effect', 'window', 'gaussian', 'chapter
+-----------------------------------
+4863,4924
+The topic would be 0
+'daily', 'closing', 'time series', 'daily price', 'noise', 'section', 'wave', 'series', 'price', 'spectrum
+The topic would be 1
+'corresponds', 'time domain corresponds', 'pass filter', 'domain corresponds', 'time domain', 'domain', 'price', 'daily', 'facebook', 'time
+-----------------------------------
+4924,4955
+The topic would be 0
+'differentiate operators', 'integration operator right', 'left integration operator right', 'diff differentiate', 'diff differentiate operators left', 'diff', 'filters corresponding diff differentiate', 'corresponding', 'difference', 'elements
+The topic would be 1
+'pass filter amplitude increases', 'filter', 'high', 'pass', 'convolution', 'computing', 'frequency domain', 'domain', 'frequency', 'window
+-----------------------------------
+4955,5116
+The topic would be 0
+'eigenfunctions', 'effect', 'series', 'time series', 'time', 'derivative', 'function', 'operator', 'e_f', 'differentiation
+The topic would be 1
+'signals', 'time', 'compute', 'frequency', 'domain', 'figure', 'dft', 'complex', 'filter', 'derivative
+-----------------------------------
+5116,5180
+The topic would be 0
+'time series', 'original time series', 'original', 'original time', 'series', 'filter', 'inverse', 'inverse differentiation', 'integration', 'differentiation
+The topic would be 1
+'integration filter correct', 'correct', 'domain', 'integrated', 'component', 'integration filter', 'spectrum', 'derivative', 'integration', 'filter
+-----------------------------------
+5180,5283
+The topic would be 0
+'operation', 'sawtooth', 'cumsum', 'signal', 'shows', 'figure shows', 'figure', 'spectrum', 'filter', 'diff
+The topic would be 1
+'components', 'parabolic', 'corresponding', 'spectrum', 'filter', 'integration', 'wave', 'sum', 'cumulative sum', 'cumulative
+-----------------------------------
+5283,5328
+The topic would be 0
+'spectrum brownian noise', 'component', 'average', 'prices', 'diff', 'brownian noise', 'brownian', 'spectrum', 'noise', 'power
+The topic would be 1
+'amplitude', 'amplitude component', 'log log scale', 'scale', 'log scale', 'component', 'noise', 'log log', 'slope', 'log
+-----------------------------------
+5328,5395
+The topic would be 0
+'does', 'create', 'apply', '2nd', 'differentiate', 'chapter', 'wave plot', 'result', 'plot', 'wave
+The topic would be 1
+'goal exercise explore', 'goal exercise', 'exercise explore effect', 'explore', 'exercise explore', 'exercise', 'goal', 'compute', 'effect', 'spectrum
+-----------------------------------
+5395,5515
+The topic would be 0
+'frequencies', 'output', 'sum', 'linear', 'signal', 'produces', 'lti', 'components', 'input', 'impulse
+The topic would be 1
+'x_2', 'takes', 'input', 'y_2', 'effect', 'component', 'time', 'output', 'signal', 'systems
+-----------------------------------
+5515,5583
+The topic would be 0
+'spectrum', 'signal', 'section', 'filter', 'characterizes', 'ones', 'example', 'dft', 'know', 'window
+The topic would be 1
+'example', 'window', 'average', 'moving average', 'moving', 'impulse response', 'response', 'identical', 'impulse', 'filter
+-----------------------------------
+5583,5672
+The topic would be 0
+'simulate effect', 'simulate effect room', 'thing', 'contains', 'function', 'transfer', 'simulate', 'like', 'violin', 'room
+The topic would be 1
+'wave', 'compute', 'dft', 'use', 'recording', 'example', 'output', 'response', 'gunshot', 'violin
+-----------------------------------
+5672,5846
+The topic would be 0
+'shift', 'like', 'frequency', 'domain', 'think', 'wave', 'time', 'input', 'amplitude', 'convolution
+The topic would be 1
+'signal', '441', 'copies', 'scaled', 'shifted', 'input', 'sum', 'impulse response', 'impulse', 'response
+-----------------------------------
+5846,5993
+The topic would be 0
+'index time', 'frequency', 'component', 'time', 'convolution', 'll', 'index', 'exponential', 'e_k', 'complex
+The topic would be 1
+'prove convolution', 'yields', 'theorem', 'convolution theorem', '_m exp', 'dft', 'convolution', '_m', 'e_k', 'exp
+-----------------------------------
+5993,6063
+The topic would be 0
+'ipynb', 'chapter', 'impulse response', 'dft', 'signal', 'impulse', 'convolution', 'recording', 'section', 'response
+The topic would be 1
+'data', 'computing', 'explain', 'example', 'component', 'effect', 'impulse', 'signal', 'sampling', 'hz
+-----------------------------------
+6063,6106
+The topic would be 0
+'making shifted', 'section', 'copies', 'scaled', 'copies signal', 'effect', 'impulses', 'convolution', 'series', 'signal
+The topic would be 1
+'ll', 'scaled copies', 'copies', 'right', 'left result', 'shifted', 'signal', 'result', 'left', 'impulses
+-----------------------------------
+6106,6200
+The topic would be 0
+'broadcast', 'carrier wave', 'plus minus', 'minus', 'plus', 'result', 'signal', 'khz', 'carrier', 'wave
+The topic would be 1
+'amplitude', 'frequency', 'row spectrum', 'modulation', 'copies', 'original', 'domain', 'row', 'signal', 'spectrum
+-----------------------------------
+6200,6321
+The topic would be 0
+'figure shows', 'analog', 'process', 'wave', 'original', 'shows', 'signal', 'sound', 'spectrum', 'sampling
+The topic would be 1
+'higher', 'khz', 'dft', 'domain', 'sampling', 'impulses', 'frequency', 'impulse train', 'impulse', 'train
+-----------------------------------
+6321,6387
+The topic would be 0
+'low', 'shows spectrum', 'second row', 'copies', 'second', 'hz', 'wave', 'shows', 'row', 'spectrum
+The topic would be 1
+'drum', 'pass filter', 'low', 'low pass', 'filter', 'sampling', 'result', 'solo', 'pass', 'spectrum
+-----------------------------------
+6387,6474
+The topic would be 0
+'sinc function', 'copies', 'scaled', 'scaled copies', 'shifted', 'original', 'hz', 'filter', 'function', 'sinc
+The topic would be 1
+'sinc', 'function', 'sampled', 'filter', 'exactly', 'figure', 'copies', 'sampling', 'signal', 'original
+-----------------------------------

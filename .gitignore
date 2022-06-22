@@ -302,5 +302,6 @@ dist
 # ======================== FileWeaver
 conf.cfg
 *exchange*
+conf.ini
 # ====================== Poetry
 *poetry.lock*

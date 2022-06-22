@@ -3,7 +3,7 @@ from pylatexenc.latex2text import LatexNodes2Text
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
 
-f = open("math_textbook_en.tex", "r")
+f = open("book.tex", "r")
 
 lines = f.readlines()
 text = " ".join(l for l in lines)

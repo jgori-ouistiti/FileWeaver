@@ -23,8 +23,9 @@ PATH_TO_GRAPH = f"{PATH_TO_LINKS}/graph.graphml"
 PATH_TO_NAMEMAP = f"{PATH_TO_LINKS}/namemap.pickle"
 PATH_TO_LOG = f"{PATH_TO_LINKS}/cookanum.log"
 PATH_TO_TKDIFF = f"{path_to_lib}/fileweaver/default-kitchen/tkdiff"
-PATH_TO_INTERACTIVE_LOG = f"{PATH_TO_LINKS}/interactive.log"
+PATH_TO_INTERACTIVE_LOG = "{PATH_TO_LINKS}/interactive.log"
 PATH_TO_FW_PARTITION = fw_partition
+
 
 VERSION_NUMBER = ["A", "B", "C", "D", "E", "G", "H", "I", "J", "K", "L"]
 IMG_FORMATS = ["jpg", "jpeg", "svg", "tiff", "gif", "png", "pdf"]
@@ -166,6 +167,7 @@ def write_scripts():
     os.chmod(os.path.join(PATH_TO_LIBS, "scenarios", "scenario_two", "scnr.sh"), 0o777)
     os.chmod(os.path.join(PATH_TO_LIBS, "scripts", "startup_scenario_one.sh"), 0o777)
     os.chmod(os.path.join(PATH_TO_LIBS, "scripts", "startup_scenario_complex.sh"), 0o777)
+    subprocess.run("rm", "~/.local/bin/stracegawk")
 
 
 def stracegawk():
