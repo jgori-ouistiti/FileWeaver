@@ -4,6 +4,11 @@ from pylatexenc.latex2text import LatexNodes2Text
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
 
+import gensim
+from gensim.models.doc2vec import Doc2Vec, TaggedDocument
+from nltk.tokenize import word_tokenize
+from gensim.models.doc2vec import Doc2Vec
+
 import gi
 
 gi.require_version("Nautilus", "3.0")
@@ -116,9 +121,6 @@ class FlexFile:
         w  = self.text_extract()
         if w == None:
             return
-        print("iiiiiiiiiii")
-        print(f"I am {self.filename}")
-        print(f"I contain thetext {w}")
 
         vectorizer = CountVectorizer()
         X = vectorizer.fit_transform([w])
@@ -126,13 +128,17 @@ class FlexFile:
 
         kw_extractor = yake.KeywordExtractor(lan="en", n=3, dedupLim=0.9, top=nkeywords)
         keywords = kw_extractor.extract_keywords(str(w))
-        print(f"keeeeeeeeeey {keywords}")
+        print(f"keywords {keywords}")
         lkw = []
         for k, s in keywords :
            lkw.append(k) 
         self.update_param("cluster", lkw)
 
 
+#    def docvec(self):
+ #       text = text_extract()
+  #      tagged_data = [TaggedDocuments(doc, [i]) for i, doc in enumerate(text)]
+        
 
 
 def fn_to_cbp(filename):
