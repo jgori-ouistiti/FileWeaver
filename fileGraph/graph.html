@@ -9,7 +9,19 @@
 	<script src="lib/graphView.js"></script>
 	<script src="lib/menu.js"></script>
 	<script type="text/javascript">
-
+	
+		var searchString = window.location.search.substring(1) || 'path=.&tag=.'
+		let m = searchString.match(/^path=([^&]*)\&tag=([^&]*)$/)
+		let path = null
+		let tag = null
+		if (m) {
+			path = decodeURIComponent(m[1])
+			tag = decodeURIComponent(m[2])
+			document.title += ' for '+tag
+		}
+		
+		var working;
+		
 		let contextMenus = {
 			node: {
 				checkDisabled(info) {},
@@ -190,22 +202,18 @@
 			var gui = require('nw.gui');
 			var newWindow; //we declare a global variable to store the handler for our new window
 			
-			window.addEventListener('message', function(event) {
-			    var data = JSON.parse(event.data);
-			    console.log(data);
-			}, false);
-			
 			let uri = `info.html?path=${encodeURIComponent(node.path)}&tag=${encodeURIComponent(node.tag)}`
 			
 			gui.Window.open(uri, {}, function(newWin) {
     				newWindow = newWin;
+    				
     				newWindow.on('loaded', function(){
     				//We only post a message when the new window is ready to listen to events.
     				newWindow.window.postMessage(JSON.stringify(node)); 
     				//the second parameter specifies the message origin. afaik, this is merely a string and has no effect beyond being there
 				});
-			});
 			
+			});
 		}
 		
 		function init() {
@@ -219,24 +227,50 @@
 			ws.addEventListener('open', function (event) {
     				console.log('Connected!');
 			});
-			
-
-			
+			//Websocket
 			ws.onmessage = function(event){
 				console.log("Received a socket message, displaying the message");
 				console.log(event.data)
 				
 				console.log("Get the string")
 				var data = event.data
-				console.log(data);
 				
-				console.log("Get it as a json thing")
-				thing = JSON.parse(data)
-				thing = JSON.parse(thing)
+				parsed_data = JSON.parse(data)
+				working = parsed_data
+				console.log(working+" of type " + typeof(parsed_data))
+				parsed_data = JSON.parse(parsed_data)
 				
-				console.log(thing)
-				global.exchange.processExchange(graph,thing,graph => global.graph.layout(graph, updateGraph))
-                    };
+				//We want to manipulate the cluster easily in info.html and here
+				//try catch because due to TypeError, the graph may not draw edges, there are better solution I think
+				// such as checking the  message beforehands
+				try{
+					var beginning = parsed_data.vpdic.cluster.indexOf('[')+1;
+					var end = parsed_data.vpdic.cluster.indexOf(']');
+					
+					parsed_data.vpdic.cluster = parsed_data.vpdic.cluster.substring(beginning,end).replaceAll('\'','').split(',')
+				} catch(e) {
+					if (e instanceof TypeError) {
+							console.log("cluster already pre processed as a list")
+  					}
+				} finally {
+					global.exchange.processExchange(graph,parsed_data,graph => global.graph.layout(graph, updateGraph))
+					//loadGraph("/home/alexandre/.cookbook/graph")
+					//working = parsed_data
+				}
+			};
+						
+			window.addEventListener('message', function(event) {
+				console.log("Received from " + event.origin)
+				var node = JSON.parse(event.data);
+				
+				Object.keys(graph.nodes).forEach(element => {
+    				if (graph.nodes[element].path == node.path){
+    					graph.nodes[element] = node;
+        				console.log("Update taken into account");
+    				}
+				})
+				console.log("-----------------------------")
+			},false);
 		}
 
 	</script>
@@ -289,12 +323,7 @@
 	<div>
 	<h1>Message:</h1>
         <div id="message"></div>  
-        </div>
-        
-        <table>
-    			<tbody id="tbody"></tbody>
-		</table>  
-        
+	</div>
         
 	<svg class="graph" width="800" height="1200" viewBox="0 0 800 1200"
 		 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">

@@ -135,13 +135,23 @@ function parse(name, cb) {
 function layout(graph, cb) {
 	let dot = toDot(graph)
 	
+	console.log("-------------------------------------------------\n B DOT FILE \n");
+	
+	console.log(dot);
+	
+	console.log("-------------------------------------------------\n N DOT FILE\n");
+	
 	child = execFile('dot', ['-Tplain'], (error, stdout, stderr) => {
 				if (error) {
 					console.error('dot says: ', error)
 					return
 				}
 				// console.log(dot)
-				// console.log(stdout)
+				console.log("-------------------------------------------------\n STDOUT \n");
+				console.log(stdout);
+				console.log(error);
+				console.log(stderr);
+					console.log("-------------------------------------------------\n END STDOUT \n");
 				cb(stdout)
 			})
 	child.stdin.write(dot)
