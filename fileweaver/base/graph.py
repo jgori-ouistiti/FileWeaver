@@ -1,4 +1,5 @@
 import gi
+import numpy as np
 
 gi.require_version("Gtk", "3.0")
 
@@ -21,11 +22,17 @@ PATH_TO_GRAPH = config["FW-paths"]["PATH_TO_GRAPH"]
 PATH_TO_NAMEMAP = config["FW-paths"]["PATH_TO_NAMEMAP"]
 
 from fileweaver.read_write import readwrite
-
+from fileweaver.base import linking
 
 import numpy
-
+import nltk
+from nltk.corpus import brown
+import gensim.downloader as api
+from gensim.models.doc2vec import Word2Vec, Doc2Vec, TaggedDocument
+from nltk.tokenize import word_tokenize
+from sklearn import decomposition
 import logging
+
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +56,8 @@ vertex_properties = [
     ("emptyin", "float"),
     ("version", "string"),
     ("cluster", "string"),
+    ("docvec", "vector<float>"),
+    ("keywordvec", "vector<float>"),
 ]
 edge_properties = [
     ("update_time", "float"),
@@ -59,7 +68,10 @@ edge_properties = [
 ]
 
 
+formats = [".odt", ".pdf", ".doc", ".html", ".txt", ".xls", ".tex"]
+
 def init_graph():
+
     """Start a new graph.
 
     For now, each call to the menu destroys the old graph, and calls init to create a new one.
@@ -108,6 +120,8 @@ def init_graph():
     g.vp.emptyout = g.new_vertex_property("double")
     g.vp.emptyin = g.new_vertex_property("double")
     g.vp.cluster = g.new_vertex_property("string")
+    g.vp.docvec = g.new_vertex_property("vector<float>")
+    g.vp.keywordvec = g.new_vertex_property("vector<float>")
 
 
     g.ep.update_time = g.new_edge_property("double")
@@ -138,6 +152,8 @@ def init_graph():
     g.vp.status[v] = 1  ### This is a special node that can trigger actions
     g.vp.version[v] = "NA"
     g.vp.cluster[v] = "cat"
+    g.vp.docvec[v] = [1, 2, 3]
+    g.vp.keywordvec[v] = [1,2,3]
 
     w = g.add_vertex()
     g.vp.path[w] = "NA"
@@ -166,6 +182,8 @@ def init_graph():
 
     with open(PATH_TO_NAMEMAP, "wb") as fd:
         pickle.dump(name_map, fd, pickle.HIGHEST_PROTOCOL)
+
+
     return g, name_map
 
 
@@ -208,6 +226,7 @@ def copy_node(node_copied_from, node_copied_to_path, node_copied_to_symlink, sen
         g.vp.trace[v],
         g.vp.interact[v],
         g.vp.cluster[v],
+        g.vp.docvec[v],
     ]
 
     new_v, g, namemap = adding_vertex(props, True, g, namemap)
@@ -348,7 +367,10 @@ def remote_add_vertex(id, vdic, g, namemap):
         trace = vdic["trace"]
         interact = vdic["interact"]
         cluster = vdic["cluster"]
-        props = path, tag, target, smlk, flags, recipe, trace, interact, cluster
+        docvec = vdic["docvec"]
+        keywordvec = vdic["keywordvec"]
+        params = {'cluster':cluster, 'docvec':docvec, 'keywordvec':keywordvec}
+        props = path, tag, target, smlk, flags, recipe, trace, interact, params
         return adding_vertex(props, False, g, namemap)
     return True, g, namemap
 
@@ -369,7 +391,7 @@ def adding_vertex(props, send=True, *args):
 
     """
     print(f"propos \n {props}")
-    path, tag, target, smlk, flags, recipe, trace, interact, cluster = props
+    path, tag, target, smlk, flags, recipe, trace, interact, params = props
     linkname = os.path.dirname(path).split("/")[-1]
     FLAG_OPENED = 0
     try:
@@ -420,16 +442,17 @@ def adding_vertex(props, send=True, *args):
         g.vp.trace[v] = trace.rstrip("]").lstrip("[").split(",")
     else:
         g.vp.trace[v] = trace
-
+    
     if isinstance(interact, str):
         g.vp.interact[v] = interact.rstrip("]").lstrip("[").split(",")
     else:
         g.vp.interact[v] = interact
 
-    if isinstance(cluster, str):
-        g.vp.cluster[v] = cluster.rstrip("]").lstrip("[").split(",")
-    else:
-        g.vp.cluster[v] = cluster
+    for i in params:
+        if isinstance(params[i], str):
+            g.vp[i][v] = params[i].rstrip("]").lstrip("[").split(",")
+        else:
+            g.vp[i][v] = params[i]
 
     g.vp.emptyout[v] = 0
     g.vp.emptyin[v] = 0
@@ -445,7 +468,8 @@ def adding_vertex(props, send=True, *args):
         vdic["recipe"] = str(recipe)
         vdic["trace"] = str(trace)
         vdic["interact"] = str(interact)
-        vdic["cluster"] = str(cluster)
+        for i in params:
+            vdic[i] = str(params[i])
         vdic["emptyout"] = 0
         vdic["emptyin"] = 0
         vdic["status"] = 1
@@ -742,3 +766,36 @@ def draw_graph(*args):
     pos, selected = informative_window(
         g, vertex_text=g.vp.tag, edge_color=edge_color, edge_text=g.ep.edge_label
     )
+
+
+
+def vectorize_nodes():
+    g, namemap = open_graph()
+    tagged_data = []
+    for a in  g.vertices():
+        path = g.vp.path[a]
+        if path != "NA" and np.array([f in path for f in formats]).any():
+            FFobject = linking.FlexFile(path)
+            tagged_data.append(TaggedDocument(word_tokenize(FFobject.text_extract()), [int(a)]))
+    
+    #training
+    model = Doc2Vec(min_count=3)
+    model.build_vocab(tagged_data)
+    model.train(tagged_data, total_examples=model.corpus_count, epochs=50)
+
+    #pca on 2D
+    pca = decomposition.PCA(n_components=2)
+    vecs = dict((str(v), list(model.dv[int(v)])) for v in g.vertices() if g.vp.path[v] != "NA" and np.array([f in g.vp.path[v] for f in formats]).any())
+    values = list(vecs.values())
+    pca.fit(values)
+    vecs = dict(zip(vecs.keys(), pca.transform(values))) 
+
+    for (key, value) in vecs.items():
+        path = g.vp.path[int(key)]
+        #update FlexFile
+        _, linkname, _, _ = linking.FlexFile(path)._get()
+        update("vertex", "docvec", linkname, value.tolist())
+        #update graph
+        FFobject = linking.FlexFile(path)
+        FFobject.update_param("docvec", value.tolist())
+

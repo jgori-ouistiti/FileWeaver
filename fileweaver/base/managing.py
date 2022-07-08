@@ -376,11 +376,13 @@ def new_link(file, restore=True):
             params
         ]
 
+        print(f"paraaaaaaaams {props}")
         ret = graph.adding_vertex(props)
         if ret != -1:
             return create_link(filename)
         else:
             logging.info("Managing: File {} is already linked".format(filename))
+        graph.vectorize_nodes()
         return cookbookpage
     except FileNotFoundError:
         print(f"new_link was called on file {file}, which does not exist anymore.")

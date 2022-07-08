@@ -1,13 +1,17 @@
 import numpy as np
+import re
+
 import yake
 from pylatexenc.latex2text import LatexNodes2Text
+
+from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
 
 import gensim
-from gensim.models.doc2vec import Doc2Vec, TaggedDocument
+from gensim.models.doc2vec import Word2Vec, Doc2Vec, TaggedDocument
 from nltk.tokenize import word_tokenize
-from gensim.models.doc2vec import Doc2Vec
+from sklearn import decomposition
 
 import gi
 
@@ -41,6 +45,8 @@ logger = logging.getLogger(__name__)
 
 from urllib.parse import unquote
 
+
+path = "/home/gozea/Documents/Fileweaver/FileWeaver/"
 
 class FlexFile:
     """Class made to make calls to a file easy (can be either via absolute path, vertex_index, linkname, of File Object).
@@ -93,6 +99,8 @@ class FlexFile:
             #     self.__init__(namemap[linkname])
         self.params = {}
         self.params["cluster"] = ""
+        self.params["docvec"] = [0]
+        self.params["keywordvec"] = [0]
 
     def _get(self):
         return self.filename, self.linkname, self.cookbookpage, self.cookbookleftpage
@@ -111,35 +119,42 @@ class FlexFile:
             text = f.read().lower()
             return LatexNodes2Text().latex_to_text(text)
 
-        format_list = [".odt", ".pdf", ".doc", ".doc", ".html", "txt", ".xls"]
-        if np.array([ext in self.filename for ext in format_list]).any():
-            return textract.process(self.filename)
+        format_list = [".odt", ".pdf", ".doc", ".html", ".txt", ".xls"]
+        if np.array([ext in self.filename for ext in format_list]).any():   #does the name contain any of these format ?
+            return bytes.decode(textract.process(self.filename, encoding="utf-8"))
         return None
 
 
     def keyword_extract(self, nkeywords):        
+        #loading the model now so we can vectorize our keywords later
+        model = Word2Vec.load(path + "model.bin")
+        #pca = decomposition.PCA(n_components=2)
+        #pca.fit(list([list(model.wv.get_vector(model.wv.index_to_key[i])) for i in range(300)]))
+        #get the text from the file
         w  = self.text_extract()
         if w == None:
             return
 
-        vectorizer = CountVectorizer()
-        X = vectorizer.fit_transform([w])
-        print(f"X factorrrr {X}")
-
+        #use yake to get the keyword extraction
         kw_extractor = yake.KeywordExtractor(lan="en", n=3, dedupLim=0.9, top=nkeywords)
         keywords = kw_extractor.extract_keywords(str(w))
-        print(f"keywords {keywords}")
         lkw = []
+        vec = []
+        print(f"keywords {keywords}")
         for k, s in keywords :
-           lkw.append(k) 
+            #substract unwanted characters
+            k = re.sub("[,\.;:]", "", k)
+            lkw.append(k) 
+            #find the word vector
+            if k in model.wv.index_to_key:
+                vec.append(model.wv.get_vector(k))
+        #update the keyword parameter
         self.update_param("cluster", lkw)
-
-
-#    def docvec(self):
- #       text = text_extract()
-  #      tagged_data = [TaggedDocuments(doc, [i]) for i, doc in enumerate(text)]
-        
-
+        #pca.transform(vec)
+        print(vec)
+        vec = list(np.array(vec).sum(axis=0)/len(vec)) if len(vec) != 0 else [0]
+        print(f"veeeeeeeeeeeec {vec}")
+        self.update_param("keywordvec", vec)
 
 def fn_to_cbp(filename):
     linkname = generate_linkname(filename)
