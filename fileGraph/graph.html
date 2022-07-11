@@ -8,7 +8,9 @@
 	<script src="lib/anime.min.js"></script>
 	<script src="lib/graphView.js"></script>
 	<script src="lib/menu.js"></script>
+	
 	<script type="text/javascript">
+	
 	
 		var searchString = window.location.search.substring(1) || 'path=.&tag=.'
 		let m = searchString.match(/^path=([^&]*)\&tag=([^&]*)$/)
@@ -217,6 +219,7 @@
 		}
 		
 		function init() {
+
 			initMenu();
 			 inspectPage();
 			 //inspectBgPage()
@@ -247,7 +250,16 @@
 					var beginning = parsed_data.vpdic.cluster.indexOf('[')+1;
 					var end = parsed_data.vpdic.cluster.indexOf(']');
 					
+					// As every keyword is seperated by a comma
 					parsed_data.vpdic.cluster = parsed_data.vpdic.cluster.substring(beginning,end).replaceAll('\'','').split(',')
+					
+					// Clean keyword a little bit
+					for (var i = 0; i < parsed_data.vpdic.cluster.length;i++) {
+						if (parsed_data.vpdic.cluster[i][0] == ' ') {
+							parsed_data.vpdic.cluster[i] = parsed_data.vpdic.cluster[i].slice(1);
+							console.log("A keyword has been cleaned");
+						}
+					}
 				} catch(e) {
 					if (e instanceof TypeError) {
 							console.log("cluster already pre processed as a list")
@@ -324,7 +336,24 @@
 	<h1>Message:</h1>
         <div id="message"></div>  
 	</div>
-        
+    
+    <div id="Keywords">
+    	<input type="text" name="product" list="productName"/>
+    	<datalist id="keywords">
+    	</datalist>
+    </div>
+    
+    <script>
+    	function updateKeywordMenu(){
+    	
+    		Object.keys(graph.nodes).forEach(node => {
+    			graph.nodes[node].cluster.forEach(keyword => console.log(keyword));
+    			console.log("-----")
+    		})
+    			
+    	};
+    </script>
+    
 	<svg class="graph" width="800" height="1200" viewBox="0 0 800 1200"
 		 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 		 <defs>
