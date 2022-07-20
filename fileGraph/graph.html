@@ -228,13 +228,13 @@
 				
 				console.log("Get the string")
 				var data = event.data
-				console.log(data);
 				
 				console.log("Get it as a json thing")
 				thing = JSON.parse(data)
 				thing = JSON.parse(thing)
 				
 				console.log(thing)
+				console.log(graph)
 				global.exchange.processExchange(graph,thing,graph => global.graph.layout(graph, updateGraph))
                     };
 		}

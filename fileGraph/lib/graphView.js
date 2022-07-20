@@ -297,6 +297,8 @@ function updateNode(id, x, y, w, h, label) {
 			img.setAttribute('href', 'icons/image-gifc.svg')
 			label = label.replace(/\.[^.]*$/, '.gifc')
 		} else {
+			console.log("this node here")
+			console.log(node)
 			img.setAttribute('href', iconFile(node.target))
 		}
 
@@ -408,6 +410,8 @@ function removeMorph(id) {
 }
 
 function parseGraph(s) {
+	console.log("parse")
+	console.log(s)
 	let nodeCoords = {}
 
 	s.split('\n').forEach(l => {

@@ -203,7 +203,6 @@ def check_cakes(file, cakes):
 
 
     """
-    print(f"check the fillllllllllle {file}")
     FFobject = linking.FlexFile(file)
     filename, linkname, cookbookpage, cookbookleftpage = FFobject._get()
     keep_cakes = []
@@ -775,7 +774,6 @@ def _sort_out_trace(tracefile, cakes, filename, level="fwpartition"):
                     filename.split("_v")[1].split(".")[0] in VERSION_NUMBER
                 ):
                     copy_flag = True
-                    print("I am tracing on a copyyyyyyyyyyyyyyyyy")
                 else:
                     copy_flag = False
             except IndexError:
@@ -783,7 +781,6 @@ def _sort_out_trace(tracefile, cakes, filename, level="fwpartition"):
             try:
                 if line.split("_v")[0] == filename.split(".")[0]:
                     copy_flag_bis = True
-                    print("I found a copyyyyyyyyyyyyyyyyy in the deps")
                 else:
                     copy_flag_bis = False
             except IndexError:
@@ -907,7 +904,6 @@ def filtering(tracefile, filename, showline, *filters):
             line = line.rstrip("\n")
             for filt in filters :
                 if not filt(line, filename):
-                    print(f"stoping because offfffff {str(filt)}")
                     stop = True
                     break
             line = line.lstrip("/.")
@@ -915,7 +911,6 @@ def filtering(tracefile, filename, showline, *filters):
                 res.append(line)
             stop = False
     if showline == True:
-        print(f"reeeeeeeeeessssssssssssssss {res}")
     return res
                          
 

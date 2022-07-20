@@ -80,8 +80,24 @@ function adjustEdgeEnd(graph, nodeName) {
 	return nodeName
 }
 
-// Layout a graph with the `dot` graph layout program.
-// The returned value is the output of dot.
+
+function toDot2(graph) {
+	dot = `strict digraph {
+	rankdir = LR; 
+	node [fontname=Helvetica image="document.png" shape=none height=1 imagepos=tc labelloc=b]
+	n2 [label = "main.tex"]
+	n3 [label = "fig2.png"]
+	n4 [label = "section.tex"]
+	n5 [label = "main.pdf"]
+
+	n3:e -> n2
+	n4:e -> n2
+	n2:e -> n5
+}`;
+	return dot;
+}
+
+
 function toDot(graph) {
 	let dot = 'strict digraph {'
 	dot += '\n    rankdir = LR; '
@@ -122,6 +138,64 @@ function toDot(graph) {
 	return dot
 }
 
+// Layout a graph with the `dot` graph layout program.
+// The returned value is the output of dot.
+/*
+function toDot(graph) {
+	let dot = 'strict digraph {'
+	dot += '\n    rankdir = LR; '
+	dot += '\n    node [fontname=Helvetica image="document.png" shape=none height=1 imagepos=tc labelloc=b]'
+
+	for (let g in graph.morphs) {
+		let group = graph.morphs[g]
+		if (group.collapsed)
+			dot += `\n    subgraph cluster${g} {${g.replace('g', 'n')}}`
+		else
+			dot += `\n    subgraph cluster${g} {${group.nodes.join('; ')}}`
+	}
+
+	var i = 0;
+	for (let n in graph.nodes) {
+		console.log("node")
+		console.log(i)
+		let node = graph.nodes[n]
+		console.log(node)
+		console.log(node.tag)
+	
+		let mid = Math.floor(Object.keys(graph.nodes).length/2)
+		if (i == 0)
+			dot+=`	\n	subgraph cluster0{\n  		style=filled;\n		color=lightgrey;\n	  	node [style=filled,color=white];\n  		"${node.tag}"`
+		if (i != 0 && i < mid)
+			dot+=` "${node.tag}"`
+		if (i == mid)
+			dot+=`; \n	 } \n	subgraph cluster1{\n 	  	style=filled;\n	 	color=lightgrey;\n  		node [style=filled,color=white];\n 		"${node.tag}"`
+		if (i >= mid && i < graph.nodes.length-1)
+			dot+=` "${node.tag}"`
+		if (i == mid*2-1)
+			dot+=`; \n 	} \n `
+
+		i+=1;
+	}
+	dot += '\n'
+
+	for (let e in graph.edges) {
+		let edge = graph.edges[e]
+		if (! includeEdge(graph, edge))
+			continue
+		let src = adjustEdgeEnd(graph, edge.source)
+		let dst = adjustEdgeEnd(graph, edge.target)
+		// dot += `\n    "${graph.nodes[src].tag}" -> "${graph.nodes[dst].tag}"`
+		dot += `\n    ${src}:e -> ${dst}`
+	}
+
+	dot += '\n}'
+
+	console.log("dot")
+	console.log(dot)
+	return dot
+}
+*/
+
 // Parse the GraphML file `name` and call `cb` with the parsed graph
 function parse(name, cb) {
 	var src = name+'.graphml'
@@ -134,7 +208,15 @@ function parse(name, cb) {
 // Layout `graph` with dot and call `cb` with the resulting dot output
 function layout(graph, cb) {
 	let dot = toDot(graph)
-	
+	let dot2 = toDot2(graph)
+	console.log("graph")
+	console.log(graph)
+	console.log(dot)
+	console.log(dot2)
+	console.log(typeof dot)
+	console.log(typeof dot2)
+	console.log(dot == dot2)
+
 	child = execFile('dot', ['-Tplain'], (error, stdout, stderr) => {
 				if (error) {
 					console.error('dot says: ', error)
@@ -144,6 +226,8 @@ function layout(graph, cb) {
 				// console.log(stdout)
 				cb(stdout)
 			})
+	console.log("child")
+	console.log(child)
 	child.stdin.write(dot)
 	child.stdin.end()
 

@@ -1,5 +1,6 @@
 import gi
 import numpy as np
+import math
 
 gi.require_version("Gtk", "3.0")
 
@@ -32,6 +33,7 @@ from gensim.models.doc2vec import Word2Vec, Doc2Vec, TaggedDocument
 from nltk.tokenize import word_tokenize
 from sklearn import decomposition
 import logging
+from itertools import combinations
 
 
 logger = logging.getLogger(__name__)
@@ -55,6 +57,7 @@ vertex_properties = [
     ("emptyout", "float"),
     ("emptyin", "float"),
     ("version", "string"),
+    ("keywords", "vector<string>"),
     ("cluster", "string"),
     ("docvec", "vector<float>"),
     ("keywordvec", "vector<float>"),
@@ -69,6 +72,8 @@ edge_properties = [
 
 
 formats = [".odt", ".pdf", ".doc", ".html", ".txt", ".xls", ".tex"]
+
+threshold = 5
 
 def init_graph():
 
@@ -120,6 +125,7 @@ def init_graph():
     g.vp.emptyout = g.new_vertex_property("double")
     g.vp.emptyin = g.new_vertex_property("double")
     g.vp.cluster = g.new_vertex_property("string")
+    g.vp.keywords = g.new_vertex_property("vector<string>")
     g.vp.docvec = g.new_vertex_property("vector<float>")
     g.vp.keywordvec = g.new_vertex_property("vector<float>")
 
@@ -152,6 +158,7 @@ def init_graph():
     g.vp.status[v] = 1  ### This is a special node that can trigger actions
     g.vp.version[v] = "NA"
     g.vp.cluster[v] = "cat"
+    g.vp.keywords[v] = ["apple", "pen"]
     g.vp.docvec[v] = [1, 2, 3]
     g.vp.keywordvec[v] = [1,2,3]
 
@@ -366,10 +373,11 @@ def remote_add_vertex(id, vdic, g, namemap):
         recipe = vdic["recipe"]
         trace = vdic["trace"]
         interact = vdic["interact"]
+        keywords = vdic["keywords"]
         cluster = vdic["cluster"]
         docvec = vdic["docvec"]
         keywordvec = vdic["keywordvec"]
-        params = {'cluster':cluster, 'docvec':docvec, 'keywordvec':keywordvec}
+        params = {'keywords':keywords, 'cluster':cluster, 'docvec':docvec, 'keywordvec':keywordvec}
         props = path, tag, target, smlk, flags, recipe, trace, interact, params
         return adding_vertex(props, False, g, namemap)
     return True, g, namemap
@@ -381,7 +389,7 @@ def adding_vertex(props, send=True, *args):
     If args is None, then the graph and namemap are loaded using open_graph(), else graph and namemap are read from args[0] and args[1]
 
     Args:
-        props (list): node attributes (path, tag, target, smlk, flags, recipe, trace, interact)
+        props (list): node attributes (path, tag, target, smlk, flags, recipe, trace, interact, params)
         args[0] (graph object): graph
         args[1] (dictionnary): namemap
 
@@ -790,6 +798,7 @@ def vectorize_nodes():
     pca.fit(values)
     vecs = dict(zip(vecs.keys(), pca.transform(values))) 
 
+    #associate document with a vector
     for (key, value) in vecs.items():
         path = g.vp.path[int(key)]
         #update FlexFile
@@ -799,3 +808,56 @@ def vectorize_nodes():
         FFobject = linking.FlexFile(path)
         FFobject.update_param("docvec", value.tolist())
 
+    #clusterize documents according to their associated vector
+    A = np.zeros((len(vecs.items()), len(vecs.items()))) 
+    i, j = 0,0
+    for (key1, value1) in vecs.items():
+        for (key2, value2) in vecs.items():
+            if i != j:
+                A[i,j] = np.where(math.dist(value1, value2) < threshold, 1, 0)
+            j += 1
+        j = 0
+        i += 1
+    
+    #find all cliques in the matrix
+    cliques = []
+    for i in range(A.shape[0]):
+        while np.any(A[i]) :
+            cliques.append(check_line_matrix(A, [], i))
+    #putting cliques into dictionary
+    for i, cl in enumerate(cliques) :
+        for n in cl:
+            num = list(vecs.items())[n][0]
+            path = g.vp.path[int(num)]
+            #update FlexFile
+            _, linkname, _, _ = linking.FlexFile(path)._get()
+            update("vertex", "cluster", linkname, i)
+            #update graph
+            FFobject = linking.FlexFile(path)
+            FFobject.update_param("cluster", i)
+
+
+
+def check_line_matrix(A, arr, line):
+    #return condition if the line is all zeros
+    if not np.any(A[line]) :
+        return arr
+    for j in range(A.shape[0]):
+        #we find a relationship
+        if A[line][j] == 1:
+            duets = []
+            #we check if there exist a link between if and all the previous ones in the array
+            for k in arr:
+                if A[j][k] == 1 and A[k][j] == 1:
+                    duets.append((j,k))
+                    duets.append((k, j))
+                else :
+                    duets = []
+                    break
+            #all the links become 0
+            for (k1,k2) in duets:
+                A[k1][k2] = 0
+                A[k2][k1] = 0
+            #add the found link in the array, we DFS into it
+            arr.append(j)
+            return check_line_matrix(A, arr, j)
