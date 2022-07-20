@@ -81,54 +81,13 @@ function adjustEdgeEnd(graph, nodeName) {
 }
 
 
-function toDot(graph) {
-	let dot = 'strict digraph {'
-	dot += '\n    rankdir = LR; '
-	dot += '\n    node [fontname=Helvetica image="document.png" shape=none height=1 imagepos=tc labelloc=b]'
-
-	for (let g in graph.morphs) {
-		let group = graph.morphs[g]
-		if (group.collapsed)
-			dot += `\n    subgraph cluster${g} {${g.replace('g', 'n')}}`
-		else
-			dot += `\n    subgraph cluster${g} {${group.nodes.join('; ')}}`
-	}
-
-	for (let n in graph.nodes) {
-		let node = graph.nodes[n]
-		if (! includeNode(graph, node))
-			continue
-		if (node.tag !== 'NA')
-			dot += `\n    ${n} [label = "${node.tag}"]`
-		if (node.copyOf) {
-			dot += `\n { rank = same; ${n}; ${node.copyOf}}`
-		}
-	}
-	dot += '\n'
-
-	for (let e in graph.edges) {
-		let edge = graph.edges[e]
-		if (! includeEdge(graph, edge))
-			continue
-		let src = adjustEdgeEnd(graph, edge.source)
-		let dst = adjustEdgeEnd(graph, edge.target)
-		// dot += `\n    "${graph.nodes[src].tag}" -> "${graph.nodes[dst].tag}"`
-		dot += `\n    ${src}:e -> ${dst}`
-	}
-
-	dot += '\n}'
-
-	return dot
-}
-
 // Layout a graph with the `dot` graph layout program.
 // The returned value is the output of dot.
-/*
 function toDot(graph) {
 	let dot = 'strict digraph {'
 	dot += '\n    rankdir = LR; '
 	dot += '\n    node [fontname=Helvetica image="document.png" shape=none height=1 imagepos=tc labelloc=b]'
-
+	//morphs
 	for (let g in graph.morphs) {
 		let group = graph.morphs[g]
 		if (group.collapsed)
@@ -136,31 +95,23 @@ function toDot(graph) {
 		else
 			dot += `\n    subgraph cluster${g} {${group.nodes.join('; ')}}`
 	}
-
+	//create clusters
 	var i = 0;
+	clusters = []
 	for (let n in graph.nodes) {
 		console.log("node")
-		console.log(i)
 		let node = graph.nodes[n]
-		console.log(node)
-		console.log(node.tag)
-	
-		let mid = Math.floor(Object.keys(graph.nodes).length/2)
-		if (i == 0)
-			dot+=`	\n	subgraph cluster0{\n  		style=filled;\n		color=lightgrey;\n	  	node [style=filled,color=white];\n  		"${node.tag}"`
-		if (i != 0 && i < mid)
-			dot+=` "${node.tag}"`
-		if (i == mid)
-			dot+=`; \n	 } \n	subgraph cluster1{\n 	  	style=filled;\n	 	color=lightgrey;\n  		node [style=filled,color=white];\n 		"${node.tag}"`
-		if (i >= mid && i < graph.nodes.length-1)
-			dot+=` "${node.tag}"`
-		if (i == mid*2-1)
-			dot+=`; \n 	} \n `
-
-		i+=1;
+		if (clusters[node.cluster] == undefined){
+			clusters[node.cluster] = `	\n	subgraph cluster${node.cluster}{\n  		style=filled;\n		color=lightgrey;\n	  	node [style=filled,color=white];`
+		}
+		clusters[node.cluster] += `\n    ${n} [label = "${node.tag}"]`
 	}
-	dot += '\n'
-
+	//add clusters in nodes
+	for (let c in clusters) {
+		clusters[c] +=`\n	}\n`
+		dot += `${clusters[c]}`
+	}
+	//add edges
 	for (let e in graph.edges) {
 		let edge = graph.edges[e]
 		if (! includeEdge(graph, edge))
@@ -170,14 +121,11 @@ function toDot(graph) {
 		// dot += `\n    "${graph.nodes[src].tag}" -> "${graph.nodes[dst].tag}"`
 		dot += `\n    ${src}:e -> ${dst}`
 	}
-
+	//close dot and return it
 	dot += '\n}'
-
-	console.log("dot")
-	console.log(dot)
 	return dot
 }
-*/
+
 
 // Parse the GraphML file `name` and call `cb` with the parsed graph
 function parse(name, cb) {
@@ -191,11 +139,9 @@ function parse(name, cb) {
 // Layout `graph` with dot and call `cb` with the resulting dot output
 function layout(graph, cb) {
 	let dot = toDot(graph)
-	let dot2 = toDot2(graph)
 	console.log("graph")
 	console.log(graph)
 	console.log(dot)
-	console.log(typeof dot)
 
 	child = execFile('dot', ['-Tplain'], (error, stdout, stderr) => {
 				if (error) {
