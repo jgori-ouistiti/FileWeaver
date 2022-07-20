@@ -1,9 +1,6 @@
 import gi
 import numpy as np
-<<<<<<< HEAD
-=======
 import math
->>>>>>> tmpstage2
 
 gi.require_version("Gtk", "3.0")
 
@@ -77,11 +74,8 @@ edge_properties = [
 
 formats = [".odt", ".pdf", ".doc", ".html", ".txt", ".xls", ".tex"]
 
-<<<<<<< HEAD
-=======
 threshold = 5
 
->>>>>>> tmpstage2
 def init_graph():
 
     """Start a new graph.
@@ -132,10 +126,7 @@ def init_graph():
     g.vp.emptyout = g.new_vertex_property("double")
     g.vp.emptyin = g.new_vertex_property("double")
     g.vp.cluster = g.new_vertex_property("string")
-<<<<<<< HEAD
-=======
     g.vp.keywords = g.new_vertex_property("vector<string>")
->>>>>>> tmpstage2
     g.vp.docvec = g.new_vertex_property("vector<float>")
     g.vp.keywordvec = g.new_vertex_property("vector<float>")
 
@@ -168,10 +159,7 @@ def init_graph():
     g.vp.status[v] = 1  ### This is a special node that can trigger actions
     g.vp.version[v] = "NA"
     g.vp.cluster[v] = "cat"
-<<<<<<< HEAD
-=======
     g.vp.keywords[v] = ["apple", "pen"]
->>>>>>> tmpstage2
     g.vp.docvec[v] = [1, 2, 3]
     g.vp.keywordvec[v] = [1,2,3]
 
@@ -390,11 +378,7 @@ def remote_add_vertex(id, vdic, g, namemap):
         cluster = vdic["cluster"]
         docvec = vdic["docvec"]
         keywordvec = vdic["keywordvec"]
-<<<<<<< HEAD
-        params = {'cluster':cluster, 'docvec':docvec, 'keywordvec':keywordvec}
-=======
         params = {'keywords':keywords, 'cluster':cluster, 'docvec':docvec, 'keywordvec':keywordvec}
->>>>>>> tmpstage2
         props = path, tag, target, smlk, flags, recipe, trace, interact, params
         return adding_vertex(props, False, g, namemap)
     return True, g, namemap
@@ -814,11 +798,7 @@ def vectorize_nodes():
     values = list(vecs.values())
     pca.fit(values)
     vecs = dict(zip(vecs.keys(), pca.transform(values))) 
-
-<<<<<<< HEAD
-=======
     #associate document with a vector
->>>>>>> tmpstage2
     for (key, value) in vecs.items():
         path = g.vp.path[int(key)]
         #update FlexFile
@@ -828,8 +808,6 @@ def vectorize_nodes():
         FFobject = linking.FlexFile(path)
         FFobject.update_param("docvec", value.tolist())
 
-<<<<<<< HEAD
-=======
     #clusterize documents according to their associated vector
     A = np.zeros((len(vecs.items()), len(vecs.items()))) 
     i, j = 0,0
@@ -883,4 +861,3 @@ def check_line_matrix(A, arr, line):
             #add the found link in the array, we DFS into it
             arr.append(j)
             return check_line_matrix(A, arr, j)
->>>>>>> tmpstage2

@@ -129,11 +129,7 @@ class FlexFile:
     def keyword_extract(self, nkeywords):        
         #loading the model now so we can vectorize our keywords later
         model = Word2Vec.load(path + "model.bin")
-<<<<<<< HEAD
-        #pca = decomposition.PCA(n_components=2)
-=======
         pca = decomposition.PCA(n_components=1)
->>>>>>> tmpstage2
         #pca.fit(list([list(model.wv.get_vector(model.wv.index_to_key[i])) for i in range(300)]))
         #get the text from the file
         w  = self.text_extract()
@@ -154,18 +150,10 @@ class FlexFile:
             if k in model.wv.index_to_key:
                 vec.append(model.wv.get_vector(k))
         #update the keyword parameter
-<<<<<<< HEAD
-        self.update_param("cluster", lkw)
-        #pca.transform(vec)
-        print(vec)
-        vec = list(np.array(vec).sum(axis=0)/len(vec)) if len(vec) != 0 else [0]
-        print(f"veeeeeeeeeeeec {vec}")
-=======
         self.update_param("keywords", lkw)
         if len(vec) != 0 :
             pca.fit_transform(vec) 
         vec = list(np.array(vec).sum(axis=0)/len(vec)) if len(vec) != 0 else [0]
->>>>>>> tmpstage2
         self.update_param("keywordvec", vec)
 
 def fn_to_cbp(filename):
