@@ -2,12 +2,7 @@
 <html>
 <head>
 	<title>History Graph</title>
-
-	<link rel="stylesheet" href="node_modules/highlight.js/styles/github.css" />
-	<link rel="stylesheet" type="text/css" href="node_modules/diff2html/bundles/css/diff2html.min.css" />
-	<script type="text/javascript" src="node_modules/diff2html/bundles/js/diff2html-ui-slim.min.js"></script>
-
-	<link rel="stylesheet" type="text/css" href="lib/menu.css">
+	<link rel="stylesheet" type="text/css" href="lib/info.css">
 	<style type="text/css">
 		#info {
 			background-color: darkgrey;
@@ -15,241 +10,27 @@
 			font-family: sans-serif;
 			padding-left: 10px;
 		}
+		
+	textarea {
+		padding: 10px;
+		max-width: 100%;
+		line-height: 1.5;
+		border-radius: 5px;
+		border: 1px solid #ccc;
+		box-shadow: 1px 1px 1px #999;
+	}
+
+	label {
+		display: block;
+		margin-bottom: 10px;
+	}
+
 	</style>
 	<script src="lib/menu.js"></script>
-
 	<script type="text/javascript">
-		var searchString = window.location.search.substring(1) || 'path=.&tag=.'
-		let m = searchString.match(/^path=([^&]*)\&tag=([^&]*)$/)
-		let path = null
-		let tag = null
-		if (m) {
-			path = decodeURIComponent(m[1])
-			tag = decodeURIComponent(m[2])
-			document.title += ' for '+tag
-		}
 
-		const Path = require('path')
-
-		const params = require('./params.js')
-		if (params.mode === 'test')
-			path = 'test/files/2053_4982370/main.tex'
-
-		let dir = Path.resolve(Path.dirname(path))
-		let file = Path.basename(path)
-
-		const git = require('simple-git')(dir)
-		const hljs = require('highlight.js')
-		// require('node_modules/diff2html/lib/ui/js/highlight.js-slim.js')
-		hljs.configure({languages: ['tex']})
-
-		function getNode(elem) {
-			if (! elem.classList.contains('node'))
-				return null
-
-			let version = elem.getElementsByTagName('title')[0].textContent
-			let isMaster = version.endsWith('+master')
-			if (isMaster)
-				version = version.slice(0, -7)
-			let firstPoly = elem.getElementsByTagName('polygon')[0]
-			let stroke = firstPoly.getAttribute('stroke')
-			let fill = firstPoly.getAttribute('fill')
-			return {
-				elem,
-				version,
-				isMaster,
-				stroke,
-				fill,
-			}
-		}
-
-		let nodes = []
-		function parseNodes(svg) {
-			let groups = svg.getElementsByTagName('g')
-			for (var i = 0; i < groups.length; i++) {
-				let n = getNode(groups[i])
-				if (n)
-					nodes.push(n)
-			}
-		}
-
-		function closeInfo() {
-			document.getElementById('info').innerHTML = ''
-			document.getElementById('content').innerHTML = ''
-			unhighlightAll()
-		}
-
-		let highlighted = []
-		function highlightNode(node1, node2) {
-			unhighlightAll()
-			changeStroke(node1.elem, 'red')
-			highlighted.push(node1)
-			if (node2) {
-				changeStroke(node2.elem, 'red')
-				highlighted.push(node2)
-			}
-		}
-		function unhighlightAll() {
-			highlighted.forEach(n => changeStroke(n.elem, n.stroke))
-			highlighted = []
-		}
-
-		function openVersion(node) {
-			let what = node.version+':'+file
-			if (params.mode === 'test')
-				what = 'f80fcb1ca:main.tex'
-
-			git.show(what, (err, content) => {
-				if (err)
-					console.error(err)
-
-				highlightNode(node)
-
-				document.getElementById('info').innerHTML = `<h3>${file} at version ${node.version}<button style="float:right" onclick="closeInfo()">close</button></h3>`
-
-				content = hljs.highlightAuto(content).value
-				document.getElementById('content').innerHTML = '<pre>'+content+'</pre>'
-			})
-		}
-
-		function showDiff(node1, node2) {
-			let what = node1.version+'..'
-			if (node2)
-				what += node2.version
-			if (params.mode === 'test') {
-				what = 'f80fcb1ca'
-				file = 'main.tex'
-			}
-
-			let v1 = node1.version
-			let v2 = node2 ? ' to '+node2.version : ''
-
-			git.diff([what, file], (err, content) => {
-				if (err)
-					console.error(err)
-
-				if (node2)
-					highlightNode(node1, node2)
-				else
-					highlightNode(node1)
-
-				document.getElementById('info').innerHTML = `<h3>diff ${file} from version ${v1}${v2} <button style="float:right" onclick="closeInfo()">close</button></h3>`
-				// document.getElementById('content').innerHTML = '<pre>'+content+'</pre>'
-
-				const targetElement = document.getElementById('content')
-				const configuration = {
-					drawFileList: false, 
-					matching: 'lines',
-					highlight: true,
-				}
-				const diff2htmlUi = new Diff2HtmlUI(targetElement, content, configuration)
-				diff2htmlUi.draw()
-			})
-		}
-
-
-
-		let contextMenus = {
-			node: {
-				checkDisabled(info) {},
-				execute(info) { singleCommand(info) },
-			},
-			edge: {
-				checkDisabled(info) {},
-				execute(info) {},
-			},
-			graph: {
-				checkDisabled(info) {},
-				execute(info) { selectionCommand(info) },
-			}
-		}
-
-		function singleCommand(info) {
-			switch(info.cmd) {
-				case 'openVersion':
-					openVersion(getNode(info.target))
-					break
-			}
-		}
-
-		function selectionCommand(info) {
-			switch(info.cmd) {
-				case 'showDiff':
-					let sel = nodes.filter(n => n.isSelected)
-					if (sel.length === 1)
-						showDiff(sel[0])
-					else if (sel.length === 2)
-						showDiff(sel[0], sel[1])
-					break
-			}
-		}
-
-		function changeStroke(elem, color) {
-			let elems = [...elem.getElementsByTagName('polygon'), 
-						 ...elem.getElementsByTagName('polyline')]
-			elems.forEach(e => e.setAttribute('stroke', color))
-		}
-
-		function changeFill(elem, color) {
-			let poly = elem.getElementsByTagName('polygon')[0]
-			poly.setAttribute('fill', color)
-		}
-
-		function isSelected(node) {
-			let n = nodes.find(n => n.elem === node.elem)
-			return n ? n.isSelected : false
-		}
-
-		function selectNode(node) {
-			// changeStroke(node.elem, 'red')
-			changeFill(node.elem, 'yellow')
-			node.isSelected = true
-		}
-
-		function deselectNode(node) {
-			// changeStroke(node.elem, node.stroke)
-			changeFill(node.elem, node.fill)
-			node.isSelected = false
-		}
-
-		function deselectAllNodes() {
-			nodes.forEach(n => {
-				if (n.isSelected)
-					deselectNode(n)
-			})
-		}
-
-		let clickCommands = {
-			clickNode(e) {
-				let [target, type] = getTarget(e.target)
-				if (type !== 'node')
-					return
-				let node = nodes.find(n => target === n.elem )
-
-				if (e.shiftKey || e.ctrlKey || e.metaKey) {
-					if (isSelected(node))
-						deselectNode(node)
-					else
-						selectNode(node)
-				} else {
-					if (isSelected(node))
-						return
-					deselectAllNodes()
-					selectNode(node)
-				}
-			},
-			dblclickNode(e) {
-				let [target, type] = getTarget(e.target)
-				if (type !== 'node')
-					return
-				let node = nodes.find(n => target === n.elem )
-				openVersion(node)
-			},
-			clickGraph(e) {
-				deselectAllNodes()
-			}
-		}
-
+		var data = null;
+		
 		function inspectPage() {
 			require('nw.gui').Window.get().showDevTools()
 		}
@@ -261,73 +42,120 @@
 			    extensionId: chrome.runtime.id
 			})
 		}
+		
+		function button_remove_keyword(kw){
+			console.log("The function is called :D");
+			console.log(kw)
+			const index = data.cluster.indexOf(kw)
+			data.cluster = data.cluster.splice(index,1)
+			
+			//Delete the HTML
+			document.getElementById("line_"+kw).remove();
+		}
+		
+		function createKeywordEntry(kw){
+			if (data.cluster.includes(kw) == false){
+				data.cluster.push(kw)
+		}
+			
+			console.log("Adding the keyword: "+kw)
+			var word_cluster = document.getElementById('cluster_tab');
+			var tr = "<tr id=\"line_"+kw+"\">";
+			//var button_html = "<button onclick=\"button_remove_keyword(\""+kw+"\")\">Remove</button>";
+			var button_html = "<button onclick=\"button_remove_keyword(&quot;"+ kw + "&quot;)\"> Remove </button>";
+			console.log("HTML code of the button");
+			console.log(button_html);
+			tr += "<td>" + kw + "</td>" +"<td>" + button_html + "</td>"
+			tr +="</tr>"
+			word_cluster.innerHTML += tr;
+		}
 
 		function init() {
-			initMenu()
+		
+			//Displaying all the properties of our nodes
 			var tbody = document.getElementById('tbody');
-			window.addEventListener('message', function(event) {
-			var data = JSON.parse(event.data);
 			
+			window.addEventListener('message', function(event) {
+			console.log("Received the node from "+ event.origin)
+			data = JSON.parse(event.data);
 			
 			// Maybe better performance with another method but couldn't make it work
 			//https://stackoverflow.com/questions/17684201/create-html-table-from-javascript-object
 			var lim = Object.keys(data).length;
 			
 			for (var i = 0; i < lim; i++) {
-				var tr = "<tr>";
 				var key = Object.keys(data)[i];
 				var value = Object.values(data)[i];
 				
-				tr += "<td>" + key + "</td>" + "<td>" + value + "</td></tr>";
+				if (key == 'cluster') {
+					value.forEach(element=>{console.log('init with ' + element);createKeywordEntry(element)});
+				} else {
+					var tr = "<tr>";
+					tr += "<td>" + key + "</td>";
+					tr += "<td>" + value + "</td>"
+					tr += "</tr>";
 				tbody.innerHTML += tr;
-			} 
-			}, false);
-		}
+				}
+			
+			}
+			console.log("Tab displayed! Now adding auto scaling");
+			//Credit to this post for text area with auto resize
+			//https://stackoverflow.com/questions/454202/creating-a-textarea-with-auto-resize
+			
+			const tx = document.getElementsByTagName("textarea");
+			for (let i = 0; i < tx.length; i++) {
+			  tx[i].setAttribute("style", "height:" + (tx[i].scrollHeight) + "px;overflow-y:hidden;");
+			  tx[i].addEventListener("input", OnInput, false);
+			}
+
+			function OnInput() {
+			  this.style.height = "auto";
+			  this.style.height = (this.scrollHeight) + "px";
+			}
+		},false);
+			
+			window.addEventListener("beforeunload", function(){
+				opener.postMessage(JSON.stringify(data))
+			});
+	
+	}
 	</script>
 </head>
 <body onload="init()">
-
+	<div id="wrapper">
 		<div>	
-	<h1> Node info </h1>
+			<h1> Node info </h1>
+		</div>
+		
+		<div id ="node_prop">
+			<h2> Nodes properties </h2>
+			<table>
+		    		<tbody id="tbody"></tbody>
+			</table>
+		</div>
+		
+		<div id="word_cluster">
+		<script>
+			function button_add_new_keyword(){
+				var kw = document.getElementById("add_keyword").value;
+				if (kw == ""){
+					alert("Please do not insert blank keyword")
+				} else if (data.cluster.includes(kw) == true) {
+					alert("Keyword already exists")
+				} else {
+					createKeywordEntry(kw);
+					alert("Keyword inserted");
+				}
+			}
+		</script>
+			<h2> Word cluster </h2>
+			<label for="add_keyword">Add a keyword:</label>
+			<textarea id="add_keyword"></textarea>
+			<button onclick="button_add_new_keyword()">Add</button>
+			<table>
+				<tbody id="cluster_tab"></tbody>
+			</table>
+		</div>
 	</div>
-	
-	
-	<div id="graphMenu" class="menu">
-		<ul class="items">
-			<li id="showDiff">Show diff</li>
-		</ul>
-		<hr />
-		<ul class="items">
-			<li onmouseup="inspectPage()">Inspect page</li>
-			<li onmouseup="inspectBgPage()">Inspect background</li>
-		</ul>
-	</div>
-	<div id="nodeMenu" class="menu">
-		<ul class="items">
-			<li id="openVersion">Open</li>
-		</ul>
-		<hr />
-		<ul class="items">
-			<li onmouseup="inspectPage()">Inspect page</li>
-			<li onmouseup="inspectBgPage()">Inspect background</li>
-		</ul>
-	</div>
-	<div id="edgeMenu" class="menu">
-		<ul class="items">
-			<li onmouseup="inspectPage()">Inspect page</li>
-			<li onmouseup="inspectBgPage()">Inspect background</li>
-		</ul>
-	</div>
-	<div id="git">
-	</div>
-	<div id="info">
-	</div>
-	<div id="content">
-	</div>
-	
-	<table>
-    <tbody id="tbody"></tbody>
-</table>
-
-	
 </body>
+</html>

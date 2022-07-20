@@ -127,6 +127,10 @@ function deselectNode(id) {
 		console.warn(`deselectNode ${id} NO RECT - ${graph.nodes[id].tag}`)
 }
 
+function dummy(event){
+	console.log("dummy text")
+}
+
 function createNode(id, x, y, w, h, label) {
 	let node = graph.nodes[id]
 	if (! node) {
@@ -138,7 +142,7 @@ function createNode(id, x, y, w, h, label) {
 	g.setAttribute('id', id)
 	g.setAttribute('class', 'node')
 	g.setAttribute('opacity', 0)
-
+	
 	let img = document.createElementNS('http://www.w3.org/2000/svg', 'image')
 	g.appendChild(img)
 	img.setAttribute('href', iconFile(node.target))
@@ -485,3 +489,52 @@ function updateGraph(s) {
 			removeMorph(id)
 	})
 }
+
+//To move nodes with the mouse
+//https://www.petercollingridge.co.uk/tutorials/svg/interactive/dragging/
+function makeDraggable(event) {
+	var svg = event.target
+	
+
+    var selectedElement = false;
+
+
+	svg.addEventListener('mousedown', startDrag);
+	svg.addEventListener('mousemove', drag);
+	svg.addEventListener('mouseup', endDrag);
+	svg.addEventListener('mouseleave', endDrag);
+	
+	
+
+	    function getMousePosition(event) {
+	      var CTM = svg.getScreenCTM();
+	      return {
+		x: (evt.clientX - CTM.e) / CTM.a,
+		y: (evt.clientY - CTM.f) / CTM.d
+	      };
+	    }
+
+
+	
+	function startDrag(evt) {
+	//
+	    selectedElement = evt.target;
+	}
+	
+	function drag(event) {
+		if (selectedElement) {
+		    event.preventDefault();
+		    var coord = getMousePosition(event);
+		    selectedElement.setAttributeNS(null, "x", coord.x);
+		    selectedElement.setAttributeNS(null, "y", coord.y);
+		}
+	}
+	
+	function endDrag(event) {
+		selectedElement = null;
+	}
+	
+	
+}
+
+
