@@ -307,4 +307,4 @@ conf.ini
 *poetry.lock*
 
 #======================= book
-/books
+/books/*
