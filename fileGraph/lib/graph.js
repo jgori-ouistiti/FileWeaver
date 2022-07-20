@@ -81,23 +81,6 @@ function adjustEdgeEnd(graph, nodeName) {
 }
 
 
-function toDot2(graph) {
-	dot = `strict digraph {
-	rankdir = LR; 
-	node [fontname=Helvetica image="document.png" shape=none height=1 imagepos=tc labelloc=b]
-	n2 [label = "main.tex"]
-	n3 [label = "fig2.png"]
-	n4 [label = "section.tex"]
-	n5 [label = "main.pdf"]
-
-	n3:e -> n2
-	n4:e -> n2
-	n2:e -> n5
-}`;
-	return dot;
-}
-
-
 function toDot(graph) {
 	let dot = 'strict digraph {'
 	dot += '\n    rankdir = LR; '
@@ -212,10 +195,7 @@ function layout(graph, cb) {
 	console.log("graph")
 	console.log(graph)
 	console.log(dot)
-	console.log(dot2)
 	console.log(typeof dot)
-	console.log(typeof dot2)
-	console.log(dot == dot2)
 
 	child = execFile('dot', ['-Tplain'], (error, stdout, stderr) => {
 				if (error) {
