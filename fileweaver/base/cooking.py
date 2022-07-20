@@ -46,15 +46,10 @@ import random
 @managing.exists_decorator
 def edit_linked_file(file):
     """Edit a link.
-
     If the link does not exist then create it. Then track it using version control.
-
     Args:
         file (str/FileObject): The absolute path to the file or a FileObject
-
     Returns:
-
-
     """
     cookbookpage, linkname = (
         linking.FlexFile(file).cookbookpage,
@@ -77,15 +72,11 @@ def edit_linked_file(file):
 
 def refresh_file(file):
     """Refresh a link.
-
     Finds all cakes and updates them.
-
     Args:
         file (str/FileObject): The absolute path to the file or a FileObject
-
     Returns:
         None
-
     """
     ##refresh links
     FFobject = linking.FlexFile(file)
@@ -138,8 +129,6 @@ def update_graph(g):
 
 def run_interactive_mode(file):
     """Run the file in interactive mode.
-
-
     Args:
         cookbookpage (str): The page where to find the leftcookbookpage
 
@@ -203,7 +192,6 @@ def check_cakes(file, cakes):
 
 
     """
-    print(f"check the fillllllllllle {file}")
     FFobject = linking.FlexFile(file)
     filename, linkname, cookbookpage, cookbookleftpage = FFobject._get()
     keep_cakes = []
@@ -467,7 +455,6 @@ def check_link(file, send=True):
         dependencies (list): List of all dependencies of the file
 
 
-
     """
     
     #save the info of the file in a FlexFile
@@ -599,7 +586,6 @@ def most_recent_update(edges):
 
 def read_deps(g, namemap, linkname):
     """Read dependencies.
-
     Args:
         g (graph object): graph
         namemap (dictionnary): namemap linking linknames to vertex_index
@@ -608,15 +594,12 @@ def read_deps(g, namemap, linkname):
     Returns:
         deps (list): List of all deps of the file
 
-
-
     """
     return [g.vp.smlk[v] for v in g.get_in_edges(namemap[linkname])[:, 0]]
 
 
 def read_cakes(g, namemap, linkname):
     """Read cakes.
-
     Args:
         g (graph object): graphF
         namemap (dictionnary): namemap linking linknames to vertex_index
@@ -625,23 +608,17 @@ def read_cakes(g, namemap, linkname):
     Returns:
         deps (list): List of all cakes of the file
 
-
-
     """
     return [g.vp.smlk[v] for v in g.get_out_edges(namemap[linkname])[:, 1]]
 
 
 def get_cakes(file):
     """Make cakes.
-
     Wrapper to generate_trace_cake()
     Args:
         file (FileObject, str): filename in whatever form works for linking.FlexFile()
     Returns:
         cakes (list): List of all cakes of the file
-
-
-
     """
     FFobject = linking.FlexFile(file)
     filename, linkname, cookbookpage, cookbookleftpage = FFobject._get()
@@ -661,14 +638,10 @@ def get_deps(file, cakes):
     """Make deps.
 
     Run trace to find up to date deps list
-
     Args:
         file (FileObject, str): filename in whatever form works for linking.FlexFile() : pathabs
     Returns:
         deps (list): List of all deps of the file
-
-
-
     """
     FFobject = linking.FlexFile(file)
     filename, linkname, cookbookpage, cookbookleftpage = FFobject._get()
@@ -688,16 +661,12 @@ def generate_trace_cake(filename, linkname, cookbookleftpage):
     """Make cakes.
 
     Run trace to find up to date cake list
-
     Args:
         filename (FileObject, str): filename in whatever form works for linking.FlexFile()
         linkname (str):
         cookbookleftpage (str): absolute path to the node content file
     Returns:
         cakes (list): List of all cakes of the file
-
-
-
     """
     logging.debug("Running trace cake on {}".format(cookbookleftpage))
     g, namemap = graph.open_graph()
@@ -738,7 +707,6 @@ def _sort_out_trace(tracefile, cakes, filename, level="fwpartition"):
 
     Run the script on the symlink obtained from the cookbookpage, and filter out unneeded dependencies according to the given level. This method is called by generate_trace_deps.
 
-
     Args:
         tracefile (str): Absolute paths to the output of trace file.
         level (str): Filtering level. For now this is the only option that is provided.
@@ -775,7 +743,6 @@ def _sort_out_trace(tracefile, cakes, filename, level="fwpartition"):
                     filename.split("_v")[1].split(".")[0] in VERSION_NUMBER
                 ):
                     copy_flag = True
-                    print("I am tracing on a copyyyyyyyyyyyyyyyyy")
                 else:
                     copy_flag = False
             except IndexError:
@@ -783,7 +750,6 @@ def _sort_out_trace(tracefile, cakes, filename, level="fwpartition"):
             try:
                 if line.split("_v")[0] == filename.split(".")[0]:
                     copy_flag_bis = True
-                    print("I found a copyyyyyyyyyyyyyyyyy in the deps")
                 else:
                     copy_flag_bis = False
             except IndexError:
@@ -838,8 +804,6 @@ def run_trace(script, symlink, leftcookbookpage, inout=3):
 
     Returns:
         dep_name (str): Absolute paths to the output of trace file.
-
-
     """
     dep_name = "/".join(
         [
@@ -888,7 +852,6 @@ def filtering(tracefile, filename, showline, *filters):
     """Filter the output of the trace file.
 
     For now only dealing with dependencies at level inside /home/user/. Later might do more complex stuff to get further dependencies, such as librairies.
-
     Args:
         tracefile (str): Absolute paths to the output of trace file.
         filename : absolute path
@@ -907,15 +870,12 @@ def filtering(tracefile, filename, showline, *filters):
             line = line.rstrip("\n")
             for filt in filters :
                 if not filt(line, filename):
-                    print(f"stoping because offfffff {str(filt)}")
                     stop = True
                     break
             line = line.lstrip("/.")
             if stop == False:
                 res.append(line)
             stop = False
-    if showline == True:
-        print(f"reeeeeeeeeessssssssssssssss {res}")
     return res
                          
 
@@ -924,7 +884,6 @@ def unmold_cake(tracefile, filename, level="fwpartition"):
     """Filter the output of the trace file.
 
     For now only dealing with dependencies at level inside /home/user/. Later might do more complex stuff to get further dependencies, such as librairies.
-
     Args:
         tracefile (str): Absolute paths to the output of trace file.
         filename : absolute path
@@ -932,7 +891,6 @@ def unmold_cake(tracefile, filename, level="fwpartition"):
 
     Returns:
         cakes (list): List of the absolute paths to the cakes.
-
     """
     #### For now only dealing with dependencies at level inside /home/user/. Later might do more complex stuff to get further dependencies, such as librairies.
     if level == "fwpartition":
@@ -963,4 +921,3 @@ def unmold_cake(tracefile, filename, level="fwpartition"):
 
     # os.remove(tracefile)
     return set(cakes)
-    

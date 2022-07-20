@@ -305,3 +305,6 @@ conf.cfg
 conf.ini
 # ====================== Poetry
 *poetry.lock*
+
+#======================= book
+books/*

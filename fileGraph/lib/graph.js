@@ -80,13 +80,14 @@ function adjustEdgeEnd(graph, nodeName) {
 	return nodeName
 }
 
+
 // Layout a graph with the `dot` graph layout program.
 // The returned value is the output of dot.
 function toDot(graph) {
 	let dot = 'strict digraph {'
 	dot += '\n    rankdir = LR; '
 	dot += '\n    node [fontname=Helvetica image="document.png" shape=none height=1 imagepos=tc labelloc=b]'
-
+	//morphs
 	for (let g in graph.morphs) {
 		let group = graph.morphs[g]
 		if (group.collapsed)
@@ -94,19 +95,23 @@ function toDot(graph) {
 		else
 			dot += `\n    subgraph cluster${g} {${group.nodes.join('; ')}}`
 	}
-
+	//create clusters
+	var i = 0;
+	clusters = []
 	for (let n in graph.nodes) {
+		console.log("node")
 		let node = graph.nodes[n]
-		if (! includeNode(graph, node))
-			continue
-		if (node.tag !== 'NA')
-			dot += `\n    ${n} [label = "${node.tag}"]`
-		if (node.copyOf) {
-			dot += `\n { rank = same; ${n}; ${node.copyOf}}`
+		if (clusters[node.cluster] == undefined){
+			clusters[node.cluster] = `	\n	subgraph cluster${node.cluster}{\n  		style=filled;\n		color=lightgrey;\n	  	node [style=filled,color=white];`
 		}
+		clusters[node.cluster] += `\n    ${n} [label = "${node.tag}"]`
 	}
-	dot += '\n'
-
+	//add clusters in nodes
+	for (let c in clusters) {
+		clusters[c] +=`\n	}\n`
+		dot += `${clusters[c]}`
+	}
+	//add edges
 	for (let e in graph.edges) {
 		let edge = graph.edges[e]
 		if (! includeEdge(graph, edge))
@@ -116,11 +121,11 @@ function toDot(graph) {
 		// dot += `\n    "${graph.nodes[src].tag}" -> "${graph.nodes[dst].tag}"`
 		dot += `\n    ${src}:e -> ${dst}`
 	}
-
+	//close dot and return it
 	dot += '\n}'
-
 	return dot
 }
+
 
 // Parse the GraphML file `name` and call `cb` with the parsed graph
 function parse(name, cb) {
@@ -134,13 +139,10 @@ function parse(name, cb) {
 // Layout `graph` with dot and call `cb` with the resulting dot output
 function layout(graph, cb) {
 	let dot = toDot(graph)
-	
-	console.log("-------------------------------------------------\n B DOT FILE \n");
-	
-	console.log(dot);
-	
-	console.log("-------------------------------------------------\n N DOT FILE\n");
-	
+	console.log("graph")
+	console.log(graph)
+	console.log(dot)
+
 	child = execFile('dot', ['-Tplain'], (error, stdout, stderr) => {
 				if (error) {
 					console.error('dot says: ', error)
@@ -151,9 +153,11 @@ function layout(graph, cb) {
 				console.log(stdout);
 				console.log(error);
 				console.log(stderr);
-					console.log("-------------------------------------------------\n END STDOUT \n");
+				console.log("-------------------------------------------------\n END STDOUT \n");
 				cb(stdout)
 			})
+	console.log("child")
+	console.log(child)
 	child.stdin.write(dot)
 	child.stdin.end()
 

@@ -283,7 +283,10 @@
 				})
 				console.log("-----------------------------")
 			},false);
-		}
+				console.log(thing)
+				console.log(graph)
+				global.exchange.processExchange(graph,thing,graph => global.graph.layout(graph, updateGraph))
+                    };
 
 	</script>
 </head>
