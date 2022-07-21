@@ -46,7 +46,7 @@ logger = logging.getLogger(__name__)
 from urllib.parse import unquote
 
 
-path = "/home/gozea/Documents/Fileweaver/FileWeaver/"
+path = config.get("Main","PATH_TO_LIBS")
 
 class FlexFile:
     """Class made to make calls to a file easy (can be either via absolute path, vertex_index, linkname, of File Object).
