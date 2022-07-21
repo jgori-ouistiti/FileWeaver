@@ -247,22 +247,22 @@
 				//try catch because due to TypeError, the graph may not draw edges, there are better solution I think
 				// such as checking the  message beforehands
 				try{
-					var beginning = parsed_data.vpdic.cluster.indexOf('[')+1;
-					var end = parsed_data.vpdic.cluster.indexOf(']');
+					var beginning = parsed_data.vpdic.keywords.indexOf('[')+1;
+					var end = parsed_data.vpdic.keywords.indexOf(']');
 					
 					// As every keyword is seperated by a comma
-					parsed_data.vpdic.cluster = parsed_data.vpdic.cluster.substring(beginning,end).replaceAll('\'','').split(',')
+					parsed_data.vpdic.keywords = parsed_data.vpdic.keywords.substring(beginning,end).replaceAll('\'','').split(',')
 					
 					// Clean keyword a little bit
-					for (var i = 0; i < parsed_data.vpdic.cluster.length;i++) {
-						if (parsed_data.vpdic.cluster[i][0] == ' ') {
-							parsed_data.vpdic.cluster[i] = parsed_data.vpdic.cluster[i].slice(1);
+					for (var i = 0; i < parsed_data.vpdic.keywords.length;i++) {
+						if (parsed_data.vpdic.keywords[i][0] == ' ') {
+							parsed_data.vpdic.keywords[i] = parsed_data.vpdic.keywords[i].slice(1);
 							console.log("A keyword has been cleaned");
 						}
 					}
 				} catch(e) {
 					if (e instanceof TypeError) {
-							console.log("cluster already pre processed as a list")
+							console.log("keywords already pre processed as a list")
   					}
 				} finally {
 					global.exchange.processExchange(graph,parsed_data,graph => global.graph.layout(graph, updateGraph))
@@ -270,22 +270,20 @@
 					//working = parsed_data
 				}
 			};
-						
-		ws.onmessage = function(event){
-				console.log("Received a socket message, displaying the message");
-				console.log(event.data)
-				
-				console.log("Get the string")
-				var data = event.data
-				
-				console.log("Get it as a json thing")
-				thing = JSON.parse(data)
-				thing = JSON.parse(thing)
-				
-				console.log(thing)
-				console.log(graph)
-				global.exchange.processExchange(graph,thing,graph => global.graph.layout(graph, updateGraph))
-		    };
+			
+			//To receive keywords update
+			window.addEventListener('message', function(event) {
+				console.log("Received from " + event.origin)
+				var node = JSON.parse(event.data);
+
+				Object.keys(graph.nodes).forEach(element => {
+    				if (graph.nodes[element].path == node.path){
+    					graph.nodes[element] = node;
+        				console.log("Update taken into account");
+    				}
+				})
+				console.log("-----------------------------")
+			},false);
 	 }
 
 	</script>
@@ -350,7 +348,7 @@
     	function updateKeywordMenu(){
     	
     		Object.keys(graph.nodes).forEach(node => {
-    			graph.nodes[node].cluster.forEach(keyword => console.log(keyword));
+    			graph.nodes[node].keywords.forEach(keyword => console.log(keyword));
     			console.log("-----")
     		})
     			

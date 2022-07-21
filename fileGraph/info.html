@@ -46,20 +46,20 @@
 		function button_remove_keyword(kw){
 			console.log("The function is called :D");
 			console.log(kw)
-			const index = data.cluster.indexOf(kw)
-			data.cluster = data.cluster.splice(index,1)
+			const index = data.keywords.indexOf(kw)
+			data.keywords.splice(index,1)
 			
 			//Delete the HTML
 			document.getElementById("line_"+kw).remove();
 		}
 		
 		function createKeywordEntry(kw){
-			if (data.cluster.includes(kw) == false){
-				data.cluster.push(kw)
+			if (data.keywords.includes(kw) == false){
+				data.keywords.push(kw)
 		}
 			
 			console.log("Adding the keyword: "+kw)
-			var word_cluster = document.getElementById('cluster_tab');
+			var word_keywords = document.getElementById('keywords_tab');
 			var tr = "<tr id=\"line_"+kw+"\">";
 			//var button_html = "<button onclick=\"button_remove_keyword(\""+kw+"\")\">Remove</button>";
 			var button_html = "<button onclick=\"button_remove_keyword(&quot;"+ kw + "&quot;)\"> Remove </button>";
@@ -67,7 +67,7 @@
 			console.log(button_html);
 			tr += "<td>" + kw + "</td>" +"<td>" + button_html + "</td>"
 			tr +="</tr>"
-			word_cluster.innerHTML += tr;
+			word_keywords.innerHTML += tr;
 		}
 
 		function init() {
@@ -87,7 +87,7 @@
 				var key = Object.keys(data)[i];
 				var value = Object.values(data)[i];
 				
-				if (key == 'cluster') {
+				if (key == 'keywords') {
 					value.forEach(element=>{console.log('init with ' + element);createKeywordEntry(element)});
 				} else {
 					var tr = "<tr>";
@@ -134,13 +134,13 @@
 			</table>
 		</div>
 		
-		<div id="word_cluster">
+		<div id="word_keywords">
 		<script>
 			function button_add_new_keyword(){
 				var kw = document.getElementById("add_keyword").value;
 				if (kw == ""){
 					alert("Please do not insert blank keyword")
-				} else if (data.cluster.includes(kw) == true) {
+				} else if (data.keywords.includes(kw) == true) {
 					alert("Keyword already exists")
 				} else {
 					createKeywordEntry(kw);
@@ -148,12 +148,12 @@
 				}
 			}
 		</script>
-			<h2> Word cluster </h2>
+			<h2> Keywords </h2>
 			<label for="add_keyword">Add a keyword:</label>
 			<textarea id="add_keyword"></textarea>
 			<button onclick="button_add_new_keyword()">Add</button>
 			<table>
-				<tbody id="cluster_tab"></tbody>
+				<tbody id="keywords_tab"></tbody>
 			</table>
 		</div>
 	</div>
