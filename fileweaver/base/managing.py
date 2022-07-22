@@ -353,6 +353,7 @@ def new_link(file, restore=True):
     try:
         FFobject = linking.FlexFile(file)
         filename, linkname, cookbookpage, cookbookleftpage = FFobject._get()
+        
         FFobject.keyword_extract(3)
         params = FFobject.get_params()
 

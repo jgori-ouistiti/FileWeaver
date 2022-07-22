@@ -6,9 +6,9 @@ let backend = null
 let callback = null
 
 function start(cb) {
-	callback = cb
-	backend = spawn('python3', ['-u', params.backendPath])
-	backend.stdout.on('data', cb)
+	//callback = cb
+	//backend = spawn('python3', ['-u', params.backendPath])
+	//backend.stdout.on('data', cb)
 	// backend.stdout.on('data', (data) => {
 //   console.log(`stdout: ${data}`);
 // });

@@ -83,7 +83,7 @@ def refresh_file(file):
     filename, linkname, cookbookpage, cookbookleftpage = FFobject._get()
 
     (cakes, cflag), (deps, dflag) = check_link(file)
-    print("checlkink output")
+    print("check links output")
     print(cakes)
 
     logging.info("\n I found the following cakes | Update necessary : {}".format(cflag))
