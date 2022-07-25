@@ -675,7 +675,6 @@ def generate_trace_cake(filename, linkname, cookbookleftpage):
     tracefile = run_trace(file, filename, cookbookleftpage, inout=1)
     l1 = filtering(tracefile, filename, filter_out_cakes_for_deps)
     return set(l1)
-    #return unmold_cake(tracefile, filename, level="fwpartition")
 
 
 def generate_recipe(linkname):

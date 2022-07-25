@@ -3,6 +3,8 @@ const parseString = require('xml2js').parseString
 const fs = require('fs')
 const { execFile } = require('child_process')
 
+const colors = ["aquamarine", "azure", "red", "gold", "green", "magenta"]
+
 // Create a graph from a string in the graphML XML format
 function parseGraphML(gml) {
 	let keys = {
@@ -102,9 +104,12 @@ function toDot(graph) {
 		console.log("node")
 		let node = graph.nodes[n]
 		if (clusters[node.cluster] == undefined){
-			clusters[node.cluster] = `	\n	subgraph cluster${node.cluster}{\n  		style=filled;\n		color=lightgrey;\n	  	node [style=filled,color=white];`
+			//creation of the cluster
+			clusters[node.cluster] = `	\n	subgraph cluster${node.cluster}{\n	  `
 		}
-		clusters[node.cluster] += `\n    ${n} [label = "${node.tag}"]`
+		//we give an associated color to identify the clyster
+		var c = colors[node.cluster]
+		clusters[node.cluster] += `\n    ${n} [label = "${node.tag}", style=filled, color=${c}]`
 	}
 	//add clusters in nodes
 	for (let c in clusters) {

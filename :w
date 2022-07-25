@@ -2,10 +2,7 @@
 let graphEl = null
 let iconSize = 48 // 64
 let iconHalfSize = 24 // 32
-let radiusCircle = 30
 
-let offSetRect = 10
-let svgOffSetTop = 100 //the top of the svg where the graph is drawn
 
 function dpi(s) {
 	return Math.round(parseFloat(s)*72)
@@ -58,12 +55,6 @@ function textElement(id) {
 	let elem = document.getElementById(id)
 	return elem && elem.getElementsByTagName('text')[0]
 }
-
-function circleElement(id) {
-	let elem = document.getElementById(id)
-	return elem && elem.getElementsByTagName('circle')[0]
-}
-
 function selRectElement(id) {
 	let elem = document.getElementById(id)
 	return elem && elem.getElementsByTagName('rect')[0]
@@ -141,9 +132,8 @@ function dummy(event){
 	console.log("dummy text")
 }
 
-function createNode(id, x, y, w, h, label, c) {
+function createNode(id, x, y, w, h, label) {
 	let node = graph.nodes[id]
-	console.log(`create Node ${node}`)
 	if (! node) {
 		console.warn(`createNode: node ${id} not found`)
 		node = {}
@@ -170,14 +160,6 @@ function createNode(id, x, y, w, h, label, c) {
 	setPosition(txt, dpi(x), dpi(y) + iconHalfSize + 10)
 	txt.appendChild(document.createTextNode(label))
 
-	let circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-	g.appendChild(circle)
-	circle.setAttribute('r', radiusCircle)
-	if (c == 'undefined') { circle.setAttribute('fill', 'None') } else { circle.setAttribute('fill', c) }
-	circle.setAttribute('stroke-width', 5)
-	circle.setAttribute('opacity', 0.3)
-	setPosition(img, dpi(x) - iconHalfSize, dpi(y) - iconHalfSize)
-
 
 	if (node.isSelected)
 		selectNode(id)
@@ -187,6 +169,7 @@ function createNode(id, x, y, w, h, label, c) {
 		targets: g,
 		opacity: 1,
 		easing: 'easeInCubic',
+		duration: 500,
 	})
 }
 
@@ -285,11 +268,11 @@ function isCollapsedMorph(id) {
 
 let oldNodeIds = []
 let newNodeIds = []
-function updateNode(id, x, y, w, h, label, c) {
+function updateNode(id, x, y, w, h, label) {
 	newNodeIds.push(id)
 	if (oldNodeIds.indexOf(id) < 0) {
 		console.log(`updateNode: create new node ${id} - ${label}`)
-		createNode(id, x, y, w, h, label, c)
+		createNode(id, x, y, w, h, label)
 	} else {
 		console.log(`updateNode: update existing node ${id} - ${label}`)
 		let node = graph.nodes[id]
@@ -312,16 +295,6 @@ function updateNode(id, x, y, w, h, label, c) {
 			targets: txt,
 			x: dpi(x),
 			y: dpi(y) + iconHalfSize + 10,
-			easing: 'easeInOutCubic',
-		})
-
-		//Animate circle to new position
-		let circle = circleElement(id)
-		if (c == 'undefined') { circle.setAttribute('fill', 'None') } else { circle.setAttribute('fill', c) }
-		anime({
-			targets: circle,
-			cx: dpi(x),
-			cy:dpi(y),
 			easing: 'easeInOutCubic',
 		})
 
@@ -465,15 +438,12 @@ function parseGraph(s) {
 					label = l.match(/"[^"]*"/)[0].slice(1, -1)
 				//put the node in a cluster
 				let c = line[line.length - 1]
-				console.log("color")
-				console.log(id)
-				console.log(c)
 				if (clusters[c] == undefined) {
 					clusters[c] = []
 				}
 				clusters[c].push(id)
 				//update the node with the given parameters
-				updateNode(id, x, y, w, h, label, c)
+				updateNode(id, x, y, w, h, label)
 				nodeCoords[id] = {x: dpi(x), y: dpi(y), w: dpi(w), h: dpi(h)}
 				break
 			case 'edge':
@@ -485,6 +455,32 @@ function parseGraph(s) {
 				break
 		}
 	})
+
+	console.log("entire cluster")
+	console.log(clusters)
+	for (let c in clusters) {
+		console.log("ccccccc")
+		console.log(clusters[c])
+		let g = document.createElementNS('http://www.w3.org/2000/svg', 'g')
+		g.setAttribute("id", clusters[c])
+		for (let elem in clusters[c]) {
+			g.appendChild(document.getElementById(clusters[c][elem]))
+			console.log(g)
+		}
+		let ell = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse')
+		g.appendChild(ell)
+		ell.setAttribute('rx', iconSize)
+		ell.setAttribute('ry', iconSize)
+		ell.setAttribute('stroke', c)
+		ell.setAttribute('fill', "none")
+		ell.setAttribute('stroke-width', 6)
+		ell.setAttribute('opacity', 1)
+		setPosition(ell, dpi(x) - iconHalfSize, dpi(y) - iconHalfSize)
+
+		graphEl.append(g)
+		console.log("clusssssssster")
+		console.log(g)
+	}
 
 	for (let g in graph.morphs) {
 		let group = graph.morphs[g]
@@ -507,48 +503,6 @@ function parseGraph(s) {
 		minX -= 5; maxX += 5; minY -= 5; maxY += 5
 		updateMorph(g, minX, minY, maxX, maxY)
 	}
-
-	//create a rectangle to regroup those of the same cluster
-	//doesn't work properly yet
-	/*
-	for (let c in clusters) {
-		let doc = document.getElementById(c) 
-		if (doc == null) {
-			doc = document.createElementNS('http://www.w3.org/2000/svg', 'g')
-			doc.setAttribute("id", c)
-		}
-		for (let elem in clusters[c]) {
-			doc.appendChild(document.getElementById(clusters[c][elem]))
-		}
-		let rec = document.getElementById("rect_" + c)
-		console.log("reccccccccc")
-		console.log(clusters[c])
-		console.log(rec)
-		//add a rectangle if needed
-		if (rec == null) {
-			rec = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-			graphEl.appendChild(rec)
-			rec.setAttribute('id', "rect_"+c)
-			rec.setAttribute('stroke', c)
-			rec.setAttribute('fill', "none")
-			rec.setAttribute('stroke-width', 6)
-		}
-		let pos = doc.getBoundingClientRect()
-		anime({
-			targets: rec,
-			x: pos.x,
-			y: pos.y,
-			width: pos.width ,
-			height: pos.height,
-			easing: 'easeInOutCubic',
-		})
-		console.log("doc")
-		console.log(doc)
-		console.log(pos)
-		graphEl.appendChild(doc)
-	}
-	*/
-
 }
 
 function updateGraph(s) {
