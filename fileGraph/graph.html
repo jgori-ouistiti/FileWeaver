@@ -274,7 +274,6 @@
 			//To receive keywords update,
 			//I think a best way to code the eventListender is to directly find the node index in the array directly
 			//This will remove the For Each as it is useless.
-			//Another possible way: Send directly a message to the FW server that will after updating on its ide, send an update msg
 			window.addEventListener('message', function(event) {
 				console.log("Received from " + event.origin)
 				var node = JSON.parse(event.data);
