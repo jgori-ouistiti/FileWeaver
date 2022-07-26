@@ -117,7 +117,6 @@ def actions_unmorph(filename):
     )
     return linehacks, symlinks, hidden_copy
 
-
 def unmorph(filename):
     """Unmorph procedure
 
@@ -357,6 +356,8 @@ def new_link(file, restore=True):
         FFobject.keyword_extract(3)
         params = FFobject.get_params()
 
+        print("keywwwwwwwwwwwwwwwwwwwwwwwwords")
+        print(params)
         flags = [1, -2, -2]
 
         uses_morph = linking.uses_morph(file)
@@ -377,13 +378,12 @@ def new_link(file, restore=True):
             params
         ]
 
-        print(f"paraaaaaaaams {props}")
         ret = graph.adding_vertex(props)
         if ret != -1:
             return create_link(filename)
         else:
             logging.info("Managing: File {} is already linked".format(filename))
-        graph.vectorize_nodes()
+        graph.vectorize_nodes("Word2Vec")
         return cookbookpage
     except FileNotFoundError:
         print(f"new_link was called on file {file}, which does not exist anymore.")

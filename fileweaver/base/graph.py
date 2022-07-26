@@ -36,6 +36,7 @@ import logging
 from itertools import combinations
 
 
+path = "/home/gozea/Documents/Fileweaver/FileWeaver/"
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +75,7 @@ edge_properties = [
 
 formats = [".odt", ".pdf", ".doc", ".html", ".txt", ".xls", ".tex"]
 
-threshold = 5
+threshold = 10
 
 def init_graph():
 
@@ -778,65 +779,81 @@ def draw_graph(*args):
 
 
 
-def vectorize_nodes():
+def vectorize_nodes(method="Doc2Vec"):
     g, namemap = open_graph()
     tagged_data = []
     for a in  g.vertices():
         path = g.vp.path[a]
         if path != "NA" and np.array([f in path for f in formats]).any():
             FFobject = linking.FlexFile(path)
-            tagged_data.append(TaggedDocument(word_tokenize(FFobject.text_extract()), [int(a)]))
-    
-    #training
-    model = Doc2Vec(min_count=3)
-    model.build_vocab(tagged_data)
-    model.train(tagged_data, total_examples=model.corpus_count, epochs=50)
-
-    #pca on 2D
-    pca = decomposition.PCA(n_components=2)
-    vecs = dict((str(v), list(model.dv[int(v)])) for v in g.vertices() if g.vp.path[v] != "NA" and np.array([f in g.vp.path[v] for f in formats]).any())
-    values = list(vecs.values())
-    pca.fit(values)
-    vecs = dict(zip(vecs.keys(), pca.transform(values))) 
-    #associate document with a vector
-    for (key, value) in vecs.items():
-        path = g.vp.path[int(key)]
-        #update FlexFile
-        _, linkname, _, _ = linking.FlexFile(path)._get()
-        update("vertex", "docvec", linkname, value.tolist())
-        #update graph
-        FFobject = linking.FlexFile(path)
-        FFobject.update_param("docvec", value.tolist())
-
+            FFobject.keyword_extract(3)
+            if method == "Doc2Vec":
+                #extract text to apply Doc2Vec
+                tagged_data.append(TaggedDocument(word_tokenize(FFobject.text_extract()), [int(a)]))
+            elif method == "Word2Vec" :
+                #extract Word2Vec
+                if (FFobject.get_params()["keywords"] != ['']) : 
+                    tagged_data.append((FFobject.get_params()["keywordvec"], int(a)))
+    #DOC2VEC
+    if  method == "Doc2Vec" :
+        #training
+        model = Doc2Vec.load(path + "doc2vec_openintro-statistics.bin")
+        #pca on 2D
+        pca = decomposition.PCA(n_components=2)
+        vecs = dict((str(v), list(model.dv[int(v)])) for v in g.vertices() if g.vp.path[v] != "NA" and np.array([f in g.vp.path[v] for f in formats]).any())
+        values = list(vecs.values())
+        pca.fit(values)
+        vecs = dict(zip(vecs.keys(), pca.transform(values))) 
+    #WORD2VEC
+    elif method == "Word2Vec" :
+        #use extracted vectors
+        vecs = dict((tag, value) for (value, tag) in tagged_data)
     #clusterize documents according to their associated vector
-    A = np.zeros((len(vecs.items()), len(vecs.items()))) 
-    i, j = 0,0
+    A = np.zeros((len(vecs.items()), len(vecs.items())))                        
+    i, j = 0,0                                                                                                 
     for (key1, value1) in vecs.items():
         for (key2, value2) in vecs.items():
             if i != j:
-                A[i,j] = np.where(math.dist(value1, value2) < threshold, 1, 0)
+                #A[i,j] = np.where(math.dist(value1, value2) < threshold, 1, 0)
+                print("distttttt")
+                print(math.dist(value1, value2))
+                A[i,j] = np.where(math.dist(value1, value2) < threshold, 1, 0) 
             j += 1
         j = 0
         i += 1
-    
     #find all cliques in the matrix
     cliques = []
-    for i in range(A.shape[0]):
-        while np.any(A[i]) :
-            cliques.append(check_line_matrix(A, [], i))
-    #putting cliques into dictionary
-    for i, cl in enumerate(cliques) :
-        for n in cl:
-            num = list(vecs.items())[n][0]
-            path = g.vp.path[int(num)]
-            #update FlexFile
-            _, linkname, _, _ = linking.FlexFile(path)._get()
-            update("vertex", "cluster", linkname, i)
-            #update graph
-            FFobject = linking.FlexFile(path)
-            FFobject.update_param("cluster", i)
+    if A.shape[0] > 1: 
+        for i in range(A.shape[0]):
+            if not np.any(A[i]) and not np.any([i in c for c in cliques]):
+                cliques.append([i])
+            else :
+                while np.any(A[i]) :
+                    cliques.append(check_line_matrix(A, [], i))
+        print("ramene ta cliqueeeeeeeee")
+        print(cliques)
+        #putting cliques into dictionary
+        for i, cl in enumerate(cliques) :
+            for n in cl:
+                num = list(vecs.items())[n][0]
+                path = g.vp.path[int(num)]
+                #update graph
+                _, linkname, _, _ = linking.FlexFile(path)._get()
+                update("vertex", "cluster", linkname, i)
+                #update FlexFile
+                FFobject = linking.FlexFile(path)
+                FFobject.update_param("cluster", i)
 
-
+        if method == "Doc2Vec" :
+            #associate document with a vector
+            for (key, value) in vecs.items():
+                path = g.vp.path[int(key)]
+                #update graph
+                _, linkname, _, _ = linking.FlexFile(path)._get()
+                update("vertex", "docvec", linkname, value.tolist())
+                #update FlexFile
+                FFobject = linking.FlexFile(path)
+                FFobject.update_param("docvec", value.tolist())
 
 def check_line_matrix(A, arr, line):
     #return condition if the line is all zeros
