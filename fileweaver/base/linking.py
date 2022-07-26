@@ -144,7 +144,6 @@ class FlexFile:
             #substract unwanted characters
             k = re.sub("[,\.;:]", "", k)
             lkw.append(k) 
-            print(f"keyword {k}")
             #find the word vector
             if k in model.wv.index_to_key:
                 vec.append(model.wv.get_vector(k))
@@ -153,11 +152,7 @@ class FlexFile:
         if len(vec) != 0 :
             pca.fit_transform(vec) 
         vec = list(np.array(vec).sum(axis=0)/len(vec)) if len(vec) != 0 else [0]
-        print(vec)
         self.update_param("keywordvec", vec)
-        print("selfffff")
-        print(self.get_params())
-        print(self._get())
 
 def fn_to_cbp(filename):
     linkname = generate_linkname(filename)
