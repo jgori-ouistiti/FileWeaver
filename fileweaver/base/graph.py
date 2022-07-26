@@ -814,9 +814,6 @@ def vectorize_nodes(method="Doc2Vec"):
     for (key1, value1) in vecs.items():
         for (key2, value2) in vecs.items():
             if i != j:
-                #A[i,j] = np.where(math.dist(value1, value2) < threshold, 1, 0)
-                print("distttttt")
-                print(math.dist(value1, value2))
                 A[i,j] = np.where(math.dist(value1, value2) < threshold, 1, 0) 
             j += 1
         j = 0
@@ -829,7 +826,7 @@ def vectorize_nodes(method="Doc2Vec"):
                 cliques.append([i])
             else :
                 while np.any(A[i]) :
-                    cliques.append(check_line_matrix(A, [], i))
+                    cliques.append(check_line_matrix(A, [], i, 0))
         print("ramene ta cliqueeeeeeeee")
         print(cliques)
         #putting cliques into dictionary
@@ -855,18 +852,24 @@ def vectorize_nodes(method="Doc2Vec"):
                 FFobject = linking.FlexFile(path)
                 FFobject.update_param("docvec", value.tolist())
 
-def check_line_matrix(A, arr, line):
+#probably needs a fix
+def check_line_matrix(A, arr, line, i):
+    print(f"recursion {i}")
+    print(A)
+    print(line)
     #return condition if the line is all zeros
     if not np.any(A[line]) :
         return arr
     for j in range(A.shape[0]):
         #we find a relationship
         if A[line][j] == 1:
+            print(f"find line {j}") 
             duets = []
             #we check if there exist a link between if and all the previous ones in the array
             for k in arr:
                 if A[j][k] == 1 and A[k][j] == 1:
-                    duets.append((j,k))
+                    print(f"k {k}")
+                    duets.append((j, k))
                     duets.append((k, j))
                 else :
                     duets = []
@@ -875,6 +878,11 @@ def check_line_matrix(A, arr, line):
             for (k1,k2) in duets:
                 A[k1][k2] = 0
                 A[k2][k1] = 0
+            #we're gonna jump in the recursion, set the case to 0
+            A[line][j] = 0
+            A[j][line] = 0
             #add the found link in the array, we DFS into it
             arr.append(j)
-            return check_line_matrix(A, arr, j)
+            if line not in arr:
+                arr.append(line)
+            return check_line_matrix(A, arr, j, i+1)
