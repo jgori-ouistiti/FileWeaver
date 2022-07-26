@@ -821,13 +821,11 @@ def vectorize_nodes(method="Doc2Vec"):
             j += 1
         j = 0
         i += 1
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-    print(A)
     #find all cliques in the matrix
     cliques = []
     if A.shape[0] > 1: 
         for i in range(A.shape[0]):
-            if not np.any(A[i]) and not np.any(cliques==i):
+            if not np.any(A[i]) and not np.any([i in c for c in cliques]):
                 cliques.append([i])
             else :
                 while np.any(A[i]) :
@@ -837,10 +835,7 @@ def vectorize_nodes(method="Doc2Vec"):
         #putting cliques into dictionary
         for i, cl in enumerate(cliques) :
             for n in cl:
-                print("num in list")
-                print(list(vecs.items())[n])
                 num = list(vecs.items())[n][0]
-                print(num)
                 path = g.vp.path[int(num)]
                 #update graph
                 _, linkname, _, _ = linking.FlexFile(path)._get()

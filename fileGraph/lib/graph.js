@@ -103,6 +103,7 @@ function toDot(graph) {
 	for (let n in graph.nodes) {
 		console.log("node")
 		let node = graph.nodes[n]
+		console.log(node)
 		if (clusters[node.cluster] == undefined){
 			//creation of the cluster
 			clusters[node.cluster] = `	\n	subgraph cluster${node.cluster}{\n	  `
