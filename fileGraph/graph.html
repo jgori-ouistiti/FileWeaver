@@ -271,15 +271,24 @@
 				}
 			};
 			
-			//To receive keywords update
+			//To receive keywords update,
+			//I think a best way to code the eventListender is to directly find the node index in the array directly
+			//This will remove the For Each as it is useless.
+			//Another possible way: Send directly a message to the FW server that will after updating on its ide, send an update msg
 			window.addEventListener('message', function(event) {
 				console.log("Received from " + event.origin)
 				var node = JSON.parse(event.data);
-
+				
 				Object.keys(graph.nodes).forEach(element => {
     				if (graph.nodes[element].path == node.path){
     					graph.nodes[element] = node;
-        				console.log("Update taken into account");
+        				console.log("Update taken into account in JS");
+        				
+        				// Sending the information back to the FW server to compute new values related to kw
+    					var object_msg = {command : "editKeywords", node: node};
+    					console.log("The following, is the object that will be sent to the FW server")
+    					console.log(object_msg)
+    					ws.send(JSON.stringify(object_msg));
     				}
 				})
 				console.log("-----------------------------")
@@ -337,12 +346,6 @@
 	<h1>Message:</h1>
         <div id="message"></div>  
 	</div>
-    
-    <div id="Keywords">
-    	<input type="text" name="product" list="productName"/>
-    	<datalist id="keywords">
-    	</datalist>
-    </div>
     
     <script>
     	function updateKeywordMenu(){

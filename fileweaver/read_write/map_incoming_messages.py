@@ -4,6 +4,7 @@ from fileweaver.base import cooking
 from fileweaver.base import managing
 from fileweaver.read_write import readwrite
 
+import json
 
 def map_incoming_message_from_websocket(msg):
     print(msg)
@@ -77,7 +78,17 @@ def map_incoming_message_from_websocket(msg):
         filename = line[1]
         versions = line[2:]
         # nautgit.show_diff_versions(filename, versions)
-
+	
+    elif "editKeywords" in line[0]:
+        print("-------------------------------------------------")
+        print("Editing keywords")
+        print(line[0])
+        print("Following lines")
+        print(line[1])
+        print("Applied json.loads")
+        print(json.loads(msg))
+        print("-------------------------------------------------")
+    
     else:
         print(line)
         print(
