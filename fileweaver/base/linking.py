@@ -111,6 +111,7 @@ class FlexFile:
 
     def update_param(self, key, value):
         self.params[key] = value
+        print(f"The params {key} has been updated with {value} of type {type(value)}")
         
     def text_extract(self):
         print(f"filename {self.filename}")

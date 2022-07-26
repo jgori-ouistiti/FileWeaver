@@ -80,14 +80,11 @@ def map_incoming_message_from_websocket(msg):
         # nautgit.show_diff_versions(filename, versions)
 	
     elif "editKeywords" in line[0]:
-        print("-------------------------------------------------")
-        print("Editing keywords")
-        print(line[0])
-        print("Following lines")
-        print(line[1])
-        print("Applied json.loads")
-        print(json.loads(msg))
-        print("-------------------------------------------------")
+        parsed_msg = json.loads(msg)
+        file = linking.FlexFile(parsed_msg[1])
+        print("update!!!")
+        graph.update("vertex","keywords",file._get()[1],parsed_msg[2])
+        #file.update_param("keywords",parsed_msg[2])
     
     else:
         print(line)
