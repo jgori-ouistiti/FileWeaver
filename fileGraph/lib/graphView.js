@@ -465,9 +465,6 @@ function parseGraph(s) {
 					label = l.match(/"[^"]*"/)[0].slice(1, -1)
 				//put the node in a cluster
 				let c = line[line.length - 1]
-				console.log("color")
-				console.log(id)
-				console.log(c)
 				if (clusters[c] == undefined) {
 					clusters[c] = []
 				}
@@ -509,8 +506,6 @@ function parseGraph(s) {
 	}
 
 	//create a rectangle to regroup those of the same cluster
-	//doesn't work properly yet
-	/*
 	for (let c in clusters) {
 		let doc = document.getElementById(c) 
 		if (doc == null) {
@@ -520,11 +515,10 @@ function parseGraph(s) {
 		for (let elem in clusters[c]) {
 			doc.appendChild(document.getElementById(clusters[c][elem]))
 		}
-		let rec = document.getElementById("rect_" + c)
-		console.log("reccccccccc")
-		console.log(clusters[c])
-		console.log(rec)
 		//add a rectangle if needed
+		//this part doesn't work properly
+                /*
+		let rec = document.getElementById("rect_" + c)
 		if (rec == null) {
 			rec = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
 			graphEl.appendChild(rec)
@@ -542,12 +536,9 @@ function parseGraph(s) {
 			height: pos.height,
 			easing: 'easeInOutCubic',
 		})
-		console.log("doc")
-		console.log(doc)
-		console.log(pos)
+                */
 		graphEl.appendChild(doc)
 	}
-	*/
 
 }
 

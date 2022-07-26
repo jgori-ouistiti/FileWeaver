@@ -160,6 +160,7 @@ def add_file_and_children(file):
 
     logger.info("\n\n\nStarting to cook\n")
     FFobject = linking.FlexFile(file)
+    FFobject.keyword_extract(3)
     filename, linkname, cookbookpage, cookbookleftpage = FFobject._get()
     (cakes, cflag), (deps, dflag) = check_link(file)
     logging.info("\n I found the following cakes | Update necessary : {}".format(cflag))
@@ -174,7 +175,7 @@ def add_file_and_children(file):
     add_dependency(file)
     run_recipe(file)
     check_cakes(file, cakes)
-    graph.vectorize_nodes()
+    graph.vectorize_nodes("Word2Vec")
     return
 
 

@@ -98,7 +98,7 @@ class FlexFile:
             #     g, namemap = graph.open_graph()
             #     self.__init__(namemap[linkname])
         self.params = {}
-        self.params["keywords"] = []
+        self.params["keywords"] = [""]
         self.params["cluster"] = ""
         self.params["docvec"] = [0]
         self.params["keywordvec"] = [0]
@@ -113,7 +113,6 @@ class FlexFile:
         self.params[key] = value
         
     def text_extract(self):
-        print(f"filename {self.filename}")
 
         if ".tex" in self.filename:
             f = open(self.filename, "r")
@@ -128,7 +127,7 @@ class FlexFile:
 
     def keyword_extract(self, nkeywords):        
         #loading the model now so we can vectorize our keywords later
-        model = Word2Vec.load(path + "model.bin")
+        model = Word2Vec.load(path + "word2vec_openintro-statistics.bin")
         pca = decomposition.PCA(n_components=1)
         #pca.fit(list([list(model.wv.get_vector(model.wv.index_to_key[i])) for i in range(300)]))
         #get the text from the file
@@ -137,15 +136,15 @@ class FlexFile:
             return
 
         #use yake to get the keyword extraction
-        kw_extractor = yake.KeywordExtractor(lan="en", n=3, dedupLim=0.9, top=nkeywords)
+        kw_extractor = yake.KeywordExtractor(lan="en", n=1, dedupLim=0.1, top=nkeywords)
         keywords = kw_extractor.extract_keywords(str(w))
         lkw = []
         vec = []
-        print(f"keywords {keywords}")
         for k, s in keywords :
             #substract unwanted characters
             k = re.sub("[,\.;:]", "", k)
             lkw.append(k) 
+            print(f"keyword {k}")
             #find the word vector
             if k in model.wv.index_to_key:
                 vec.append(model.wv.get_vector(k))
@@ -154,7 +153,11 @@ class FlexFile:
         if len(vec) != 0 :
             pca.fit_transform(vec) 
         vec = list(np.array(vec).sum(axis=0)/len(vec)) if len(vec) != 0 else [0]
+        print(vec)
         self.update_param("keywordvec", vec)
+        print("selfffff")
+        print(self.get_params())
+        print(self._get())
 
 def fn_to_cbp(filename):
     linkname = generate_linkname(filename)
