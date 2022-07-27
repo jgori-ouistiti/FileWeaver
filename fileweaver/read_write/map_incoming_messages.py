@@ -101,10 +101,12 @@ def map_incoming_message_from_websocket(msg):
         for k in parsed_msg[3]:
             vec.append(model.wv.get_vector(k))
         vec = list(np.array(vec).sum(axis=0)/len(vec)) if len(vec) != 0 else [0]
-        graph.update("vertex", "keywordvec", file._get()[1], vec)
+        zero = np.zeros(len(vec)).tolist()
+        print(f"vec {type(vec)}")
+        print(f"zero {type(zero)}")
+        graph.update("vertex", "keywordvec", file._get()[1], zero)
+        graph.vectorize_nodes()
         print("update finished")
-        g, namemap = graph.open_graph()
-        print(g.vp.keywordvec[2])
 
     else:
         print(line)
