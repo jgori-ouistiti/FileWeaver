@@ -795,7 +795,7 @@ def vectorize_nodes(method="Doc2Vec"):
                 tagged_data.append(TaggedDocument(word_tokenize(FFobject.text_extract()), [int(a)]))
             elif method == "Word2Vec" :
                 #extract Word2Vec
-                if (g.vp.keywords[nodeid] != ['']) : 
+                if g.vp.keywords[nodeid] != [''] and not (g.vp.keywords[nodeid] != [''] and g.vp.keywordvec[nodeid] == np.array([0])) : 
                     tagged_data.append((g.vp.keywordvec[nodeid],  int(a)))
     #DOC2VEC
     if  method == "Doc2Vec" :
@@ -810,7 +810,9 @@ def vectorize_nodes(method="Doc2Vec"):
     #WORD2VEC
     elif method == "Word2Vec" :
         #use extracted vectors
+        print("vecccs")
         vecs = dict((tag, value) for (value, tag) in tagged_data)
+        print(vecs)
     #clusterize documents according to their associated vector
     A = np.zeros((len(vecs.items()), len(vecs.items())))                        
     i, j = 0,0                                                                                                 
@@ -821,6 +823,8 @@ def vectorize_nodes(method="Doc2Vec"):
             j += 1
         j = 0
         i += 1
+    print("AAAAAAA")
+    print(A)
     #find all cliques in the matrix
     cliques = []
     if A.shape[0] > 1: 
