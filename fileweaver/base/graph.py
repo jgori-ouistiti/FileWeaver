@@ -824,6 +824,8 @@ def vectorize_nodes(method="Doc2Vec"):
             j += 1
         j = 0
         i += 1
+    print("AAAAAAA")
+    print(A)
     #find all cliques in the matrix
     cliques = []
     if A.shape[0] > 1: 
@@ -833,6 +835,8 @@ def vectorize_nodes(method="Doc2Vec"):
             else :
                 while np.any(A[i]) :
                     cliques.append(check_line_matrix(A, [], i, 0))
+        print(" clique")
+        print(cliques)
         #putting cliques into dictionary
         for i, cl in enumerate(cliques) :
             for n in cl:

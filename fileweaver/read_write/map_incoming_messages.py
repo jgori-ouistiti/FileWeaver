@@ -105,7 +105,7 @@ def map_incoming_message_from_websocket(msg):
         print(f"vec {type(vec)}")
         print(f"zero {type(zero)}")
         graph.update("vertex", "keywordvec", file._get()[1], zero)
-        graph.vectorize_nodes()
+        graph.vectorize_nodes("Word2Vec")
         print("update finished")
 
     else:
