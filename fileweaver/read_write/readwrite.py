@@ -159,6 +159,8 @@ def send_instruction_over(linkname, action, id, vdic=None, edic=None):
     out_json["id"] = str(id)
     out_json["vpdic"] = vdic
     out_json["epdic"] = edic
+    print("json")
+    print(out_json)
     # ws = websocket.WebSocket()
     # ws.connect(URI)
     # ws.send(json.dumps(out_json))

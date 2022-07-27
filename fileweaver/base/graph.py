@@ -790,9 +790,6 @@ def vectorize_nodes(method="Doc2Vec"):
             FFobject = linking.FlexFile(path)
             _, linkname, _, _ = FFobject._get()
             nodeid = namemap[linkname]
-            print("graph")
-            print(nodeid)
-            print(g.vp.path[nodeid])
             if method == "Doc2Vec":
                 #extract text to apply Doc2Vec
                 tagged_data.append(TaggedDocument(word_tokenize(FFobject.text_extract()), [int(a)]))
@@ -824,8 +821,6 @@ def vectorize_nodes(method="Doc2Vec"):
             j += 1
         j = 0
         i += 1
-    print("AAAAAAA")
-    print(A)
     #find all cliques in the matrix
     cliques = []
     if A.shape[0] > 1: 
@@ -835,8 +830,6 @@ def vectorize_nodes(method="Doc2Vec"):
             else :
                 while np.any(A[i]) :
                     cliques.append(check_line_matrix(A, [], i, 0))
-        print(" clique")
-        print(cliques)
         #putting cliques into dictionary
         for i, cl in enumerate(cliques) :
             for n in cl:

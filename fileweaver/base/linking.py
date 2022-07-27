@@ -101,7 +101,7 @@ class FlexFile:
         self.params["keywords"] = [""]
         self.params["cluster"] = ""
         self.params["docvec"] = [0]
-        self.params["keywordvec"] = [0]
+        self.params["keywordvec"] = np.zeros(100).tolist()
 
     def _get(self):
         return self.filename, self.linkname, self.cookbookpage, self.cookbookleftpage

@@ -96,15 +96,17 @@ def map_incoming_message_from_websocket(msg):
         file = linking.FlexFile(parsed_msg[1])
         graph.update("vertex","keywords",file._get()[1],parsed_msg[3])
         #keywords
+        g, namemap = graph.open_graph()
+        nodeid = namemap[file._get()[1]]
         model = Word2Vec.load(path + "word2vec_openintro-statistics.bin")
         vec = []
         for k in parsed_msg[3]:
             vec.append(model.wv.get_vector(k))
         vec = list(np.array(vec).sum(axis=0)/len(vec)) if len(vec) != 0 else [0]
-        zero = np.zeros(len(vec)).tolist()
-        print(f"vec {type(vec)}")
-        print(f"zero {type(zero)}")
-        graph.update("vertex", "keywordvec", file._get()[1], zero)
+        g.vp["keywordvec"][nodeid] = np.array(vec)
+        graph.close_graph(g, namemap)
+        #zero = np.zeros(len(vec)).tolist()
+        #graph.update("vertex", "keywordvec", file._get()[1], zero)
         graph.vectorize_nodes("Word2Vec")
         print("update finished")
 
