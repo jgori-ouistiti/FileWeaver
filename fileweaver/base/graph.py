@@ -556,6 +556,7 @@ def get_subgraph_belongs(linkname, index=False, g=None, namemap=None):
 
 def update(property_type, property_name, linkname, value, **kwargs):
     # Open graph if it is not provided
+    print("updating graph")
     LOAD_GRAPH = 0
     g = kwargs.get("g")
     namemap = kwargs.get("namemap")
@@ -565,6 +566,7 @@ def update(property_type, property_name, linkname, value, **kwargs):
 
     ## If vertex  do vertex stuff
     if property_type == "v" or property_type == "vertex":
+        print("update vertex")
         property_type_string = "Vertex"
         property_index = kwargs.get("property_index")
         if property_index is None:
@@ -786,14 +788,18 @@ def vectorize_nodes(method="Doc2Vec"):
         path = g.vp.path[a]
         if path != "NA" and np.array([f in path for f in formats]).any():
             FFobject = linking.FlexFile(path)
-            FFobject.keyword_extract(3)
+            _, linkname, _, _ = FFobject._get()
+            nodeid = namemap[linkname]
+            print("graph")
+            print(nodeid)
+            print(g.vp.path[nodeid])
             if method == "Doc2Vec":
                 #extract text to apply Doc2Vec
                 tagged_data.append(TaggedDocument(word_tokenize(FFobject.text_extract()), [int(a)]))
             elif method == "Word2Vec" :
                 #extract Word2Vec
-                if (FFobject.get_params()["keywords"] != ['']) : 
-                    tagged_data.append((FFobject.get_params()["keywordvec"], int(a)))
+                if (g.vp.keywords[nodeid] != ['']) : 
+                    tagged_data.append((g.vp.keywordvec[nodeid],  int(a)))
     #DOC2VEC
     if  method == "Doc2Vec" :
         #training
@@ -827,8 +833,6 @@ def vectorize_nodes(method="Doc2Vec"):
             else :
                 while np.any(A[i]) :
                     cliques.append(check_line_matrix(A, [], i, 0))
-        print("ramene ta cliqueeeeeeeee")
-        print(cliques)
         #putting cliques into dictionary
         for i, cl in enumerate(cliques) :
             for n in cl:
@@ -854,9 +858,6 @@ def vectorize_nodes(method="Doc2Vec"):
 
 #probably needs a fix
 def check_line_matrix(A, arr, line, i):
-    print(f"recursion {i}")
-    print(A)
-    print(line)
     #return condition if the line is all zeros
     if not np.any(A[line]) :
         return arr

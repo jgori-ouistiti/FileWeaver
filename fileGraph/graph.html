@@ -284,7 +284,7 @@
         				console.log("Update taken into account in JS");
         				
         				// Sending the information back to the FW server to compute new values related to kw
-    					var object_msg = {command : "editKeywords", smlk: node.smlk, keywords: node.keywords};
+    					var object_msg = {command : "editKeywords", smlk: node.smlk, path: node.path, keywords: node.keywords};
     					console.log("The following, is the object that will be sent to the FW server")
     					console.log(object_msg)
     					ws.send(JSON.stringify(Object.values(object_msg)));

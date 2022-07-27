@@ -4,7 +4,18 @@ from fileweaver.base import cooking
 from fileweaver.base import managing
 from fileweaver.read_write import readwrite
 
+import gensim
+from gensim.models.doc2vec import Word2Vec, Doc2Vec, TaggedDocument
+import numpy as np
+
 import json
+
+import os
+import configparser
+
+config = configparser.ConfigParser()
+config.read(os.environ["CONFIG_FILE"])
+path = config.get("Main","PATH_TO_LIBS")
 
 def map_incoming_message_from_websocket(msg):
     print(msg)
@@ -79,13 +90,22 @@ def map_incoming_message_from_websocket(msg):
         versions = line[2:]
         # nautgit.show_diff_versions(filename, versions)
 	
+
     elif "editKeywords" in line[0]:
         parsed_msg = json.loads(msg)
         file = linking.FlexFile(parsed_msg[1])
-        print("update!!!")
-        graph.update("vertex","keywords",file._get()[1],parsed_msg[2])
-        #file.update_param("keywords",parsed_msg[2])
-    
+        graph.update("vertex","keywords",file._get()[1],parsed_msg[3])
+        #keywords
+        model = Word2Vec.load(path + "word2vec_openintro-statistics.bin")
+        vec = []
+        for k in parsed_msg[3]:
+            vec.append(model.wv.get_vector(k))
+        vec = list(np.array(vec).sum(axis=0)/len(vec)) if len(vec) != 0 else [0]
+        graph.update("vertex", "keywordvec", file._get()[1], vec)
+        print("update finished")
+        g, namemap = graph.open_graph()
+        print(g.vp.keywordvec[2])
+
     else:
         print(line)
         print(
