@@ -361,33 +361,31 @@ def update_cakes_in_graph(cakes, file, send=True):
             g.ep.update_time[e] = _time
             g.ep.edge_dir_up[e] = bool(0)
 
-        print("new out_edges stuff")
-        out_edges = g.get_out_edges(namemap[linkname])
-        print(out_edges)
-        print("old out edges that are not cakes anymore")
-        print(remaining_out_edges)
-        for s, t in out_edges:
-            if not (remaining_out_edges == [s, t]).all(axis=1):
-                e = g.edge(g.vertex(s), g.vertex(t))
-                vhash = g.vp.version[namemap[linkname]]
-                g.ep.parent_version[e] = vhash
-            else:
-                vhash = g.ep.parent_version[e]
-
-            if send is True:
-                edic = {}
-                if flag_add is True:
-                    action = "add_edge"
-                    edic["update_bool"] = bool(1)
-                    edic["format"] = str(g.ep.format[e])
-                else:
-                    action = "update_edge"
-
-                edic["update_time"] = _time
-                edic["edge_dir_up"] = bool(1)
-                edic["parent_version"] = vhash
-                _id = "{}#{}".format(_edge[0], _edge[1])
-                readwrite.send_instruction_over(linkname, action, _id, {}, edic)
+            print("new out_edges stuff")
+            out_edges = g.get_out_edges(namemap[linkname])
+            print(out_edges)
+            print("old out edges that are not cakes anymore")
+            print(remaining_out_edges)
+            for s, t in out_edges:
+            	e = g.edge(g.vertex(s), g.vertex(t))
+            	if not (remaining_out_edges == [s, t]).all(axis=1):
+            		vhash = g.vp.version[namemap[linkname]]
+            		g.ep.parent_version[e] = vhash
+            	else:
+            		vhash = g.ep.parent_version[e]
+            	if send is True:
+            		edic = {}
+            		if flag_add is True:
+            			action = "add_edge"
+            			edic["update_bool"] = bool(1)
+            			edic["format"] = str(g.ep.format[e])
+            		else:
+            			action = "update_edge"
+            		edic["update_time"] = _time
+            		edic["edge_dir_up"] = bool(1)
+            		edic["parent_version"] = vhash
+            		_id = "{}#{}".format(_edge[0], _edge[1])
+            		readwrite.send_instruction_over(linkname, action, _id, {}, edic)
 
     else:
         _time = time.time()
@@ -674,7 +672,7 @@ def generate_trace_cake(filename, linkname, cookbookleftpage):
     trace = g.vp.trace[namemap.get(linkname)]
     file = generate_builder_file(trace)
     tracefile = run_trace(file, filename, cookbookleftpage, inout=1)
-    l1 = filtering(tracefile, filename, filter_out_cakes_for_deps)
+    l1 = filtering(tracefile, filename,True, filter_out_cakes_for_deps)
     return set(l1)
 
 
@@ -697,7 +695,7 @@ def generate_trace_deps(filename, linkname, cookbookleftpage, cakes):
     trace = g.vp.trace[namemap.get(linkname)]
     file = generate_builder_file(trace)
     tracefile = run_trace(file, filename, cookbookleftpage, inout=2)
-    l = filtering(tracefile, filename, filters.filter_partit_or_local, filters.filter_is_not_dir, filters.filter_filename_not_in_line, filters.filter_cookbook, filters.filter_no_hidden_files)
+    l = filtering(tracefile, filename, True, filters.filter_partit_or_local, filters.filter_is_not_dir, filters.filter_filename_not_in_line, filters.filter_cookbook, filters.filter_no_hidden_files)
     return set(l)
     #return _sort_out_trace(tracefile, cakes, filename, level="fwpartition")
 
