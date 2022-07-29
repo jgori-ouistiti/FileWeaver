@@ -823,6 +823,8 @@ def vectorize_nodes(method="Doc2Vec"):
         i += 1
     #find all cliques in the matrix
     cliques = []
+    print("AAAAAAAAa")
+    print(A)
     if A.shape[0] > 1: 
         for i in range(A.shape[0]):
             if not np.any(A[i]) and not np.any([i in c for c in cliques]):
@@ -886,4 +888,4 @@ def check_line_matrix(A, arr, line, i):
                 if line not in arr:
                     arr.append(line)
                 return check_line_matrix(A, arr, j, i+1)
-    return 
+    return ar
