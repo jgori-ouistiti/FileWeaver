@@ -283,6 +283,7 @@ def copy_node(node_copied_from, node_copied_to_path, node_copied_to_symlink, sen
 
 def open_graph():
     """Open and return the graph.
+    If you want to apply modifications, call the close_graph function below
 
     Args:
 
@@ -781,7 +782,12 @@ def draw_graph(*args):
 
 
 
-def vectorize_nodes(method="Doc2Vec"):
+def vectorize_nodes(method="Word2Vec"):
+    """
+    Compute the clusters by using either the Word2Vec or Doc2Vec method
+    Word2Vec needs the vectors already computed from the keywords of each file
+    Doc2Vec compute the document vector by itself and doesn't care about keywords
+    """
     g, namemap = open_graph()
     tagged_data = []
     for a in  g.vertices():
@@ -831,7 +837,7 @@ def vectorize_nodes(method="Doc2Vec"):
                 cliques.append([i])
             else :
                 while np.any(A[i]) :
-                    cliques.append(check_line_matrix(A, [], i, 0))
+                    cliques.append(check_line_matrix(A, [], i))
         print("ramene la cliiiiiiiiiiique")
         print(cliques)
         #putting cliques into dictionary
@@ -857,7 +863,16 @@ def vectorize_nodes(method="Doc2Vec"):
                 FFobject.update_param("docvec", value.tolist())
 
 #probably needs a fix
-def check_line_matrix(A, arr, line, i):
+def check_line_matrix(A, arr, line):
+    """
+    Check a line of the relational matrix to check the relations of its relations
+    Can be used recursively in each line to get the cliques of the graph
+
+    Args :
+        A (2-D ndarray): the relational matrix to check. The matrix should be symmetrical with each line representing a node. 1 if link exist with its column, 0 if not
+        arr (1-D array)! an array that contains the relations already checked at this state
+        line (int): the line to check in the matrix
+    """
     #return condition if the line is all zeros
     if not np.any(A[line]) :
         return arr
@@ -887,5 +902,5 @@ def check_line_matrix(A, arr, line, i):
                 arr.append(j)
                 if line not in arr:
                     arr.append(line)
-                return check_line_matrix(A, arr, j, i+1)
-    return ar
+                return check_line_matrix(A, arr, j)
+    return arr
