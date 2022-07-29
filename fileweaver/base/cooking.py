@@ -306,7 +306,7 @@ def update_cakes_in_graph(cakes, file, send=True):
     Makes edges between each (cake in cakes) and file, update  update_time and edge_dir_up
 
     Args:
-        deps (list): list of absolute paths to the deps that need to be added to file.
+        cakes (list): list of absolute paths to the cakes that need to be added to file.
         file (str/FileObject): The absolute path to the file or a FileObject
 
     Returns:
@@ -361,33 +361,31 @@ def update_cakes_in_graph(cakes, file, send=True):
             g.ep.update_time[e] = _time
             g.ep.edge_dir_up[e] = bool(0)
 
-        print("new out_edges stuff")
-        out_edges = g.get_out_edges(namemap[linkname])
-        print(out_edges)
-        print("old out edges that are not cakes anymore")
-        print(remaining_out_edges)
-        for s, t in out_edges:
-            if not (remaining_out_edges == [s, t]).all(axis=1):
-                e = g.edge(g.vertex(s), g.vertex(t))
-                vhash = g.vp.version[namemap[linkname]]
-                g.ep.parent_version[e] = vhash
-            else:
-                vhash = g.ep.parent_version[e]
-
-            if send is True:
-                edic = {}
-                if flag_add is True:
-                    action = "add_edge"
-                    edic["update_bool"] = bool(1)
-                    edic["format"] = str(g.ep.format[e])
-                else:
-                    action = "update_edge"
-
-                edic["update_time"] = _time
-                edic["edge_dir_up"] = bool(1)
-                edic["parent_version"] = vhash
-                _id = "{}#{}".format(_edge[0], _edge[1])
-                readwrite.send_instruction_over(linkname, action, _id, {}, edic)
+            print("new out_edges stuff")
+            out_edges = g.get_out_edges(namemap[linkname])
+            print(out_edges)
+            print("old out edges that are not cakes anymore")
+            print(remaining_out_edges)
+            for s, t in out_edges:
+            	e = g.edge(g.vertex(s), g.vertex(t))
+            	if not (remaining_out_edges == [s, t]).all(axis=1):
+            		vhash = g.vp.version[namemap[linkname]]
+            		g.ep.parent_version[e] = vhash
+            	else:
+            		vhash = g.ep.parent_version[e]
+            	if send is True:
+            		edic = {}
+            		if flag_add is True:
+            			action = "add_edge"
+            			edic["update_bool"] = bool(1)
+            			edic["format"] = str(g.ep.format[e])
+            		else:
+            			action = "update_edge"
+            		edic["update_time"] = _time
+            		edic["edge_dir_up"] = bool(1)
+            		edic["parent_version"] = vhash
+            		_id = "{}#{}".format(_edge[0], _edge[1])
+            		readwrite.send_instruction_over(linkname, action, _id, {}, edic)
 
     else:
         _time = time.time()
@@ -501,10 +499,25 @@ def check_link(file, send=True):
 
 
 def need_update(g, v, FILE_ACCESS_TIME):
+    """Return cakes and deeps that need to be updated.
+    
+    Args:
+        g (graph object): graph
+        v (graph vertex): the vertex which we are looking for deps/cakes updates
+        FILE_ACCESS_TIME (time): last time the file associated to v was edited
+    
+    Returns:
+        cakes_need_update (boolean): true if a cake need to be updated else false
+        deps_need_update (boolean): true if a dep need to be updated else false
+    
+    """
+    
     cakes_need_update = True
     deps_need_update = True
     edges_out = g.get_out_edges(v, eprops=[g.ep.update_time, g.ep.update_bool])
     edges_in = g.get_in_edges(v, eprops=[g.ep.update_time, g.ep.update_bool])
+    
+    #case 1: The vertex does not exists
     if v is None :
         return cakes_need_update, deps_need_update
     
@@ -674,7 +687,7 @@ def generate_trace_cake(filename, linkname, cookbookleftpage):
     trace = g.vp.trace[namemap.get(linkname)]
     file = generate_builder_file(trace)
     tracefile = run_trace(file, filename, cookbookleftpage, inout=1)
-    l1 = filtering(tracefile, filename, filter_out_cakes_for_deps)
+    l1 = filtering(tracefile, filename,True, filter_out_cakes_for_deps)
     return set(l1)
 
 
@@ -697,7 +710,7 @@ def generate_trace_deps(filename, linkname, cookbookleftpage, cakes):
     trace = g.vp.trace[namemap.get(linkname)]
     file = generate_builder_file(trace)
     tracefile = run_trace(file, filename, cookbookleftpage, inout=2)
-    l = filtering(tracefile, filename, filters.filter_partit_or_local, filters.filter_is_not_dir, filters.filter_filename_not_in_line, filters.filter_cookbook, filters.filter_no_hidden_files)
+    l = filtering(tracefile, filename, True, filters.filter_partit_or_local, filters.filter_is_not_dir, filters.filter_filename_not_in_line, filters.filter_cookbook, filters.filter_no_hidden_files)
     return set(l)
     #return _sort_out_trace(tracefile, cakes, filename, level="fwpartition")
 
@@ -784,6 +797,17 @@ def _sort_out_trace(tracefile, cakes, filename, level="fwpartition"):
 
 
 def generate_builder_file(build):
+    """Generate a script based on the argument build
+    
+    Args:
+        build: recipe or interact
+    
+    Returns:
+        file (string): path of the script generated by the function
+    
+    
+    """
+    
     file = PATH_TO_DUMP + str(random.uniform(1, 10000000)) + ".tmpbuilder.sh"
     with open(file, "w") as fd:
         fd.writelines([b + "\n" for b in build])

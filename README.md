@@ -41,10 +41,17 @@ First usage
 
 * Git clone
 
-* Install all dependencies in a virtual environment using poetry
+* Configure Poetry
+```
+poetry config virtualenvs.in-project true
+```
 
+* Install all dependencies in a virtual environment using poetry
 ```
 poetry install
+poetry update
+poetry install
+sed -i 's/include-system-site-packages = false/include-system-site-packages = true/g' .venv/pyvenv.cfg
 ```
 
 * Determine a folder which will act as a fake partition. FileWeaver will only act on files inside this folder. For example, you can

@@ -810,9 +810,7 @@ def vectorize_nodes(method="Doc2Vec"):
     #WORD2VEC
     elif method == "Word2Vec" :
         #use extracted vectors
-        print("vecccs")
         vecs = dict((tag, value) for (value, tag) in tagged_data)
-        print(vecs)
     #clusterize documents according to their associated vector
     A = np.zeros((len(vecs.items()), len(vecs.items())))                        
     i, j = 0,0                                                                                                 
@@ -823,10 +821,10 @@ def vectorize_nodes(method="Doc2Vec"):
             j += 1
         j = 0
         i += 1
-    print("AAAAAAA")
-    print(A)
     #find all cliques in the matrix
     cliques = []
+    print("AAAAAAAAa")
+    print(A)
     if A.shape[0] > 1: 
         for i in range(A.shape[0]):
             if not np.any(A[i]) and not np.any([i in c for c in cliques]):
@@ -834,6 +832,8 @@ def vectorize_nodes(method="Doc2Vec"):
             else :
                 while np.any(A[i]) :
                     cliques.append(check_line_matrix(A, [], i, 0))
+        print("ramene la cliiiiiiiiiiique")
+        print(cliques)
         #putting cliques into dictionary
         for i, cl in enumerate(cliques) :
             for n in cl:
@@ -845,7 +845,6 @@ def vectorize_nodes(method="Doc2Vec"):
                 #update FlexFile
                 FFobject = linking.FlexFile(path)
                 FFobject.update_param("cluster", i)
-
         if method == "Doc2Vec" :
             #associate document with a vector
             for (key, value) in vecs.items():
@@ -881,10 +880,12 @@ def check_line_matrix(A, arr, line, i):
                 A[k1][k2] = 0
                 A[k2][k1] = 0
             #we're gonna jump in the recursion, set the case to 0
-            A[line][j] = 0
-            A[j][line] = 0
-            #add the found link in the array, we DFS into it
-            arr.append(j)
-            if line not in arr:
-                arr.append(line)
-            return check_line_matrix(A, arr, j, i+1)
+            if duets != [] or arr == []:
+                A[line][j] = 0
+                A[j][line] = 0
+                #add the found link in the array, we DFS into it
+                arr.append(j)
+                if line not in arr:
+                    arr.append(line)
+                return check_line_matrix(A, arr, j, i+1)
+    return ar

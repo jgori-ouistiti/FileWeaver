@@ -32,7 +32,8 @@ source ~/.bash_profile
 poetry config virtualenvs.in-project true
 
 #update
-curl -sSL https://install.python-poetry.orgsudo apt update
+curl -sSL https://install.python-poetry.org
+sudo apt update
 sudo apt upgrade
 
 poetry install

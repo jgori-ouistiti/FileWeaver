@@ -1,6 +1,6 @@
 #!/bin/bash
-/home/alexandre/Documents/StageM1/FileWeaver//scenarios/scenario_one/scnr.sh
-rm -f /home/alexandre/.cookbook/graph.graphml
-rm -f /home/alexandre/.cookbook/namemap.pickle
-rm -f /home/alexandre/Documents/StageM1/FileWeaver/.exchange.json
-rm -f /home/alexandre/Documents/StageM1/FileWeaver/exchange.json
+/home/gozea/Documents/Fileweaver/FileWeaver//scenarios/scenario_one/scnr.sh
+rm -f /home/gozea/.cookbook/graph.graphml
+rm -f /home/gozea/.cookbook/namemap.pickle
+rm -f /home/gozea/Documents/Fileweaver/FileWeaver/.exchange.json
+rm -f /home/gozea/Documents/Fileweaver/FileWeaver/exchange.json
