@@ -1,5 +1,5 @@
 #!/bin/bash
-rsync -av --progress /home/gozea/Documents/Fileweaver/FileWeaver//scenarios/complex/files /home/gozea/Documents/Fileweaver/FileWeaver_Partition --exclude src
+rsync -av --progress /home/alexandre/Documents/StageM1/FileWeaver//scenarios/complex/files /home/alexandre/Documents/StageM1/FileWeaver_Partition --exclude src
 
- mkdir /home/gozea/Documents/Fileweaver/FileWeaver_Partition/../src
-cp /home/gozea/Documents/Fileweaver/FileWeaver//scenarios/complex/files/src/* /home/gozea/Documents/Fileweaver/FileWeaver_Partition/../src
+ mkdir /home/alexandre/Documents/StageM1/FileWeaver_Partition/../src
+cp /home/alexandre/Documents/StageM1/FileWeaver//scenarios/complex/files/src/* /home/alexandre/Documents/StageM1/FileWeaver_Partition/../src
