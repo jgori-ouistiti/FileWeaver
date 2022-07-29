@@ -829,6 +829,8 @@ def vectorize_nodes(method="Word2Vec"):
         i += 1
     #find all cliques in the matrix
     cliques = []
+    print("AAAAAAAAa")
+    print(A)
     if A.shape[0] > 1: 
         for i in range(A.shape[0]):
             if not np.any(A[i]) and not np.any([i in c for c in cliques]):
