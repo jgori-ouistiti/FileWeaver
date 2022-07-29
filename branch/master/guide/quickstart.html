@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quick Start &mdash; FileWeaver 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Welcome to FileWeaver’s documentation!" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> FileWeaver
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#first-usage">First usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#some-tips">Some tips</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">See also</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">    Home page</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FileWeaver</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Quick Start</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guide/quickstart.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="quick-start">
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline"></a></h1>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
+<blockquote>
+<div><p>A script <code class="docutils literal notranslate"><span class="pre">install.sh</span></code> is provided that can be run as is on Ubuntu 20.04. For other Linux distributions, you may use that file as basis to adapt.</p>
+</div></blockquote>
+</section>
+<section id="first-usage">
+<h2>First usage<a class="headerlink" href="#first-usage" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>git clone the FileWeaver repository</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt-get install git <span class="c1"># if needed</span>
+git clone https://github.com/jgori-ouistiti/FileWeaver/
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>run the install script</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash install.sh
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Edit the <code class="docutils literal notranslate"><span class="pre">conf.ini</span></code> file. You have to give the path to the FileWeaver library you just cloned, and the path to a folder where FileWeaver will operate. An example would be:</p></li>
+</ul>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[Library]</span><span class="w"></span>
+<span class="na">PATH_TO_LIBS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/user/Documents/FileWeaver/</span><span class="w"></span>
+<span class="k">[FileWeaver_Partition]</span><span class="w"></span>
+<span class="na">FW_PARTITION</span><span class="o">=</span><span class="s">/home/user/Documents/FileWeaver_Partition</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">configure.py</span></code>, which creates a conf.cfg file and various scripts.</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 configure.py
+</pre></div>
+</div>
+<p>You can check what is inside that conf.cfg file, it indicates the location of various FileWeaver components.</p>
+<ul class="simple">
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">run_fileweaver.py</span></code>. This will launch the server that forwards Fileweaver messages incoming from Nautilus over a websocket, and receives messages that it passes to Nautilus. This will also launch a Nautilus instance with Fileweaver support. From there, you can head to your FileWeaver partition and start experimenting.</p></li>
+</ul>
+</section>
+<section id="some-tips">
+<h2>Some tips<a class="headerlink" href="#some-tips" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>A <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> and a <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> can be created with Poetry (e.g. to install via pip):</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry <span class="nb">export</span> --without-hashes --dev -f requirements.txt --output requirements.txt
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>FileWeaver uses a TCP socket on port 5555. If closed unproperly, the TCP socket will remain open. The launch script takes care of this, but should you still have a <code class="docutils literal notranslate"><span class="pre">zmq.error.ZMQError:</span> <span class="pre">Address</span> <span class="pre">already</span> <span class="pre">in</span> <span class="pre">use</span></code>, you can</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>netstat -lntp <span class="c1"># Look up sockets, identify the PID &lt;pid&gt; holding socket with port 5555 open</span>
+<span class="nb">kill</span> -9 &lt;pid&gt;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>The nautilus window of FileWeaver uses websocket to forward information to the other windows via <code class="docutils literal notranslate"><span class="pre">ws://localhost:4000</span></code>.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to FileWeaver’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Julien Gori.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
