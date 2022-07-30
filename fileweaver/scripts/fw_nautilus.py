@@ -43,7 +43,7 @@ from fileweaver.base import graph
 import subprocess
 
 ##### Clean up stuff for demo
-cmd = os.path.join(os.getcwd(), f"{PATH_TO_SCRIPTS}/startup_scenario_one.sh")
+cmd = os.path.join(os.getcwd(), f"{PATH_TO_SCRIPTS}/startup_scenario_hw.sh")
 subprocess.call(cmd)
 ## Start an emptygraph
 graph.init_graph()
