@@ -222,11 +222,11 @@ class ExampleMenuProvider(
 
     def activate_add_link(self, menu, file):
         cooking.add_file_and_children(file)
-        graph.draw_graph()
+        #graph.draw_graph()
 
     def activate_new_link(self, menu, file):
         linkname = managing.new_link(file)
-        graph.draw_graph()
+        #graph.draw_graph()
 
     def activate_rm_link(self, menu, file):
         ret = managing.un_link(file)
@@ -237,7 +237,7 @@ class ExampleMenuProvider(
 
     def activate_edit_link(self, menu, file):
         cooking.edit_linked_file(file)
-        graph.draw_graph()
+        #graph.draw_graph()
         # nautgit.plot_repo(file)
 
     def activate_tagLink(self, menu, file):
