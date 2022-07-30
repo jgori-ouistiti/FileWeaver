@@ -5,6 +5,12 @@ const fs = require('fs')
 
 //const watcher = chokidar.watch(params.exchangePath)
 
+/**
+ * Add a morph
+ * @param graph {graph} graph object defined in the main window
+ * @param morphName {String} name of the morph
+ * @param nodeName {} name of the nodes
+ */
 function addMorph(graph, morphName, nodeName) {
 	if (! graph.morphs[morphName])
 		graph.morphs[morphName] = {nodes: [nodeName], collapsed: false}
@@ -12,6 +18,12 @@ function addMorph(graph, morphName, nodeName) {
 		graph.morphs[morphName].nodes.push(nodeName)
 }
 
+/**
+ * Parse node flags
+ * @param graph {graph} graph object defined in the main window
+ * @param id {int} id of the node
+ * @param node {node} node selected
+ */
 function parseNodeFlags(graph, id, node) {
 	node.isSelected = false
 
@@ -44,6 +56,11 @@ function parseNodeFlags(graph, id, node) {
 	}
 }
 
+/*
+ * Remove the node from the graph
+ * @param graph
+ * @param node
+ */
 function removeNode(graph, node) {
 	console.log(`   -> deleting node ${node.id} - ${node.tag}`)
 	let nodeName = 'n'+ex.id
@@ -76,6 +93,11 @@ function parseEdgeId(id) {
 	return id.split('#').map(i => i.replace('.0', ''))
 }
 
+/**
+ * Do something on the graphd depending on ex
+ * @param graph
+ * @param {ex} {String} action to do
+ */
 function parseGraphAction(graph, ex) {
 	let node, nodeName, edge, edgeName, from, to
 	switch (ex.action) {
@@ -187,6 +209,12 @@ function parseExchange(graph, ex) {
 	}
 }
 
+/**
+ * interfaction function between functions in this files and the main window, check that the command is well defined
+ * @param graph
+ * @param cmd {String} command to pass
+ * @param cb {function} function to call
+ */
 function processExchange(graph, cmd,cb) {
 	console.log("Processing the message from the HTML, the next log should be the same");
 	console.log(cmd)
