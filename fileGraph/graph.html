@@ -1,400 +1,457 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>FileWeaver Graph</title>
+	<head>
+		<title>FileWeaver Graph</title>
 
-	<link rel="stylesheet" type="text/css" href="lib/menu.css">
+		<link rel="stylesheet" type="text/css" href="lib/menu.css">
 
-	<script src="lib/anime.min.js"></script>
-	<script src="lib/graphView.js"></script>
-	<script src="lib/menu.js"></script>
-	
-	<script type="text/javascript">
-	
-	
-		var searchString = window.location.search.substring(1) || 'path=.&tag=.'
-		let m = searchString.match(/^path=([^&]*)\&tag=([^&]*)$/)
-		let path = null
-		let tag = null
-		if (m) {
-			path = decodeURIComponent(m[1])
-			tag = decodeURIComponent(m[2])
-			document.title += ' for '+tag
-		}
-		
-		var working;
-		
-		let contextMenus = {
-			node: {
-				checkDisabled(info) {},
-				execute(info) { singleFileCommand(info) },
-			},
-			edge: {
-				checkDisabled(info) {},
-				execute(info) {},
-			},
-			graph: {
-				checkDisabled(info) {},
-				execute(info) { multipleFilesCommand(info) },
+		<script src="lib/anime.min.js"></script>
+		<script src="lib/graphView.js"></script>
+		<script src="lib/menu.js"></script>
+
+		<script type="text/javascript">
+
+			//Window title
+			var searchString = window.location.search.substring(1) || 'path=.&tag=.'
+			let m = searchString.match(/^path=([^&]*)\&tag=([^&]*)$/)
+			let path = null
+			let tag = null
+			if (m) {
+				path = decodeURIComponent(m[1])
+				tag = decodeURIComponent(m[2])
+				document.title += ' for '+tag
 			}
-		}
 
-		let clickCommands = {
-			clickNode(e) {
-				let [target, type] = getTarget(e.target)
-				if (type !== 'node')
-					return
-				let node = graph.nodes[target.id]
-				if (! node)
-					return
-				console.log("Node correctly selected")
-				if (e.shiftKey || e.ctrlKey || e.metaKey) {
-					if (node.isSelected) {
-						node.isSelected = false
-						deselectNode(target.id)
+			// Variable used for debugging purpose, usually used to get the last node used
+			var working;
+
+			let contextMenus = {
+				node: {
+					checkDisabled(info) {},
+					execute(info) { singleFileCommand(info) },
+				},
+				edge: {
+					checkDisabled(info) {},
+					execute(info) {},
+				},
+				graph: {
+					checkDisabled(info) {},
+					execute(info) { multipleFilesCommand(info) },
+				}
+			}
+
+			let clickCommands = {
+				clickNode(e) {
+					let [target, type] = getTarget(e.target)
+					if (type !== 'node')
+						return
+					let node = graph.nodes[target.id]
+					if (! node)
+						return
+					console.log("Node correctly selected")
+					if (e.shiftKey || e.ctrlKey || e.metaKey) {
+						if (node.isSelected) {
+							node.isSelected = false
+							deselectNode(target.id)
+						} else {
+							node.isSelected = true
+							selectNode(target.id)
+						}
 					} else {
+						if (node.isSelected)
+							return
+						deselectAllNodes()
 						node.isSelected = true
 						selectNode(target.id)
 					}
-				} else {
-					if (node.isSelected)
+				},
+				dblclickNode(e) {
+					let [target, type] = getTarget(e.target)
+					if (type !== 'node')
 						return
+					let node = graph.nodes[target.id]
+					if (! node)
+						return
+
+					if (isCollapsedMorph(target.id)) {
+						let morph = graph.morphs['g'+node.morph.group]
+						morph.collapsed = false
+						global.graph.layout(graph, updateGraph)
+					} else
+						global.backend.send('editFileAndUpdate', node.linkname)
+				},
+				clickGraph(e) {
 					deselectAllNodes()
-					node.isSelected = true
-					selectNode(target.id)
 				}
-			},
-			dblclickNode(e) {
-				let [target, type] = getTarget(e.target)
-				if (type !== 'node')
+			}
+
+			function singleFileCommand(info) {
+				if (! info.target || ! info.cmd)
 					return
-				let node = graph.nodes[target.id]
-				if (! node)
+				let id = info.target.getAttribute('id')
+				let node = graph.nodes[id]
+				if (! node) {
+					console.warn(`fileCommand - unknown node ${id} for ${info.cmd}`)
 					return
+				}
 
-				if (isCollapsedMorph(target.id)) {
-					let morph = graph.morphs['g'+node.morph.group]
-					morph.collapsed = false
-					global.graph.layout(graph, updateGraph)
-				} else
-					global.backend.send('editFileAndUpdate', node.linkname)
-			},
-			clickGraph(e) {
-				deselectAllNodes()
-			}
-		}
-
-		function singleFileCommand(info) {
-			if (! info.target || ! info.cmd)
-				return
-			let id = info.target.getAttribute('id')
-			let node = graph.nodes[id]
-			if (! node) {
-				console.warn(`fileCommand - unknown node ${id} for ${info.cmd}`)
-				return
+				global.backend.send(info.cmd, node.linkname)
 			}
 
-			global.backend.send(info.cmd, node.linkname)
-		}
-
-		function multipleFilesCommand(info) {
-			if (! info.cmd)
-				return
-			let selection = []
-			for (let n in graph.nodes) {
-				let node = graph.nodes[n]
-				if (node.isSelected)
-					selection.push(node.linkname)
+			function multipleFilesCommand(info) {
+				if (! info.cmd)
+					return
+				let selection = []
+				for (let n in graph.nodes) {
+					let node = graph.nodes[n]
+					if (node.isSelected)
+						selection.push(node.linkname)
+				}
+				global.backend.send(info.cmd, ...selection)
 			}
-			global.backend.send(info.cmd, ...selection)
-		}
 
-		let graph = {
+			//Graph object, used to save nodes,edges and morphs
+			let graph = {
 				nodes: {},
 				edges: {},
 				morphs: {},
 			}
 
-		function loadGraph(name) {
-		 	graphEl = document.getElementById('graph')
-			graphEl.textContent = ""
-		 	global.graph.parse(name, g => {
-		 		graph = g
-		 		global.graph.layout(graph, parseGraph)
-		 	})
-		 }
+			/**
+			 * Draw a graph based on the graphml file given in argument
+			 * @param {String} name	path of the graphml file without the extension
+			 */
+			function loadGraph(name) {
+				graphEl = document.getElementById('graph')
+				graphEl.textContent = ""
+				global.graph.parse(name, g => {
+					graph = g
+					global.graph.layout(graph, parseGraph)
+				})
+			}
 
-		function inspectPage() {
-			//require('nw.gui').Window.get().showDevTools()
-			nw.Window.get().showDevTools()
-		}
+			/**
+			 * Function used to open the Inspect Element window, it is in this window that console.log in this file are print
+			 */
+			function inspectPage() {
+				//require('nw.gui').Window.get().showDevTools()
+				nw.Window.get().showDevTools()
+			}
 
-		function inspectBgPage() {
-			chrome.developerPrivate.openDevTools({
-			    renderViewId: -1,
-			    renderProcessId: -1,
-			    extensionId: chrome.runtime.id
-			})
-		}
+			/**
+			 * Function used to open the Inspect Background window, it is in this window that console.log from 
+			 * js files inside the lib folder are print
+			 */
+			function inspectBgPage() {
+				chrome.developerPrivate.openDevTools({
+					renderViewId: -1,
+					renderProcessId: -1,
+					extensionId: chrome.runtime.id
+				})
+			}
 
-		function deselectAllNodes() {
-			for (let n in graph.nodes) {
-				let node = graph.nodes[n]
-				if (node.isSelected) {
-					node.isSelected = false
-					deselectNode(n)
+			/**
+			 * Function used to deselect all nodes
+			 */
+			function deselectAllNodes() {
+				for (let n in graph.nodes) {
+					let node = graph.nodes[n]
+					if (node.isSelected) {
+						node.isSelected = false
+						deselectNode(n)
+					}
 				}
 			}
-		}
 
-		function getNodeUnderContextMenu() {
-			let info = sm.context.menuInfo
-			if (!info || !info.target || info.type !== 'node')
-				return null
-			let node = graph.nodes[info.target.id]
-			if (! node)
-				return null
-			return node
-		}
+			/**
+			 * Get the selected node
+			 */
+			function getNodeUnderContextMenu() {
+				let info = sm.context.menuInfo
+				if (!info || !info.target || info.type !== 'node')
+					return null
+				let node = graph.nodes[info.target.id]
+				if (! node)
+					return null
+				return node
+			}
 
-		function collapseMorph() {
-			node = getNodeUnderContextMenu()
-			if (! node || ! node.morph)
-				return
+			/**
+			 * Collapse morph, the entire morph will be show as a unique node
+			 */
+			function collapseMorph() {
+				node = getNodeUnderContextMenu()
+				if (! node || ! node.morph)
+					return
 
-			let morph = graph.morphs['g'+node.morph.group]
-			if (morph.collapsed)
-				return
-			morph.collapsed = true
-			global.graph.layout(graph, updateGraph)
-		}
+				let morph = graph.morphs['g'+node.morph.group]
+				if (morph.collapsed)
+					return
+				morph.collapsed = true
+				global.graph.layout(graph, updateGraph)
+			}
 
-		function expandMorph() {
-			node = getNodeUnderContextMenu()
-			if (! node || ! node.morph)
-				return
+			/** 
+			 * Expand morph, the entire morph will be show as several nodes
+			 */
+			function expandMorph() {
+				node = getNodeUnderContextMenu()
+				if (! node || ! node.morph)
+					return
 
-			let morph = graph.morphs['g'+node.morph.group]
-			if (! morph.collapsed)
-				return
-			morph.collapsed = false
-			global.graph.layout(graph, updateGraph)
-		}
+				let morph = graph.morphs['g'+node.morph.group]
+				if (! morph.collapsed)
+					return
+				morph.collapsed = false
+				global.graph.layout(graph, updateGraph)
+			}
 
-		function showHistory() {
-			node = getNodeUnderContextMenu()
-			console.log(`showHistory ${node.tag}`)
-			if (! node)
-				return
+			/**
+			 * Open the Git history of the selected node in a new window (based on git.html)
+			 * Note: The window will not display anything as the git2dot script is not installed
+			 * Follow up: One way to do it is to install the following Git repo as a submodule
+			 * https://github.com/jlinoff/git2dot
+			 * Then to modify concerned variables inside params.js
+			 */
+			function showHistory() {
+				node = getNodeUnderContextMenu()
+				console.log(`showHistory ${node.tag}`)
+				if (! node)
+					return
 
 
-			let uri = `git.html?path=${encodeURIComponent(node.path)}&tag=${encodeURIComponent(node.tag)}`
-			require('nw.gui').Window.open(uri, win => { win.x = 100; win.y = 100})
-		}
-		
-		function popInfoNode() {
-			node = getNodeUnderContextMenu()
-			if (!node)
-				return
+				let uri = `git.html?path=${encodeURIComponent(node.path)}&tag=${encodeURIComponent(node.tag)}`
+				require('nw.gui').Window.open(uri, win => { win.x = 100; win.y = 100})
+			}
+
+			/**
+			 * Open a window (based on info.html) displaying every properties of the current node selectionned
+			 * Currently, this window only allow keyword modification
+			 * Code (and useful explaination) used from this SO post:
+			 * https://stackoverflow.com/questions/28211831/passing-object-to-the-other-windows-using-node-jsnw-gui
+			 */
+			function popInfoNode() {
+				node = getNodeUnderContextMenu()
+				if (!node)
+					return
+
+				var message = document.getElementById('message');
+				message.innerHTML = Object.values(node);
+
+
+				var gui = require('nw.gui');
+				var newWindow; //we declare a global variable to store the handler for our new window
+
+				let uri = `info.html?path=${encodeURIComponent(node.path)}&tag=${encodeURIComponent(node.tag)}`
 				
-			var message = document.getElementById('message');
-			message.innerHTML = Object.values(node);
-			
-			
-			var gui = require('nw.gui');
-			var newWindow; //we declare a global variable to store the handler for our new window
-			
-			let uri = `info.html?path=${encodeURIComponent(node.path)}&tag=${encodeURIComponent(node.tag)}`
-			
-			gui.Window.open(uri, {}, function(newWin) {
-    				newWindow = newWin;
-    				
-    				newWindow.on('loaded', function(){
-    				//We only post a message when the new window is ready to listen to events.
-    				newWindow.window.postMessage(JSON.stringify(node)); 
-    				//the second parameter specifies the message origin. afaik, this is merely a string and has no effect beyond being there
+				gui.Window.open(uri, {}, function(newWin) {
+					newWindow = newWin;
+					// We send node to the new window
+					newWindow.on('loaded', function(){
+						//We only post a message when the new window is ready to listen to events.
+						newWindow.window.postMessage(JSON.stringify(node)); 
+					});
+
 				});
-			
-			});
-		}
-        var current_ws;
-		const connect = () => {
-			    const ws = new WebSocket("ws://localhost:4000");
-			    ws.addEventListener('open', function (event) {
-        				console.log('Connected!');
-			    });
-			
-			    current_ws = ws;
-			
-			
-			    ws.onmessage = function(event){
-				    console.log("Received a socket message, displaying the message");
-				    console.log(event.data)
-				    
-				    console.log("Get the string")
-				    var data = event.data
-				    
-				    parsed_data = JSON.parse(data)
-				    working = parsed_data
-				    console.log(working+" of type " + typeof(parsed_data))
-				    parsed_data = JSON.parse(parsed_data)
-				    
-				    //We want to manipulate the cluster easily in info.html and here
-				    //try catch because due to TypeError, the graph may not draw edges, there are better solution I think
-				    // such as checking the  message beforehands
-				    try{
-					    var beginning = parsed_data.vpdic.keywords.indexOf('[')+1;
-					    var end = parsed_data.vpdic.keywords.indexOf(']');
-					    
-					    // As every keyword is seperated by a comma
-					    parsed_data.vpdic.keywords = parsed_data.vpdic.keywords.substring(beginning,end).replaceAll('\'','').split(',')
-					    
-					    // Clean keyword a little bit
-					    for (var i = 0; i < parsed_data.vpdic.keywords.length;i++) {
-						    if (parsed_data.vpdic.keywords[i][0] == ' ') {
-							    parsed_data.vpdic.keywords[i] = parsed_data.vpdic.keywords[i].slice(1);
-							    console.log("A keyword has been cleaned");
-						    }
-					    }
-				    } catch(e) {
-					    if (e instanceof TypeError) {
-							    console.log("keywords already pre processed as a list")
-      					}
-				    } finally {
-					    global.exchange.processExchange(graph,parsed_data,graph => global.graph.layout(graph, updateGraph))
-					    //loadGraph("/home/alexandre/.cookbook/graph")
-					    //working = parsed_data
-				    }
-			    };
-			    
-                ws.onclose = (e) => {
-                    setTimeout(function () {
-                        connect();
-                    }, 1000);
-                };
-        }
-		
-		function init() {
-
-			initMenu();
-			 inspectPage();
-			 //inspectBgPage()
-
-			graphEl = document.getElementById('graph');
-			//global.backend.start(data => console.log('Backend: '+data))
-			
-			//Websocket
-			//Structure used to reconnect when WebSocket is closing
-			//Solution found on StackOverflow and here:
+			}
+			var current_ws; // Variable used to allow code after this block to send websocket msg back to the FW server
+			//Code inspired from this website:
 			//https://thewebdev.info/2022/04/30/how-to-automatically-reconnect-after-it-dies-with-websocket-and-javascript/
-            
-			connect();
-			
-			//To receive keywords update,
-			//I think a best way to code the eventListender is to directly find the node index in the array directly
-			//This will remove the For Each as it is useless.
-			window.addEventListener('message', function(event) {
-				console.log("Received from " + event.origin)
-				var node = JSON.parse(event.data);
-				
-				Object.keys(graph.nodes).forEach(element => {
-    				if (graph.nodes[element].path == node.path){
-    					//graph.nodes[element] = node;
-        				console.log("Update taken into account in JS");
-        				
-        				// Sending the information back to the FW server to compute new values related to kw
-    					var object_msg = {command : "editKeywords", smlk: node.smlk, path: node.path, keywords: node.keywords};
-    					console.log("The following, is the object that will be sent to the FW server")
-    					console.log(object_msg)
-    					current_ws.send(JSON.stringify(Object.values(object_msg)));
-    				}
-				})
-				console.log("-----------------------------")
-			},false);
-	 }
+			//A close solution: 
+			//https://stackoverflow.com/questions/22431751/websocket-how-to-automatically-reconnect-after-it-dies
+			const connect = () => {
+				const ws = new WebSocket("ws://localhost:4000");
+				ws.addEventListener('open', function (event) {
+					console.log('Connected!');
+				});
+				// As said before, to allow code elsewhere to send websocket msg back to the FW server
+				current_ws = ws;
 
-	</script>
-</head>
-<body onload="init()">
-	<div id="graphMenu" class="menu">
-		<ul class="items">
-			<li id="connectFiles">Connect files</li>
-			<li id="morphFiles">Create morph</li>
-			<li id="tagGroupOfFiles">Tag group</li>
-		</ul>
-		<hr />
-		<ul class="items">
-			<li onmouseup="inspectPage()">Inspect page</li>
-			<li onmouseup="inspectBgPage()">Inspect background</li>
-		</ul>
-	</div>
-	<div id="nodeMenu" class="menu">
-		<ul class="items">
-			<li id="showInFileBrowser">Show original</li>
-			<li id="editFileAndUpdate">Edit and update</li>
-			<li id="addFileAndChildren">Add linked files</li>
-			<li id="removeFileAsLink">Remove</li>
-			<li id="copyFileWithDependencies">Copy</li>
-			<li onmouseup="showHistory()">Show history</li>
-			<li id="makeStandaloneArchiveRun">Archive</li>
-			<li id="makeStandaloneArchiveFlat">Flat archive</li>
-			<li id="tagFile">Tag</li>
-			<li onmouseup="collapseMorph()">Collapse morph</li>
-			<li onmouseup="expandMorph()">Expand morph</li>
-			<li onmouseup="popInfoNode()">Info Node</li>
-		</ul>
-		<hr />
-		<ul class="items">
-			<li onmouseup="inspectPage()">Inspect page</li>
-			<li onmouseup="inspectBgPage()">Inspect background</li>
-		</ul>
-	</div>
-	<div id="edgeMenu" class="menu">
-		<ul class="items">
-			<li id="disconnectFiles">Disconnect files</li>
-		</ul>
-		<hr />
-		<ul class="items">
-			<li onmouseup="inspectPage()">Inspect page</li>
-			<li onmouseup="inspectBgPage()">Inspect background</li>
-		</ul>
-	</div>
+				// When we received a message (from the FW server)
+				ws.onmessage = function(event){
+					console.log("Received a socket message, displaying the message");
+					console.log(event.data)
+
+					console.log("Get the string")
+					var data = event.data
+					
+					//For some reason, we have the data twice for the following part to work
+					parsed_data = JSON.parse(data)
+					working = parsed_data
+					console.log(working+" of type " + typeof(parsed_data))
+					parsed_data = JSON.parse(parsed_data)
+
+					//We want to manipulate the cluster easily in info.html
+					//Here (the list of keyword is a string here)
+					//try catch because due to TypeError, the graph may not draw edges, 
+					// there are better solution I think, such as checking the  message beforehands
+					try{
+						var beginning = parsed_data.vpdic.keywords.indexOf('[')+1;
+						var end = parsed_data.vpdic.keywords.indexOf(']');
+
+						// As every keyword is seperated by a comma
+						parsed_data.vpdic.keywords = parsed_data.vpdic.keywords.substring(beginning,end).replaceAll('\'','').split(',')
+
+						// Clean keyword a little bit
+						for (var i = 0; i < parsed_data.vpdic.keywords.length;i++) {
+							//If the first character of a keyword is a white space, remove it
+							if (parsed_data.vpdic.keywords[i][0] == ' ') {
+								parsed_data.vpdic.keywords[i] = parsed_data.vpdic.keywords[i].slice(1);
+								console.log("A keyword has been cleaned");
+							}
+						}
+					} catch(e) {
+						if (e instanceof TypeError) {
+							console.log("keywords already pre processed as a list")
+						}
+					} finally {
+						//As the function name imply, process the message depending of the message type 
+						global.exchange.processExchange(graph,parsed_data,graph => global.graph.layout(graph, 
+							updateGraph))
+						//loadGraph("/home/alexandre/.cookbook/graph")
+						//working = parsed_data
+					}
+				};
+				
+				//If websocket connection is lost or we disconnect
+				ws.onclose = (e) => {
+					//Do something after a certain amount of time is ms
+					setTimeout(function () {
+						connect();
+					}, 1000);
+				};
+			}
+			
+			/**
+			 *Init function, started when the html page is loaded for the first time
+			 */
+
+			function init() {
+				initMenu();
+				inspectPage();
+				//inspectBgPage()
+
+				graphEl = document.getElementById('graph');
+				//global.backend.start(data => console.log('Backend: '+data))
+
+				// We connect to the websocket, ready to receive FW server's msg
+				connect();
+
+				// To receive keywords update, (and eventually, others properties updates)
+				// I think many things can be optimized/be better in the following block
+				// I think a best way to code the eventListender is to directly find the node index in the array directly
+				// This will remove the For Each as it is useless.
+				window.addEventListener('message', function(event) {
+					console.log("Received from " + event.origin)
+					var node = JSON.parse(event.data);
+
+					Object.keys(graph.nodes).forEach(element => {
+						if (graph.nodes[element].path == node.path){
+							//graph.nodes[element] = node;
+							console.log("Update taken into account in JS");
+
+							// Sending the information back to the FW server to compute new values related to kw
+							var object_msg = {
+								command : "editKeywords", 
+								smlk: node.smlk, path: node.path,
+								keywords: node.keywords
+							};
+							console.log("The following, is the object that will be sent to the FW server")
+							console.log(object_msg)
+							// We only send values from the previous object, what can be done instead
+							// Sending the whole node (heavier)
+							// Only send updated properties (smarter)
+							// Sending a dictionnary would be more interesting
+							current_ws.send(JSON.stringify(Object.values(object_msg)));
+						}
+					})
+					console.log("-----------------------------")
+				},false);
+			}
+
+		</script>
+	</head>
+	<body onload="init()">
+		<div id="graphMenu" class="menu">
+			<ul class="items">
+				<li id="connectFiles">Connect files</li>
+				<li id="morphFiles">Create morph</li>
+				<li id="tagGroupOfFiles">Tag group</li>
+			</ul>
+			<hr />
+			<ul class="items">
+				<li onmouseup="inspectPage()">Inspect page</li>
+				<li onmouseup="inspectBgPage()">Inspect background</li>
+			</ul>
+		</div>
+		<div id="nodeMenu" class="menu">
+			<ul class="items">
+				<li id="showInFileBrowser">Show original</li>
+				<li id="editFileAndUpdate">Edit and update</li>
+				<li id="addFileAndChildren">Add linked files</li>
+				<li id="removeFileAsLink">Remove</li>
+				<li id="copyFileWithDependencies">Copy</li>
+				<li onmouseup="showHistory()">Show history</li>
+				<li id="makeStandaloneArchiveRun">Archive</li>
+				<li id="makeStandaloneArchiveFlat">Flat archive</li>
+				<li id="tagFile">Tag</li>
+				<li onmouseup="collapseMorph()">Collapse morph</li>
+				<li onmouseup="expandMorph()">Expand morph</li>
+				<li onmouseup="popInfoNode()">Info Node</li>
+			</ul>
+			<hr />
+			<ul class="items">
+				<li onmouseup="inspectPage()">Inspect page</li>
+				<li onmouseup="inspectBgPage()">Inspect background</li>
+			</ul>
+		</div>
+		<div id="edgeMenu" class="menu">
+			<ul class="items">
+				<li id="disconnectFiles">Disconnect files</li>
+			</ul>
+			<hr />
+			<ul class="items">
+				<li onmouseup="inspectPage()">Inspect page</li>
+				<li onmouseup="inspectBgPage()">Inspect background</li>
+			</ul>
+		</div>
+		
 	
-	<div>
-	<h1>Message:</h1>
-        <div id="message"></div>  
-	</div>
-    
-    <script>
-    	function updateKeywordMenu(){
-    	
-    		Object.keys(graph.nodes).forEach(node => {
-    			graph.nodes[node].keywords.forEach(keyword => console.log(keyword));
-    			console.log("-----")
-    		})
-    			
-    	};
-    </script>
-    
-	<svg class="graph" width="800" height="1200" viewBox="0 0 800 1200"
-		 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-		 <defs>
+		<!-- Just a div for displaying websocket message received from the FW server -->
+		<div>
+			<h1>Message:</h1>
+			<div id="message"></div>  
+		</div>
+
+		<script>
+			/**
+			 * Function used for a menu with every keyword used in the graphs, to highlight them or not...
+			 * Not used here
+			 */
+			function updateKeywordMenu(){
+			
+			};
+		</script>
+
+		<svg class="graph" width="800" height="1200" viewBox="0 0 800 1200"
+							     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+			<defs>
 			<marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
-				<path d="M0,0 L0,6 L9,3 z" fill="black" />
+			<path d="M0,0 L0,6 L9,3 z" fill="black" />
 			</marker>
 			<marker id="copyarrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
-				<path d="M0,0 L0,6 L9,3 z" fill="green" />
+			<path d="M0,0 L0,6 L9,3 z" fill="green" />
 			</marker>
 			<marker id="stalearrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
-				<path d="M0,0 L0,6 L9,3 z" fill="red" />
+			<path d="M0,0 L0,6 L9,3 z" fill="red" />
 			</marker>
 			<marker id="manualarrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
-				<path d="M0,0 L0,6 L9,3 z" fill="lightgrey" />
+			<path d="M0,0 L0,6 L9,3 z" fill="lightgrey" />
 			</marker>
-		</defs>
-		<g id="graph" transform="scale(1 1) rotate(0) translate(0 0)">
-		</g>
-	</svg>
-</body>
+			</defs>
+			<g id="graph" transform="scale(1 1) rotate(0) translate(0 0)">
+			</g>
+		</svg>
+	</body>
 </html>
 
