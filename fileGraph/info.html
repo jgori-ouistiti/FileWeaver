@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>History Graph</title>
-	<link rel="stylesheet" type="text/css" href="lib/info.css">
-	<style type="text/css">
-		#info {
-			background-color: darkgrey;
-			color: white;
-			font-family: sans-serif;
-			padding-left: 10px;
-		}
-		
+	<head>
+		<title>History Graph</title>
+		<link rel="stylesheet" type="text/css" href="lib/info.css">
+		<style type="text/css">
+#info {
+	background-color: darkgrey;
+	color: white;
+	font-family: sans-serif;
+	padding-left: 10px;
+}
+
 	textarea {
 		padding: 10px;
 		max-width: 100%;
@@ -25,137 +25,142 @@
 		margin-bottom: 10px;
 	}
 
-	</style>
-	<script src="lib/menu.js"></script>
-	<script type="text/javascript">
+		</style>
+		<script src="lib/menu.js"></script>
+		<script type="text/javascript">
 
-		var data = null;
-		
-		function inspectPage() {
-			require('nw.gui').Window.get().showDevTools()
-		}
+			var data = null;
 
-		function inspectBgPage() {
-			chrome.developerPrivate.openDevTools({
-			    renderViewId: -1,
-			    renderProcessId: -1,
-			    extensionId: chrome.runtime.id
-			})
-		}
-		
-		function button_remove_keyword(kw){
-			console.log("The function is called :D");
-			console.log(kw)
-			const index = data.keywords.indexOf(kw)
-			data.keywords.splice(index,1)
-			
-			//Delete the HTML
-			document.getElementById("line_"+kw).remove();
-		}
-		
-		function createKeywordEntry(kw){
-			if (data.keywords.includes(kw) == false){
-				data.keywords.push(kw)
-		}
-			
-			console.log("Adding the keyword: "+kw)
-			var word_keywords = document.getElementById('keywords_tab');
-			var tr = "<tr id=\"line_"+kw+"\">";
-			//var button_html = "<button onclick=\"button_remove_keyword(\""+kw+"\")\">Remove</button>";
-			var button_html = "<button onclick=\"button_remove_keyword(&quot;"+ kw + "&quot;)\"> Remove </button>";
-			console.log("HTML code of the button");
-			console.log(button_html);
-			tr += "<td>" + kw + "</td>" +"<td>" + button_html + "</td>"
-			tr +="</tr>"
-			word_keywords.innerHTML += tr;
-		}
+			function inspectPage() {
+				require('nw.gui').Window.get().showDevTools()
+			}
 
-		function init() {
-		
-			//Displaying all the properties of our nodes
-			var tbody = document.getElementById('tbody');
-			
-			window.addEventListener('message', function(event) {
-			console.log("Received the node from "+ event.origin)
-			data = JSON.parse(event.data);
-			
-			// Maybe better performance with another method but couldn't make it work
-			//https://stackoverflow.com/questions/17684201/create-html-table-from-javascript-object
-			var lim = Object.keys(data).length;
-			
-			for (var i = 0; i < lim; i++) {
-				var key = Object.keys(data)[i];
-				var value = Object.values(data)[i];
-				
-				if (key == 'keywords') {
-					value.forEach(element=>{console.log('init with ' + element);createKeywordEntry(element)});
-				} else {
-					var tr = "<tr>";
-					tr += "<td>" + key + "</td>";
-					tr += "<td>" + value + "</td>"
-					tr += "</tr>";
-				tbody.innerHTML += tr;
+			function inspectBgPage() {
+				chrome.developerPrivate.openDevTools({
+					renderViewId: -1,
+					renderProcessId: -1,
+					extensionId: chrome.runtime.id
+				})
+			}
+
+			/**
+			 * Function used when pressing the button Remove of the associated keyword
+			 * @param {String} kw the keyword to remove
+			 */
+			function button_remove_keyword(kw){
+				console.log("The function is called :D");
+				console.log(kw)
+				const index = data.keywords.indexOf(kw)
+				data.keywords.splice(index,1)
+
+				//Delete the HTML
+				document.getElementById("line_"+kw).remove();
+			}
+
+			/**
+			 * Function used to display a keyword in the window
+			 * @param {String} kw the keyword to add
+			 */
+			function createKeywordEntry(kw){
+				// We do not want duplicate
+				if (data.keywords.includes(kw) == false){
+					data.keywords.push(kw)
 				}
-			
-			}
-			console.log("Tab displayed! Now adding auto scaling");
-			//Credit to this post for text area with auto resize
-			//https://stackoverflow.com/questions/454202/creating-a-textarea-with-auto-resize
-			
-			const tx = document.getElementsByTagName("textarea");
-			for (let i = 0; i < tx.length; i++) {
-			  tx[i].setAttribute("style", "height:" + (tx[i].scrollHeight) + "px;overflow-y:hidden;");
-			  tx[i].addEventListener("input", OnInput, false);
+
+				console.log("Adding the keyword: "+kw)
+
+				// To view it in the window
+				var word_keywords = document.getElementById('keywords_tab');
+				// The line
+				var tr = "<tr id=\"line_"+kw+"\">";
+				//var button_html = "<button onclick=\"button_remove_keyword(\""+kw+"\")\">Remove</button>";
+				var button_html = "<button onclick=\"button_remove_keyword(&quot;"+ kw + "&quot;)\"> Remove </button>";
+				console.log("HTML code of the button");
+				console.log(button_html);
+				tr += "<td>" + kw + "</td>" +"<td>" + button_html + "</td>"
+				tr +="</tr>"
+				word_keywords.innerHTML += tr;
 			}
 
-			function OnInput() {
-			  this.style.height = "auto";
-			  this.style.height = (this.scrollHeight) + "px";
-			}
-		},false);
-			
-			window.addEventListener("beforeunload", function(){
-				opener.postMessage(JSON.stringify(data))
-			});
-	
-	}
-	</script>
-</head>
-<body onload="init()">
-	<div id="wrapper">
-		<div>	
-			<h1> Node info </h1>
-		</div>
-		
-		<div id ="node_prop">
-			<h2> Nodes properties </h2>
-			<table>
-		    		<tbody id="tbody"></tbody>
-			</table>
-		</div>
-		
-		<div id="word_keywords">
-		<script>
-			function button_add_new_keyword(){
-				var kw = document.getElementById("add_keyword").value;
-				if (kw == ""){
-					alert("Please do not insert blank keyword")
-				} else if (data.keywords.includes(kw) == true) {
-					alert("Keyword already exists")
-				} else {
-					createKeywordEntry(kw);
-					alert("Keyword inserted");
-				}
+			function init() {
+				//Displaying all the properties of our nodes
+				var tbody = document.getElementById('tbody');
+
+				// When the window is loaded, received the node coming from graph.html
+				window.addEventListener('message', function(event) {
+					console.log("Received the node from "+ event.origin)
+					data = JSON.parse(event.data);
+
+					// Maybe better performance with another method but couldn't make it work
+					//https://stackoverflow.com/questions/17684201/create-html-table-from-javascript-object
+					var lim = Object.keys(data).length;
+
+					//Display every properties of the node
+					for (var i = 0; i < lim; i++) {
+						var key = Object.keys(data)[i];
+						var value = Object.values(data)[i];
+
+						if (key == 'keywords') {
+							value.forEach(element=>{console.log('init with ' + element);
+								createKeywordEntry(element)});
+						} else {
+							var tr = "<tr>";
+							tr += "<td>" + key + "</td>";
+							tr += "<td>" + value + "</td>"
+							tr += "</tr>";
+							tbody.innerHTML += tr;
+						}
+
+					}
+				},false)
+				// Helpful information here:
+				// https://stackoverflow.com/questions/24081699/why-onbeforeunload-event-is-not-firing
+				window.addEventListener("beforeunload", function(){
+					//Sending the node back to the main window
+					opener.postMessage(JSON.stringify(data))
+				});
+
 			}
 		</script>
-			<h2> Keywords </h2>
-			<label for="add_keyword">Add a keyword:</label>
-			<textarea id="add_keyword"></textarea>
-			<button onclick="button_add_new_keyword()">Add</button>
-			<table>
-				<tbody id="keywords_tab"></tbody>
-			</table>
+	</head>
+	<body onload="init()">
+		<div id="wrapper">
+			<div>	
+				<h1> Node info </h1>
+			</div>
+
+			<div id ="node_prop">
+				<h2> Nodes properties </h2>
+				<table>
+					<tbody id="tbody"></tbody>
+				</table>
+			</div>
+
+			<div id="word_keywords">
+				<script>
+					/**
+					* Function used when pressing the button to add a keyword
+					 */
+					function button_add_new_keyword(){
+						var kw = document.getElementById("add_keyword").value;
+						if (kw == ""){
+							alert("Please do not insert blank keyword")
+						} else if (data.keywords.includes(kw) == true) {
+							alert("Keyword already exists")
+						} else {
+							createKeywordEntry(kw);
+							alert("Keyword inserted");
+						}
+					}
+				</script>
+				<h2> Keywords </h2>
+				<label for="add_keyword">Add a keyword:</label>
+				<textarea id="add_keyword"></textarea>
+				<button onclick="button_add_new_keyword()">Add</button>
+				<table>
+					<tbody id="keywords_tab"></tbody>
+				</table>
+			</div>
 		</div>
-	</div>
-</body>
+	</body>
 </html>
