@@ -6,6 +6,7 @@ from fileweaver.read_write import readwrite
 
 import gensim
 from gensim.models.doc2vec import Word2Vec, Doc2Vec, TaggedDocument
+from sklearn import decomposition
 import numpy as np
 
 import json
@@ -101,10 +102,14 @@ def map_incoming_message_from_websocket(msg):
         model = Word2Vec.load(path + "word2vec_openintro-statistics.bin")
         vec = []
         for k in parsed_msg[3]:
-            vec.append(model.wv.get_vector(k))
+            print(k)
+            if k in model.wv.index_to_key:
+                print(model.wv.get_vector(k))
+                vec.append(model.wv.get_vector(k))
         vec = list(np.array(vec).sum(axis=0)/len(vec)) if len(vec) != 0 else [0]
         g.vp["keywordvec"][nodeid] = np.array(vec)
         graph.close_graph(g, namemap)
+        print("close")
         #zero = np.zeros(len(vec)).tolist()
         #graph.update("vertex", "keywordvec", file._get()[1], zero)
         graph.vectorize_nodes("Word2Vec")

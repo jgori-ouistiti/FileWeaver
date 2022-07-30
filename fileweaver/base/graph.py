@@ -75,7 +75,7 @@ edge_properties = [
 
 formats = [".odt", ".pdf", ".doc", ".html", ".txt", ".xls", ".tex"]
 
-threshold = 10
+threshold = 6
 
 def init_graph():
 

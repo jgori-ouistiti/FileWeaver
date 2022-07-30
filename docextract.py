@@ -14,7 +14,7 @@ from nltk import ngrams
 text = []
 
 #globing our books
-folder = 'books/scenario_hw/'
+folder = 'books/openintro-statistics/'
 books = glob.glob(folder + "**/*.tex", recursive=True)
 
 #set stopwords
